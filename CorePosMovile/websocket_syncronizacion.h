@@ -1,0 +1,64 @@
+#ifndef WEBSOCKET_SYNCRONIZACION_H
+#define WEBSOCKET_SYNCRONIZACION_H
+
+#include <QtCore/QObject>
+#include <QtWebSockets/QWebSocket>
+#include <QtNetwork/QSslError>
+#include <QtSql>
+#include <QtCore/QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+
+class websocket_syncronizacion : public QObject
+{
+Q_OBJECT
+    Q_PROPERTY(double progreso_actualizacion READ progreso_actualizacion WRITE setProgreso_actualizacion NOTIFY progreso_actualizacionChanged)
+QThread workerThread;
+public:
+    int ai_ln_max;
+    int ai_ln_actual;
+    QSqlDatabase db;
+    explicit websocket_syncronizacion(const QUrl &url, bool debug = false, QObject *parent = nullptr);
+    QStringList opciones;
+Q_SIGNALS:
+    void closed();
+signals:
+    void progreso_actualizacionChanged();
+    void setInstancia(int instancia);
+    void loginf(int instancia,int tienda);
+    void confirmado(int valor);//1 si 0 no
+    void instalacionCompleta(int instancia,int tienda);
+private Q_SLOTS:
+    void onConnected();
+    void onConnected2();
+    void onConnected3();
+    void onTextMessageReceived(QString message);
+
+public slots:
+    void iniciar(const QUrl &url2);
+    void iniciar2(const QUrl &url3);
+    void send_message(QString mensaje,int actual);
+    void send_message_log_conf(QString mensaje);
+    void send_message_inst(QString mensaje);
+    void cerrar_slot();
+    int get_max();
+    void base_de_datos();
+    void run_hilo_actualizador() ;
+    void muestra_progreso_sincronizacion(double text);
+    //set y get del valor de la actualizacion
+    double progreso_actualizacion() const;
+    void setProgreso_actualizacion(double value);
+    void insertar();
+    void select();
+    QString get_tender();
+private:
+    QWebSocket m_webSocket;//syncronizacion
+    QWebSocket m_webSocket2;//login/confirmacion
+    QWebSocket m_webSocket3;//instalacion
+    QUrl m_url;
+    bool m_debug;
+    double m_progreso_actualizacion;
+};
+
+#endif // WEBSOCKET_SYNCRONIZACION_H
