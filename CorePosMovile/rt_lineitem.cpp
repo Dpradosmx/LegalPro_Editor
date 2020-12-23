@@ -306,6 +306,7 @@ QMap<QString, QVariant> RT_LineItem::getlinea(int i){
     regreso["respuesta"]=1;
     qDebug() << "RT_LineItem::getlinea(int i) " << regreso["theTotal"].toString() << " " << regreso["textName"].toString() << " " << regreso["textQuantity"].toString() << " " << regreso["st"].toString();
     regreso["textCount"] = i+1;
+    regreso["cambios"]=get_cambios();
     return regreso;
 }
 

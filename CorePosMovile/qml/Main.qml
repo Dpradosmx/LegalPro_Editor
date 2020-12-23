@@ -5,26 +5,12 @@ import "helper"
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.XmlListModel 2.0
+import QtGraphicalEffects 1.0
 
-/*/////////////////////////////////////
-  NOTE:
-  Additional integration steps are needed to use Felgo Plugins, for example to add and link required libraries for Android and iOS.
-  Please follow the integration steps described in the plugin documentation of your chosen plugins:
-  - Google Analytics: https://felgo.com/doc/plugin-googleanalytics/
-  - Facebook: https://felgo.com/doc/plugin-facebook/
 
-  To open the documentation of a plugin item in Qt Creator, place your cursor on the item in your QML code and press F1.
-  This allows to view the properties, methods and signals of Felgo Plugins directly in Qt Creator.
 
-/////////////////////////////////////*/
 
 App {
-    // You get free licenseKeys from https://felgo.com/licenseKey
-    // With a licenseKey you can:
-    //  * Publish your games & apps for the app stores
-    //  * Remove the Felgo Splash Screen or set a custom one (available with the Pro Licenses)
-    //  * Add plugins to monetize, analyze & improve your apps (available with the Pro Licenses)
-    //licenseKey: "<generate one from https://felgo.com/licenseKey>"
 
     // This item contains example code for the chosen Felgo Plugins
     // It is hidden by default and will overlay the QML items below if shown
@@ -45,6 +31,7 @@ App {
     }*/
     id:principal
     //secciones de la zona de registro
+    property bool registroN: false
     property bool usuario: true;//botones de usuario nuevo o viejo
     property bool login:false;//login de usuario existente
     property bool datos: false;//datos  para llenar si es usuario nuevo
@@ -56,10 +43,17 @@ App {
     //fin de la zona del login
     property int mesaSeleccionada:0;//mesa seleccionada
     property var modelo1:[
-        {"capacidad": 0,  "ocupados":0, "idMesa":1,"status":0,"texto":"CHORIZO SUM 1/4"},
-        {"capacidad": 0,  "ocupados":0, "idMesa":2,"status":1,"texto":"CHORIZO SUM 1/4"},
-        ]
-;
+        {"capacidad": 4,  "ocupados":0, "idMesa":11,"status":0,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit.."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":12,"status":1,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit..."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":13,"status":2,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit...."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":14,"status":3,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":15,"status":4,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit..."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":16,"status":5,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":17,"status":4,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit..."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":18,"status":5,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit."},
+        {"capacidad": 4,  "ocupados":0, "idMesa":19,"status":0,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit.."}
+        ];
+
     property var modelo2:[
         {"capacidad": 4,  "ocupados":0, "idMesa":11,"status":0,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit.."},
         {"capacidad": 4,  "ocupados":0, "idMesa":12,"status":1,"texto":"Suspendisse pellentesque urna et justo malesuada interdum. Morbi fermentum fermentum urna vestibulum pretium. Mauris sit amet tristique velit. Morbi faucibus dignissim turpis at pharetra. Maecenas eu augue velit..."},
@@ -98,21 +92,28 @@ App {
     property var cantidadArtIngresados:0.0
     property var categoriaActual: ""
     property var visibleMenuDespegable1:false
+    property bool visibleAlta: false
     //tickets
     property bool visibleTarjeta: false
     property bool visibleCheque:false
     property int ticketIndice:0
     //venta por default se usa cash, efectivo
     property var tySeleccionado: "CASH"
+
+    property var impuesttos : [] ;
+    property var cattegorias: [];
     FontLoader {
          id: geoFont
          source: "../assets/GeoSlab.ttf" // loaded from your assets folder
+         //font.pixelSize: sp(20)
        }
 
     onInitTheme: {
         Theme.navigationBar.backgroundColor="#4a576c";
       Theme.normalFont=geoFont;
         Theme.navigationBar.defaultIconSize=dp(23);
+
+
        }
 
     Component.onCompleted:{
@@ -124,7 +125,8 @@ App {
              //funcion que crea las tablas
                console.log("No hay instancia aun")
              //coneccion.base_de_datos()
-             page.navigationStack.push(nuevo)
+             //page.navigationStack.push(nuevo)//antes abria otra cosa
+               registroN=true;
              //principal.settings.setValue("numberAppStarts", 1)
                console.log("creada bd "+principal.settings.getValue("instalacionpendiente"))
                principal.settings.setValue("instancia", 1)
@@ -141,6 +143,9 @@ App {
            //botonesTender.xml=coneccion.get_tender();
            botonesTender.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>CCAR</ID_STR_RT><ID_BTNSET>CARD</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CASH</ID_STR_RT><ID_BTNSET>CASH</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CHEC</ID_STR_RT><ID_BTNSET>CHEC</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>FDST</ID_STR_RT><ID_BTNSET>Food Stamp</ID_BTNSET></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
            //coneccion.send_message("0,1,36,x",0)
+           categoriasgenerales.xml=funciones.get_categorias("");
+           impuestosgenerales.xml=funciones.get_taxs();
+           principal.settings.setValue("instancia",78);
 
 
         }
@@ -155,7 +160,8 @@ App {
             //backgroundColor: "aliceblue"
             backgroundColor: "white"
             useSafeArea: false // do not consider safe area insets of screen
-            property bool loginvisible: false
+            property bool loginvisible: true
+
 
 
                 /*
@@ -182,6 +188,7 @@ App {
             }
 */
 
+            //zona de mesas
                JsonListModel {
                    id: jsonModel1
                    source: modelo1
@@ -192,7 +199,7 @@ App {
                  id: listaMesas
                  x: dp(10) // left margin
                  //y: dp(10) // top margin
-                 spacing: dp(90)
+                 spacing: dp(2)//90
                  anchors.top: parent.top
                  anchors.topMargin: dp(10)
                  backgroundColor: "white"
@@ -201,7 +208,7 @@ App {
                  height: parent.height-dp(60)
                  visible:principal.visiblemesas;
                  model: jsonModel1
-
+                z:1
                delegate: Row {
                 id:delegadoMesa
                 spacing: dp(60)
@@ -233,70 +240,77 @@ App {
                                     }
                                 }
                     }
+
+                    Rectangle{
+                        id:col
+                        width: dp(75)
+                        height: dp(75)
+                        color: "white"
+                        border.color: "black"
+                        x:5
+                        y:5
+
+                        Column{
+                                            id:coll
+                                            width: dp(80)
+
+                                            //anchors.left: tecto.right
+                                            anchors.horizontalCenter: col.horizontalCenter
+                                            Rectangle {
+                                              id: rec
+                                              color: "white"
+                                              border.color: "gray"
+                                              width: dp(30)
+                                              height: dp(30)
+                                              radius: dp(15)
+                                              anchors.horizontalCenter: parent.horizontalCenter
+                                              anchors.top:parent.top
+                                              anchors.topMargin: dp(10)
+                                            }
+                                            Rectangle{
+                                                id:cir
+                                                width: dp(30)
+                                                height: dp(30)
+                                                radius: dp(15)
+                                                anchors.centerIn: rec
+                                                color: model.status===0 ? "white":
+                                                       model.status===1 ? "blue" :
+                                                       model.status===2 ? "lightgreen" :
+                                                       model.status===3 ? "red" :
+                                                       model.status===4 ? "grey" :
+                                                       model.status===5 ? "yellow" :
+                                                       "white"
+                                                border.color: "black"
+                                            }
+                                            AppText{
+                                                id:comensales
+                                                anchors.centerIn: cir
+                                                text:model.status===0 ? model.capacidad :
+                                                     model.ocupados
+                                            }
+                                            AppText{
+                                             id:mesaText
+                                             anchors.top: rec.bottom
+                                             anchors.horizontalCenter: rec.horizontalCenter
+                                             text: "Mesa " +model.idMesa
+                                            }
+                                        }
+                    }
+
+                    AppText{
+                                        id:tt
+                                        text:model.texto
+                                        anchors.left: col.right
+                                        anchors.leftMargin: dp(10)
+                                        y:dp(5)
+                                        //anchors.verticalCenter: parent.verticalCenter
+                                        //width:dp(450)
+                                        maximumLineCount: 4
+                                        width:listaMesas.width-dp(85)
+                                    }
+
                 }
 
-                Rectangle{
-                    id:col
-                    width: dp(75)
-                    height: dp(75)
-                    color: "white"
-                    border.color: "black"
-                    x:5
-                    y:5
-                }
-                Column{
-                                    id:coll
-                                    width: dp(80)
-
-                                    //anchors.left: tecto.right
-                                    anchors.horizontalCenter: col.horizontalCenter
-                                    Rectangle {
-                                      id: rec
-                                      color: "white"
-                                      border.color: "gray"
-                                      width: dp(30)
-                                      height: dp(30)
-                                      radius: dp(15)
-                                      anchors.horizontalCenter: parent.horizontalCenter
-                                      anchors.top:parent.top
-                                      anchors.topMargin: dp(20)
-                                    }
-                                    Rectangle{
-                                        id:cir
-                                        width: dp(30)
-                                        height: dp(30)
-                                        radius: dp(15)
-                                        anchors.centerIn: rec
-                                        color: model.status===0 ? "white":
-                                               model.status===1 ? "blue" :
-                                               model.status===2 ? "lightgreen" :
-                                               model.status===3 ? "red" :
-                                               model.status===4 ? "grey" :
-                                               model.status===5 ? "yellow" :
-                                               "white"
-                                        border.color: "black"
-                                    }
-                                    AppText{
-                                        id:comensales
-                                        anchors.centerIn: cir
-                                        text:model.status===0 ? model.capacidad :
-                                             model.ocupados
-                                    }
-                                    AppText{
-                                     id:mesaText
-                                     anchors.top: rec.bottom
-                                     anchors.horizontalCenter: rec.horizontalCenter
-                                     text: "Mesa " +model.idMesa
-                                    }
-                                }
-                AppText{
-                                    id:tt
-                                    text:model.texto
-                                    anchors.left: col.right
-                                    //anchors.verticalCenter: parent.verticalCenter
-                                    //width:dp(450)
-                                    width:listaMesas.width-dp(90)
-                                }
 
               }
 
@@ -312,7 +326,7 @@ App {
                  id: listaMesas2
                  x: dp(10) // left margin
                  //y: dp(10) // top margin
-                 spacing: dp(90)
+                 spacing: dp(2)//90
                  anchors.top: parent.top
                  anchors.topMargin: dp(10)
                  backgroundColor: "white"
@@ -325,103 +339,111 @@ App {
 
                  model: jsonModel2
 
-               delegate: Row {
-                id:delegadoMesa2
-                spacing: dp(60)
+                 z:1
+                delegate: Row {
+                 id:delegadoMesa2
+                 spacing: dp(60)
 
-                Rectangle{
-                    id:fondocol2
-                    color:model.idMesa===mesaSeleccionada ? "grey":
-                           index%2===0 ? "white":
-                                         "#82bee3"
+                 Rectangle{
+                     id:fondocol2
+                     color:model.idMesa===mesaSeleccionada ? "grey":
+                            index%2===0 ? "white":
+                                          "#82bee3"
 
-                    border.color: "grey"
-                    //width: dp(560)
-                    width:listaMesas2.width
-                    height: dp(90)
-                    MouseArea{
-                        anchors.fill: parent
-                                onClicked: {
+                     border.color: "grey"
+                     //width: dp(560)
+                     width:listaMesas.width
+                     height: dp(90)
+                     MouseArea{
+                         anchors.fill: parent
+                                 onClicked: {
+                                      //console.log("Clicked Item #"+model.idMesa+": "+JSON.stringify(model))
                                      console.log("Clicked Item #"+model.idMesa)
-                                    if(model.idMesa===mesaSeleccionada){
-                                        mesaSeleccionada=0;
-                                        listaSeleccionada=0;
-                                        estadoSeleccionada=0;
-                                    }
-                                    else{mesaSeleccionada=model.idMesa;
-                                    listaSeleccionada=2;
-                                    estadoSeleccionada=model.status;}
-                                }
-                    }
-                }
+                                     if(model.idMesa===mesaSeleccionada){
+                                         mesaSeleccionada=0;
+                                         listaSeleccionada=0;
+                                         estadoSeleccionada=0;
+                                     }
+                                     else{
+                                         mesaSeleccionada=model.idMesa;
+                                         listaSeleccionada=1;
+                                         estadoSeleccionada=model.status;
+                                     }
+                                 }
+                     }
 
-                Rectangle{
-                    id:col2
-                    width: dp(75)
-                    height: dp(75)
-                    color: "white"
-                    border.color: "black"
-                    x:5
-                    y:5
-                }
-                Column{
-                                    id:coll2
-                                    width: dp(80)
+                     Rectangle{
+                         id:col2
+                         width: dp(75)
+                         height: dp(75)
+                         color: "white"
+                         border.color: "black"
+                         x:5
+                         y:5
 
-                                    //anchors.left: tecto.right
-                                    anchors.horizontalCenter: col2.horizontalCenter
-                                    Rectangle {
-                                      id: rec2
-                                      color: "white"
-                                      border.color: "grey"
-                                      width: dp(30)
-                                      height: dp(30)
-                                      radius: dp(15)
-                                      anchors.horizontalCenter: parent.horizontalCenter
-                                      anchors.top:parent.top
-                                      anchors.topMargin: dp(20)
+                         Column{
+                                             id:coll2
+                                             width: dp(80)
 
-                                    }
-                                    Rectangle{
-                                        id:cir2
-                                        width: dp(30)
-                                        height: dp(30)
-                                        radius: dp(15)
-                                        anchors.centerIn: rec2
-                                        color: model.status===0 ? "white":
-                                               model.status===1 ? "blue" :
-                                               model.status===2 ? "lightgreen" :
-                                               model.status===3 ? "red" :
-                                               model.status===4 ? "grey" :
-                                               model.status===5 ? "yellow" :
-                                               "white"
-                                        border.color: "black"
-                                    }
-                                    AppText{
-                                        id:comensales2
-                                        anchors.centerIn: cir2
-                                        text:model.status===0 ? model.capacidad :
-                                             model.ocupados
-                                    }
-                                    AppText{
-                                     id:mesaText2
-                                     anchors.top: rec2.bottom
-                                     anchors.horizontalCenter: rec2.horizontalCenter
-                                     text: "Mesa " +model.idMesa
-                                    }
+                                             //anchors.left: tecto.right
+                                             anchors.horizontalCenter: col2.horizontalCenter
+                                             Rectangle {
+                                               id: rec2
+                                               color: "white"
+                                               border.color: "gray"
+                                               width: dp(30)
+                                               height: dp(30)
+                                               radius: dp(15)
+                                               anchors.horizontalCenter: parent.horizontalCenter
+                                               anchors.top:parent.top
+                                               anchors.topMargin: dp(10)
+                                             }
+                                             Rectangle{
+                                                 id:cir2
+                                                 width: dp(30)
+                                                 height: dp(30)
+                                                 radius: dp(15)
+                                                 anchors.centerIn: rec2
+                                                 color: model.status===0 ? "white":
+                                                        model.status===1 ? "blue" :
+                                                        model.status===2 ? "lightgreen" :
+                                                        model.status===3 ? "red" :
+                                                        model.status===4 ? "grey" :
+                                                        model.status===5 ? "yellow" :
+                                                        "white"
+                                                 border.color: "black"
+                                             }
+                                             AppText{
+                                                 id:comensales2
+                                                 anchors.centerIn: cir2
+                                                 text:model.status===0 ? model.capacidad :
+                                                      model.ocupados
+                                             }
+                                             AppText{
+                                              id:mesaText2
+                                              anchors.top: rec2.bottom
+                                              anchors.horizontalCenter: rec2.horizontalCenter
+                                              text: "Mesa " +model.idMesa
+                                             }
+                                         }
+                     }
 
-                }
-                AppText{
-                                    id:tt2
-                                    text:model.texto
-                                    anchors.left: col2.right
-                                    //anchors.verticalCenter: parent.verticalCenter
-                                    //width:dp(450)
-                                    width:listaMesas2.width-dp(90)
+                     AppText{
+                                         id:tt2
+                                         text:model.texto
+                                         anchors.left: col2.right
+                                         anchors.leftMargin: dp(10)
+                                         y:dp(5)
+                                         //anchors.verticalCenter: parent.verticalCenter
+                                         //width:dp(450)
+                                         maximumLineCount: 4
+                                         width:listaMesas.width-dp(85)
+                                     }
 
-                                }
+                 }
 
-              }
+
+               }
 
                }
 
@@ -435,7 +457,7 @@ App {
                  id: listaMesas3
                  x: dp(10) // left margin
                  //y: dp(10) // top margin
-                 spacing: dp(90)
+                 spacing: dp(2)//90
                  anchors.top: parent.top
                  anchors.topMargin: dp(10)
                  backgroundColor: "white"
@@ -447,100 +469,111 @@ App {
                  model: jsonModel3
 
 
-               delegate: Row {
-                id:delegadoMesa3
-                spacing: dp(60)
+                 z:1
+                delegate: Row {
+                 id:delegadoMesa3
+                 spacing: dp(60)
 
-                Rectangle{
-                    id:fondocol3
-                    color:model.idMesa===mesaSeleccionada ? "grey":
-                           index%2===0 ? "white":
-                                         "#82bee3"
+                 Rectangle{
+                     id:fondocol3
+                     color:model.idMesa===mesaSeleccionada ? "grey":
+                            index%2===0 ? "white":
+                                          "#82bee3"
 
-                    border.color: "grey"
-                    //width: dp(560)
-                    width:listaMesas3.width
-                    height: dp(90)
-                    MouseArea{
-                        anchors.fill: parent
-                                onClicked: {
+                     border.color: "grey"
+                     //width: dp(560)
+                     width:listaMesas.width
+                     height: dp(90)
+                     MouseArea{
+                         anchors.fill: parent
+                                 onClicked: {
+                                      //console.log("Clicked Item #"+model.idMesa+": "+JSON.stringify(model))
                                      console.log("Clicked Item #"+model.idMesa)
-                                    if(model.idMesa===mesaSeleccionada){ mesaSeleccionada=0;
-                                        listaSeleccionada=0;
-                                        estadoSeleccionada=0;
-                                    }
-                                    else{mesaSeleccionada=model.idMesa;
-                                    listaSeleccionada=3;
-                                    estadoSeleccionada=model.status;}
-                                }
-                    }
-                }
+                                     if(model.idMesa===mesaSeleccionada){
+                                         mesaSeleccionada=0;
+                                         listaSeleccionada=0;
+                                         estadoSeleccionada=0;
+                                     }
+                                     else{
+                                         mesaSeleccionada=model.idMesa;
+                                         listaSeleccionada=1;
+                                         estadoSeleccionada=model.status;
+                                     }
+                                 }
+                     }
 
-                Rectangle{
-                    id:col3
-                    width: dp(75)
-                    height: dp(75)
-                    color: "white"
-                    border.color: "black"
-                    x:5
-                    y:5
-                }
-                Column{
-                                    id:coll3
-                                    width: dp(80)
+                     Rectangle{
+                         id:col3
+                         width: dp(75)
+                         height: dp(75)
+                         color: "white"
+                         border.color: "black"
+                         x:5
+                         y:5
 
-                                    //anchors.left: tecto.right
-                                    anchors.horizontalCenter: col3.horizontalCenter
-                                    Rectangle {
-                                      id: rec3
-                                      color: "white"
-                                      border.color: "black"
-                                      width: dp(30)
-                                      height: dp(30)
-                                      radius: dp(15)
-                                      anchors.horizontalCenter: parent.horizontalCenter
-                                      anchors.top:parent.top
-                                      anchors.topMargin: dp(20)
-                                    }
-                                    Rectangle{
-                                        id:cir3
-                                        width: dp(30)
-                                        height: dp(30)
-                                        radius: dp(15)
-                                        anchors.centerIn: rec3
-                                        color: model.status===0 ? "white":
-                                               model.status===1 ? "blue" :
-                                               model.status===2 ? "lightgreen" :
-                                               model.status===3 ? "red" :
-                                               model.status===4 ? "grey" :
-                                               model.status===5 ? "yellow" :
-                                               "white"
-                                        border.color: "black"
-                                    }
-                                    AppText{
-                                        id:comensales3
-                                        anchors.centerIn: cir3
-                                        text:model.status===0 ? model.capacidad :
-                                             model.ocupados
-                                    }
-                                    AppText{
-                                     id:mesaText3
-                                     anchors.top: rec3.bottom
-                                     anchors.horizontalCenter: rec3.horizontalCenter
-                                     text: "Mesa " +model.idMesa
+                         Column{
+                                             id:coll3
+                                             width: dp(80)
 
-                                    }
-                                }
+                                             //anchors.left: tecto.right
+                                             anchors.horizontalCenter: col3.horizontalCenter
+                                             Rectangle {
+                                               id: rec3
+                                               color: "white"
+                                               border.color: "gray"
+                                               width: dp(30)
+                                               height: dp(30)
+                                               radius: dp(15)
+                                               anchors.horizontalCenter: parent.horizontalCenter
+                                               anchors.top:parent.top
+                                               anchors.topMargin: dp(10)
+                                             }
+                                             Rectangle{
+                                                 id:cir3
+                                                 width: dp(30)
+                                                 height: dp(30)
+                                                 radius: dp(15)
+                                                 anchors.centerIn: rec3
+                                                 color: model.status===0 ? "white":
+                                                        model.status===1 ? "blue" :
+                                                        model.status===2 ? "lightgreen" :
+                                                        model.status===3 ? "red" :
+                                                        model.status===4 ? "grey" :
+                                                        model.status===5 ? "yellow" :
+                                                        "white"
+                                                 border.color: "black"
+                                             }
+                                             AppText{
+                                                 id:comensales3
+                                                 anchors.centerIn: cir3
+                                                 text:model.status===0 ? model.capacidad :
+                                                      model.ocupados
+                                             }
+                                             AppText{
+                                              id:mesaText3
+                                              anchors.top: rec3.bottom
+                                              anchors.horizontalCenter: rec3.horizontalCenter
+                                              text: "Mesa " +model.idMesa
+                                             }
+                                         }
+                     }
 
-                AppText{
-                                    id:tt3
-                                    text:model.texto
-                                    anchors.left: col3.right
-                                    anchors.leftMargin: dp(5)
-                                    width:listaMesas3.width-dp(90)
-                                }
+                     AppText{
+                                         id:tt3
+                                         text:model.texto
+                                         anchors.left: col3.right
+                                         anchors.leftMargin: dp(10)
+                                         y:dp(5)
+                                         //anchors.verticalCenter: parent.verticalCenter
+                                         //width:dp(450)
+                                         maximumLineCount: 4
+                                         width:listaMesas.width-dp(85)
+                                     }
 
-              }
+                 }
+
+
+               }
 
                }
 
@@ -676,206 +709,756 @@ App {
                      }//if onclicked
                }
 
-                //zona login
-               // login form background
-                  Rectangle {
-                    id: loginForm
-                    anchors.centerIn: parent
-                    color: "#d6d6d6"
-                    width: content.width + dp(48)
-                    height: content.height + dp(80)//16
-                    radius: dp(4)
+               //!zona de mesas
+                 //fondo
+                  Rectangle{
+                    id:fondoblock
+                    width: parent.width
+                    height: parent.height
+                    z:1
                     visible: page.loginvisible
-                    border.color: "black"
+                    //visible:false;
+                    Image {
+                        id: logo
+                        source: "../assets/logo.png"
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.margins: dp(30)
+                        width:dp(320)
+                        height: dp(85)
 
-                  }
+                    }
 
-                  Rectangle {
-                    id: loginFormh
-                    anchors.bottom: loginForm.top
-                    anchors.left: loginForm.left
-                    color: "#4a576c"
-                    width: loginForm.width
-                    height: ingreso.height + dp(16)
-                    radius: dp(4)
-                    visible: page.loginvisible
-                    border.color: "black"
+                    Rectangle{
+                      id:rojo
+                      anchors.left: logo.right
+                      anchors.top: parent.top
+                      anchors.topMargin: dp(85)
+                      anchors.leftMargin: dp(10)
 
-                  }
+                      color: "#FD070C"
+                      height: dp(10)
+                      width: parent.width -dp(500)
 
-                  AppText {
-                    id:ingreso
-                    anchors.verticalCenter: loginFormh.verticalCenter
-                    anchors.left: loginFormh.left
-                    anchors.leftMargin: dp(10)
-                    text: "Ingreso"
-                    color: "white"
-                    //anchors.bottomMargin: dp(10)
-                    visible: page.loginvisible
-                  }
+                    }
 
-                  // login form content
-                  GridLayout {
-                      id: content
-                      anchors.centerIn: loginForm                     
-                      columnSpacing: dp(20)
-                      rowSpacing: dp(10)
-                      columns: 2
-                      visible: page.loginvisible
-                      // headline
+                    Rectangle{
+                      id:azul
+                      anchors.right: parent.right
+                      anchors.bottom: parent.bottom
+                      anchors.bottomMargin: dp(80)
+                      color: "#265596"
+                      height: dp(10)
+                      width: parent.width -dp(330)
+
+                    }
+
+                    //zona login
+                   // login form background
+                      Rectangle {
+                        id: loginForm
+                        anchors.centerIn: parent
+                        color: "#d6d6d6"
+                        width: content.width + dp(48)
+                        height: content.height + dp(80)//16
+                        radius: dp(4)
+                        visible: !registroN
+                        border.color: "black"
+                        // login form content
+                        GridLayout {
+                            id: content
+                            anchors.centerIn: parent
+                            columnSpacing: dp(20)
+                            rowSpacing: dp(10)
+                            columns: 2
+                            // headline
 
 
-                      // email text and field
-                      AppText {
-                        id:txtUsernamel
-                        text: qsTr("Usuario")
-                        font.pixelSize: sp(12)
+                            // email text and field
+                            AppText {
+                              text: qsTr("Usuario")
+                              font.pixelSize: sp(12)
 
-                        //fontFamily: geoFont
-                      }
-
-                      AppTextField {
-                        id: txtUsername
-                        Layout.preferredWidth: dp(200)
-                        showClearButton: true
-                        font.pixelSize: sp(14)
-                        backgroundColor: "white";
-
-                        borderColor: Theme.tintColor
-                        borderWidth: dp(2)
-                      }
-
-                      // password text and field
-                      AppText {
-                        id:txtPasswordl
-                        text: qsTr("Contraseña")
-                        font.pixelSize: sp(12)
-
-                        //fontFamily: geoFont
-                      }
-
-                      AppTextField {
-                        id: txtPassword
-                        Layout.preferredWidth: dp(200)
-                        showClearButton: true
-                        font.pixelSize: sp(14)
-                        backgroundColor: "white"
-                        borderColor: Theme.tintColor
-                        borderWidth:  dp(2)
-                        echoMode: TextInput.Password
-                      }
-
-                      // column for buttons, we use column here to avoid additional spacing between buttons
-                      Column {
-                        Layout.fillWidth: true
-                        Layout.columnSpan: 2
-                        Layout.topMargin: dp(12)
-
-                        // buttons
-                        AppButton {
-                            id:logbuton
-                          text: "Ingreso"
-                          flat: false
-                          fontCapitalization: Font.MixedCase
-                          backgroundColor: "#4a576c"
-                          backgroundColorPressed: "#d6d6d6"
-                          anchors.horizontalCenter: parent.horizontalCenter
-                          fontBold: false
-                          //fontFamily: geoFont
-                          onClicked: {
-                            page.forceActiveFocus() // move focus away from text fields
-                            if(olvidocontraseña){//if true manda llamar nueva contraseña
-                               console.log("Mandando que se olvido la contreña")
+                              //fontFamily: geoFont
                             }
-                            else{//sige el proceso login
-                                // call login action
-                                //logic.login(txtUsername.text, txtPassword.text)
-                                  if(txtUsername.text==="usuarion"){
-                                  page.loginvisible=false;
-                                  page.backgroundColor="aliceblue";
-                                  }
-                                  else{
-                                   NativeDialog.confirm("Error", "Contraseña incorrecta", function(ok) {
-                                       if(ok) {
 
+                            AppTextField {
+                              id: txtUsername
+                              Layout.preferredWidth: dp(200)
+                              showClearButton: true
+                              font.pixelSize: sp(14)
+                              backgroundColor: "white";
+
+                              borderColor: Theme.tintColor
+                              borderWidth: dp(2)
+                            }
+
+                            // password text and field
+                            AppText {
+                                id:txtPasswordl
+                              text: qsTr("Contraseña")
+                              font.pixelSize: sp(12)
+
+                              //fontFamily: geoFont
+                            }
+
+                            AppTextField {
+                              id: txtPassword
+                              Layout.preferredWidth: dp(200)
+                              showClearButton: true
+                              font.pixelSize: sp(14)
+                              backgroundColor: "white"
+                              borderColor: Theme.tintColor
+                              borderWidth:  dp(2)
+                              echoMode: TextInput.Password
+                            }
+
+                            // column for buttons, we use column here to avoid additional spacing between buttons
+                            Column {
+                              Layout.fillWidth: true
+                              Layout.columnSpan: 2
+                              Layout.topMargin: dp(12)
+
+                              // buttons
+                              AppButton {
+                                  id:logbuton
+                                text: "Ingreso"
+                                flat: false
+                                fontCapitalization: Font.MixedCase
+                                backgroundColor: "#4a576c"
+                                backgroundColorPressed: "#d6d6d6"
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                fontBold: false
+                                //fontFamily: geoFont
+                                onClicked: {
+                                  page.forceActiveFocus() // move focus away from text fields
+                                  if(olvidocontraseña){//if true manda llamar nueva contraseña
+                                     console.log("Mandando que se olvido la contreña")
+                                  }
+                                  else{//sige el proceso login
+                                      // call login action
+                                      //logic.login(txtUsername.text, txtPassword.text)
+
+
+                                      var loginresult=funciones.login(txtUsername.text,txtPassword.text,false);
+                                      if(loginresult.indexOf("<resultado>1</resultado>")>0){
+                                       // if(txtUsername.text==="usuarion"){
+                                       page.loginvisible=false;
+                                       page.backgroundColor="aliceblue";
+                                          mensajes.tipoM=1;
+                                          mt.text="Sesion iniciada";
+                                          mostrarTexto.start();
+                                        }
+                                        else{
+                                         NativeDialog.confirm("Error", "Contraseña incorrecta", function(ok) {
+                                             if(ok) {
+
+                                             }
+                                           })
+                                        }
+                                  }
+                                }//if onclicked
+                              }
+                              AppButton{
+                              id:olvidolog
+                              text:"¿Olvidó su contraseña?"
+                              flat: false
+                              backgroundColor: "#d6d6d6"
+                              backgroundColorPressed: "#d6d6d6"
+                              textColor: "black"
+                              dropShadow: false
+                              textSize: dp(12)
+                              //fontFamily: geoFont
+                              fontBold: false
+                              fontCapitalization: Font.MixedCase
+                              anchors.horizontalCenter: logbuton.horizontalCenter
+                              horizontalPadding: dp(0)
+                              onClicked: {
+                                 if(olvidocontraseña){
+                                     olvidolog.text="¿Olvidó su contraseña?";
+                                     txtPasswordl.visible=true;
+                                     txtPassword.visible=true;
+                                     txtUsernamel.text="Usuario";
+                                     ingreso.text="Ingreso";
+                                     olvidocontraseña=false;
+                                     logbuton.text="Ingreso";
+                                 }
+                                 else{
+                                     olvidolog.text="Atras";
+                                     logbuton.text="Obtén nuevo password";
+                                     txtPasswordl.visible=false;
+                                     txtPassword.visible=false;
+                                     txtUsernamel.text="Email";
+                                     ingreso.text="Password olvidado";
+                                     olvidocontraseña=true;
+                                 }
+                              }
+                              }
+                             }
+                          }
+
+
+                      }
+
+                      Rectangle {
+                        id: loginFormh
+                        anchors.bottom: loginForm.top
+                        anchors.left: loginForm.left
+                        color: "#4a576c"
+                        width: loginForm.width
+                        height: ingreso.height + dp(16)
+                        radius: dp(4)
+                        visible: !registroN
+                        border.color: "black"
+
+                        AppText {
+                          id:ingreso
+                          anchors.verticalCenter: parent.verticalCenter
+                          anchors.left: parent.left
+                          anchors.leftMargin: dp(10)
+                          //fontSize: sp(0)
+                          text: "Ingreso"
+                          color: "white"
+                        }
+                      }
+                     //fin de zona login
+
+
+                      // zona nuevo registro
+                         Rectangle {
+                           id: loginForm2
+                           anchors.centerIn: parent
+                           color: "#d6d6d6"
+                           width: content2.width + dp(48)
+                           height: content2.height + dp(80)//16
+                           radius: dp(4)
+                           visible:registroN
+                           border.color: "black"
+                           // login form content
+                           GridLayout {
+                               id: content2
+                               anchors.centerIn: parent
+                               columnSpacing: dp(20)
+                               rowSpacing: dp(10)
+                               columns: 2
+
+
+                                //inicio, usuario nuevo o ya existente
+                               AppButton{
+                                     id:nuevou
+                                     text: "¿Usuario nuevo?"
+                                     visible: usuario
+                                     onClicked:{
+                                         usuario=false;
+                                         datos=true;
+                                         login=false;
+                                         codigo=false;
+                                         datos2=false;
+                                     }
+
+                                     }
+
+                               AppButton{
+                                         id:nuevoy
+
+                                     text: "¿Usuario ya registrado?"
+                                     visible: usuario
+                                     onClicked:{
+                                         usuario=false;
+                                         datos=false;
+                                         login=true;
+                                         codigo=false;
+                                         datos2=false;
+                                     }
+
+                                     }
+
+                               //ya existente 2
+                               AppText {
+                                 text: qsTr("Usuario")
+                                 font.pixelSize: sp(12)
+                                 visible:login
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: usuariol
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:login
+                                       placeholderText: "Usuario ya registrado"
+
+                                     }
+
+                               AppText {
+                                 text: qsTr("Password")
+                                 font.pixelSize: sp(12)
+                                 visible:login
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: passwordl
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:login
+                                       placeholderText: "password registrado"
+
+                                     }
+
+                               Column {
+                                 Layout.fillWidth: true
+                                 Layout.columnSpan: 2
+                                 Layout.topMargin: dp(12)
+                                 visible:login
+                               AppButton{
+                                         id:aceptarl
+                                     text: "Aceptar login"
+                                     //visible: login
+                                     onClicked: {
+                                         //datos, L login, N nuevo codigo, C confirmar, usuario, password, codigo,email,celular,url
+                                         console.log("aceptar log");
+                                         coneccion.send_message_log_conf("L,"+usuariol.text+","+passwordl.text+",codigo,email,celular,url");
+                                         //activa onloginf
+                                         /*usuario=false;
+                                         datos=false;
+                                         login=false;
+                                         codigo=true;*/
+                                         aceptarl.enabled=false;
+                                     }
+                                     //anchors.horizontalCenter: parent.horizontalCenter
+                                       //      anchors.top: passwordl.bottom
+                                     }
+                               AppButton{
+                                         id:cancelar
+                                     text: "Cancelar"
+                                     //visible: login
+                                     onClicked: {
+                                         usuario=true;
+                                         datos=false;
+                                         login=false;
+                                         codigo=false;
+                                         datos2=false;
+                                         principal.settings.setValue("instancia", 0);
+                                     }
+                                     //anchors.horizontalCenter: parent.horizontalCenter
+                                       //      anchors.top: aceptarl.bottom
+                                     }
+                               }
+                               //ya existente 2
+
+                               //usuario ya existente 3
+                               AppText {
+                                 text: qsTr("Usuario")
+                                 font.pixelSize: sp(12)
+                                 visible:datos2
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: usuariod2
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos2
+                                       placeholderText: "Usuario"
+
+                                     }
+
+                               AppText {
+                                 text: qsTr("Password")
+                                 font.pixelSize: sp(12)
+                                 visible:datos2
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: passwordd2
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos2
+                                       placeholderText: "Password"
+
+                                     }
+
+                               AppText {
+                                 text: qsTr("E-mail")
+                                 font.pixelSize: sp(12)
+                                 visible:datos2
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: emaild2
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos2
+                                       placeholderText: "Correo electronico"
+
+                                     }
+
+                               AppButton{
+                                     id:aceptard2
+                                     text: "Aceptar datos2"
+                                     visible: datos2
+                                     Layout.fillWidth: true
+                                     Layout.columnSpan: 2
+                                     Layout.topMargin: dp(12)
+
+                                     onClicked: {
+                                         //datos, si es nuevo, usuario, password, instancia, rfc,nombretienda, encabezadotienda,id_tienda
+                                         console.log("aceptar log");
+                                         coneccion.send_message_log_conf("N,"+usuariod2.text+","+passwordd2.text+",0,"+emaild2.text+",felgo3443,url");
+                                         principal.settings.setValue("instalacionpendiente", "O,"+usuariod2.text+","+passwordd2.text+","+principal.settings.getValue("instancia")+",n,n,"+principal.settings.getValue("tienda"));
+                                         usuario=false;
+                                         datos=false;
+                                         login=false;
+                                         codigo=true;
+                                         datos2=false;
+                                         onClicked: NativeDialog.confirm("Confirmado", "Pronto recibira  un correo con un codigo de confirmacion", function(ok) {
+                                             if(ok) {}
+                                           })
+                                     }
+
+                                     }
+
+                               //usuario ya existente 3
+
+                               //ususario ya existente 4, usuario nuevo 3
+                               AppText {
+                                 text: qsTr("Codigo")
+                                 font.pixelSize: sp(12)
+                                 visible:codigo
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: codigoc
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:codigo
+                                       placeholderText: "Codigo"
+                                       //anchors.horizontalCenter: parent.horizontalCenter
+                                       //anchors.top: parent.top
+                                     }
+                               Column {
+                                 Layout.fillWidth: true
+                                 Layout.columnSpan: 2
+                                 Layout.topMargin: dp(12)
+                                 visible: codigo
+                               AppButton{
+                                         id:aceptarc
+                                     text: "Aceptar codigo"
+                                     //visible: codigo
+                                     onClicked: {
+                                         coneccion.send_message_log_conf("C,usuario,password,"+codigoc.text+",email,felgo4334,url");
+
+                                         usuario=true;
+                                         datos=false;
+                                         login=false;
+                                         codigo=false;
+                                         datos2=false;
+                                         //principal.settings.setValue("instancia", 1)
+                                         page.loginvisible=true;
+                                         registroN=false;
+                                         //page.navigationStack.pop();//regresa a la pantalla de login
+
+
+                                     }
+                                     //anchors.horizontalCenter: parent.horizontalCenter
+                                     //anchors.top: codigoc.bottom
+                                     }
+                               AppButton{
+                                         id:cancelarc
+                                     text: "Cancelar"
+                                     //visible: codigo
+                                     onClicked: {
+                                         usuario=true;
+                                         datos=false;
+                                         login=false;
+                                         codigo=false;
+                                         datos2=false;
+                                         principal.settings.setValue("instancia", 0);
+                                     }
+                                     //anchors.horizontalCenter: parent.horizontalCenter
+                                     //        anchors.top: aceptarc.bottom
+                                     }
+                               }
+                               //ususario ya  existente 4, codigo 1
+
+                               //usuario nuevo 2
+                               AppText {
+                                 text: qsTr("Usuario")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: usuarioCampo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Usuario"
+
+                                     }
+
+                               AppText {
+                                 text: qsTr("Password")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: passwordCampo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "password"
+                                     }
+
+                               AppText {
+                                 text: qsTr("E-mail")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+
+                               AppTextField {
+                                       id: correoCampo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Correo"
+
+                                     }
+
+                               AppText {
+                                 text: qsTr("Datos de la tienda")
+                                 font.pixelSize: sp(18)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppText {
+                                 text: qsTr("")
+                                 font.pixelSize: sp(18)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppText {
+                                 text: qsTr("Nombre")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: tiendaCampo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Nombre tienda"
+                                     }
+                               AppText {
+                                 text: qsTr("RFC")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: rfcCampo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "RFC"
+                                     }
+
+                               AppText {
+                                 text: qsTr("Encabezado tiquet")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: enc1Campo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Encabezado tiquet"
+                                     }
+                               AppText {
+                                 text: qsTr("Subtitulo tiquet")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: enc2Campo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Subtitulo tiquet"
+                                     }
+                               AppText {
+                                 text: qsTr("Pie de tiquet")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: pie1Campo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Pie  de  tiquet 1"
+                                     }
+                               AppText {
+                                 text: qsTr("Pie de tiquet 2")
+                                 font.pixelSize: sp(12)
+                                 visible:datos
+                                 //fontFamily: geoFont
+                               }
+                               AppTextField {
+                                       id: pie2Campo
+                                       Layout.preferredWidth: dp(200)
+                                       showClearButton: true
+                                       font.pixelSize: sp(14)
+                                       backgroundColor: "white";
+
+                                       borderColor: Theme.tintColor
+                                       borderWidth: dp(2)
+                                       visible:datos
+                                       placeholderText: "Pie  de  tiquet 2"
+                                     }
+                               AppButton{
+
+                                   icon: IconType.check
+                                   text: "aceptar"
+                                   visible: datos
+                                   Layout.fillWidth: true
+                                   Layout.columnSpan: 2
+                                   Layout.topMargin: dp(12)
+                                   onClicked: NativeDialog.confirm("Confirmar", "¿Subir datos?", function(ok) {
+                                       if(ok) {
+                                           coneccion.send_message_log_conf("N,usuarionuevo,usuarionuevo,0,fireshaitan@hotmail.com,felo3443,url");
+                                           principal.settings.setValue("instalacionpendiente", "N,usuarionuevo,usuarionuevo,?,rfc,nombre,encabezadotienda,0");
+                                           usuario=false;
+                                           datos=false;
+                                           login=false;
+                                           codigo=true;
+                                           datos2=false;
+                                           onClicked: NativeDialog.confirm("Confirmado", "Pronto recibira  un correo con un codigo de confirmacion", function(ok) {
+                                               if(ok) {}
+                                             })
+                                       }
+                                       else{
+                                           usuario=true;
+                                           datos=false;
+                                           login=false;
+                                           codigo=false;
+                                           datos2=false;
                                        }
                                      })
-                                  }
-                            }
-                          }//if onclicked
-                        }
-                        AppButton{
-                        id:olvidolog
-                        text:"¿Olvidó su contraseña?"
-                        flat: false
-                        backgroundColor: "#d6d6d6"
-                        backgroundColorPressed: "#d6d6d6"
-                        textColor: "black"
-                        dropShadow: false
-                        textSize: dp(12)
-                        //fontFamily: geoFont
-                        fontBold: false
-                        fontCapitalization: Font.MixedCase
-                        anchors.horizontalCenter: logbuton.horizontalCenter
-                        horizontalPadding: dp(0)
-                        onClicked: {
-                           if(olvidocontraseña){
-                               olvidolog.text="¿Olvidó su contraseña?";
-                               txtPasswordl.visible=true;
-                               txtPassword.visible=true;
-                               txtUsernamel.text="Usuario";
-                               ingreso.text="Ingreso";
-                               olvidocontraseña=false;
-                               logbuton.text="Ingreso";
+                               }
+
+
+                               //usuario nuevo 2
+
                            }
-                           else{
-                               olvidolog.text="Atras";
-                               logbuton.text="Obtén nuevo password";
-                               txtPasswordl.visible=false;
-                               txtPassword.visible=false;
-                               txtUsernamel.text="Email";
-                               ingreso.text="Password olvidado";
-                               olvidocontraseña=true;
+
+
+                         }
+
+                         Rectangle {
+                           id: loginFormh2
+                           anchors.bottom: loginForm2.top
+                           anchors.left: loginForm2.left
+                           color: "#4a576c"
+                           width: loginForm2.width
+                           height: ingreso2.height + dp(16)
+                           radius: dp(4)
+                           visible: registroN
+                           border.color: "black"
+
+                           AppText {
+                             id:ingreso2
+                             anchors.verticalCenter: parent.verticalCenter
+                             anchors.left: parent.left
+                             anchors.leftMargin: dp(10)
+                             //fontSize: sp(0)
+                             text: "Registro"
+                             color: "white"
                            }
-                        }
-                        }
-                       }
-                    }
-                //fin de zona login
-                 //fondo
-                  Image {
-                      id: logo
-                      source: "../assets/logo.png"
-                      anchors.left: parent.left
-                      anchors.top: parent.top
-                      anchors.margins: dp(30)
-                      width:dp(320)
-                      height: dp(85)
-                      visible: page.loginvisible
-                  }
-
-                  Rectangle{
-                    id:rojo
-                    anchors.left: logo.right
-                    anchors.top: parent.top
-                    anchors.topMargin: dp(85)
-                    anchors.leftMargin: dp(10)
-
-                    color: "#FD070C"
-                    height: dp(10)
-                    width: parent.width -dp(500)
-                    visible: page.loginvisible
-                  }
-
-                  Rectangle{
-                    id:azul
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: dp(80)
-                    color: "#265596"
-                    height: dp(10)
-                    width: parent.width -dp(330)
-                    visible: page.loginvisible
+                         }
+                        //fin zona registro
                   }
 
                 //fin fondo
@@ -888,7 +1471,7 @@ App {
                        id: listaTicket
                        x: dp(10) // left margin
                        //y: dp(10) // top margin
-                       spacing: dp(90)
+                       spacing: dp(2)//90
                        anchors.top: parent.top
                        anchors.topMargin: dp(10)
                        backgroundColor: "white"
@@ -919,73 +1502,87 @@ App {
                                           console.log("Clicked Item #"+textName)
                                           ticketIndice=index;
                                           //pone los datos dela linea en la descripcion
+                                          datosCM.text="Linea: "+lx.text
                                           d1.text=textQuantity;
                                           d2.text=textName;
+                                          d2.iditmps=textid_itm_ps;
+                                          d2.iditmpsqfr=textid_itm_ps_qfr;
                                           d3.text=cambios;
+                                          d3e.text=cambios;
                                           t1.text=textPrice;
+                                          t1e.text=textPrice;
                                           t2.text=textTotal;
 
                                               visibleDescripcio=true;
                                               visibleBusqueda=false;
                                               visibleCategorias=false;
                                               visibleVenta=false;
+                                              page.edicionlvisible=false;
+
                                       }
                           }
+
+                          AppText{
+                          id:lx
+                          text:index+1
+                          anchors.left: fondotick.left
+                          anchors.leftMargin: dp(5)
+                          anchors.top:fondotick.top
+                          color: isCanceled ? "red" : "black"
+                          }
+                          AppText{
+                          id:l1
+                          text:textQuantity
+                          anchors.left: fondotick.left
+                          anchors.top:fondotick.top
+                          color: isCanceled ? "red" : "black"
+                          anchors.leftMargin: dp(10)
+                          anchors.topMargin: dp(10)
+                          }
+                          AppText{
+                          id:l2
+                          text:textName
+                          anchors.left: l1.right
+                          anchors.top:fondotick.top
+                          maximumLineCount: 2
+                          anchors.leftMargin: dp(10)
+                          anchors.topMargin: dp(10)
+                          }
+
+                          AppText{
+                          id:l3
+                          text:cambios
+                          anchors.left: l2.left
+                          anchors.top:l1.bottom
+
+                          anchors.leftMargin: dp(10)
+                          anchors.topMargin: dp(10)
+                          //anchors.right:t1.left
+                          }
+
+
+                          AppText{
+                          id:l4
+                          text:textPrice
+                          anchors.right: l5.left
+                          anchors.top:fondotick.top
+                          color: isCanceled ? "red" : "black"
+                          anchors.rightMargin: dp(10)
+                          anchors.topMargin: dp(10)
+                          }
+
+                          AppText{
+                          id:l5
+                          text:textTotal
+                          anchors.right: fondotick.right
+                          anchors.top:fondotick.top
+                          color: isCanceled ? "red" : "black"
+                          anchors.rightMargin: dp(10)
+                          anchors.topMargin: dp(10)
+                          }
+
+
                       }
-
-                      AppText{
-                      id:l1
-                      text:textQuantity
-                      anchors.left: fondotick.left
-                      anchors.top:fondotick.top
-                      color: isCanceled ? "red" : "black"
-                      anchors.leftMargin: dp(10)
-                      anchors.topMargin: dp(10)
-                      }
-                      AppText{
-                      id:l2
-                      text:textName
-                      anchors.left: l1.right
-                      anchors.top:fondotick.top
-                      maximumLineCount: 2
-                      anchors.leftMargin: dp(10)
-                      anchors.topMargin: dp(10)
-                      }
-
-                      AppText{
-                      id:l3
-                      text:cambios
-                      anchors.left: l2.left
-                      anchors.top:l1.bottom
-
-                      anchors.leftMargin: dp(10)
-                      anchors.topMargin: dp(10)
-                      //anchors.right:t1.left
-                      }
-
-
-                      AppText{
-                      id:l4
-                      text:textPrice
-                      anchors.right: l5.left
-                      anchors.top:fondotick.top
-                      color: isCanceled ? "red" : "black"
-                      anchors.rightMargin: dp(10)
-                      anchors.topMargin: dp(10)
-                      }
-
-                      AppText{
-                      id:l5
-                      text:textTotal
-                      anchors.right: fondotick.right
-                      anchors.top:fondotick.top
-                      color: isCanceled ? "red" : "black"
-                      anchors.rightMargin: dp(10)
-                      anchors.topMargin: dp(10)
-                      }
-
-
-
                     }
 
                      }
@@ -1001,6 +1598,32 @@ App {
                     width: (parent.width/2) -dp(30)
                     border.color: "grey"
 
+                    AppText{
+                        id:totalText
+                        text:"Total"
+                        color: "white"
+                        fontSize: sp(50)
+                        anchors.top:parent.top
+                        anchors.right: parent.right
+                        anchors.topMargin: dp(10)
+                        //anchors.rightMargin: dp(10)
+                        anchors.rightMargin: parent.width/3
+                    }
+
+                    AppText{
+                        id:totalticketText
+                        text:"0.00"
+                        color: "white"
+                        fontSize: sp(50)
+                        anchors.top:parent.top
+                        anchors.right: parent.right
+                        //anchors.rightMargin: parent.width/4
+                        //width: parent.width/3
+                        anchors.rightMargin: dp(10)
+                        anchors.topMargin: dp(10)
+
+                    }
+
                     MouseArea{
                         anchors.fill:  parent
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -1012,44 +1635,135 @@ App {
                         }
 
                     }
+
+                    layer.enabled: true
+                                layer.effect: DropShadow {
+                                    transparentBorder: true
+                                    horizontalOffset: 1
+                                    verticalOffset: 1
+                                }
                 }
 
-                AppText{
-                    id:totalText
-                    text:"Total"
-                    color: "white"
-                    fontSize: sp(50)
-                    anchors.top:totalf.top
-                    anchors.right: totalticketText.left
-                    anchors.topMargin: dp(10)
-                    anchors.rightMargin: dp(10)
-                }
-
-                AppText{
-                    id:totalticketText
-                    text:"0.00"
-                    color: "white"
-                    fontSize: sp(50)
-                    anchors.top:totalf.top
-                    anchors.right: totalf.right
-                    anchors.rightMargin: totalf.width/4
-                    anchors.topMargin: dp(10)
-                }
                 //este es el principal
                 Rectangle{
                     id:lineaDescripcion
                     anchors.right: parent.right
                     anchors.top: totalf.bottom
-                    anchors.bottom: botonBuscar.top
+                    anchors.bottom: mensajes.top
+                    anchors.bottomMargin: dp(10)
                     anchors.topMargin: dp(10)
                     anchors.rightMargin: dp(10)
                     color: "grey"
                     height: dp(60)
                     width: (parent.width/2) -dp(30)
                     border.color: "grey"
+                    layer.enabled: true
+                                layer.effect: DropShadow {
+                                    transparentBorder: true
+                                    horizontalOffset: 1
+                                    verticalOffset: 1
+                                }
 
                 }
 
+                Rectangle{
+                id:mensajes
+                anchors.left: lineaDescripcion.left
+                anchors.right: parent.right
+                anchors.rightMargin: dp(10)
+                anchors.bottom: botonBuscar.top
+                property var tipoM: 2
+                //1 correcto
+                //2 error
+                width: dp(400)
+                height: dp(80)
+                color: "#265596"
+
+
+                AppText{
+                    id:iconText
+                    text:"Mensajes"
+                    anchors.top: parent.top
+                    //anchors.topMargin: dp(5)
+                    anchors.left: parent.left
+                    anchors.leftMargin: dp(10)
+                    color:"white"
+                }
+                Icon {
+                    id:iconMensaje
+                       icon:mensajes.tipoM===1? IconType.checkcircle :
+                                                IconType.ban
+                       size:dp(50)
+                       color:"white"
+                       anchors.top:iconText.bottom
+                       //anchors.topMargin: dp(10)
+                       anchors.left: parent.left
+                       anchors.leftMargin: dp(25)
+                        opacity: 0
+                       visible: opacity != 0
+
+                      Behavior on opacity {
+                                NumberAnimation { duration: 500 }
+                              }
+                     }
+
+                AppText{
+                    id:mt
+                    anchors.top:parent.top
+                    anchors.topMargin: dp(5)
+                    anchors.left: iconMensaje.right
+                    anchors.leftMargin: dp(10)
+                    anchors.right: parent.right
+                    anchors.rightMargin: dp(5)
+                    color:"white"
+                    font.pixelSize: sp(20)
+                    maximumLineCount: 3
+                    height: parent.height
+                    text: "No se pueden hacer cambios en esta linea"
+                    opacity: 0
+                    visible: opacity != 0
+
+                   Behavior on opacity {
+                             NumberAnimation { duration: 500 }
+                           }
+                }
+
+
+                }
+
+                SequentialAnimation {
+                         // You can start the whole animation by calling start() of the top-most item
+                         id: mostrarTexto
+                         ParallelAnimation {
+                         NumberAnimation {
+                                    target: mt
+                                    property: "opacity"
+                                    to: 1
+                                    duration: 500
+                                  }
+                         NumberAnimation {
+                                    target: iconMensaje
+                                    property: "opacity"
+                                    to: 1
+                                    duration: 500
+                                  }
+                         }
+
+                         ParallelAnimation {
+                         NumberAnimation {
+                                    target: mt
+                                    property: "opacity"
+                                    to: 0
+                                    duration: 4000
+                                  }
+                         NumberAnimation {
+                                    target: iconMensaje
+                                    property: "opacity"
+                                    to: 0
+                                    duration: 4000
+                                  }
+                         }
+                }
 
                 XmlListModel {
                     id: botonesTender
@@ -1385,180 +2099,191 @@ App {
                     //visible:visibleVenta
                     visible:visibleVenta && visibleCheque ? true:false
                 }
-//edicion
+                //edicion
                 //venta
-Row{
-spacing: dp(5)
-anchors.horizontalCenter: lineaDescripcion.horizontalCenter
-anchors.bottom: lineaDescripcion.bottom
-AppButton{
-  id:ventaAceptar
-  icon: IconType.check
-  text: ""
-  minimumWidth: dp(80)
-  minimumHeight: dp(50)
-  //anchors.left: listaTender.right
-  //anchors.leftMargin:  lineaDescripcion.width/5
-  //anchors.bottom: lineaDescripcion.bottom
-  backgroundColor: "#4a576c"
-  visible:visibleVenta
-  onClicked: {
-      if(parseFloat(montot.text) >= 0)
-      {
-          var newObject = {} ;
-          //newObject.a_pagar = totalt.text;
-          newObject.a_pagar=totalticketText.text;
-          newObject.forma_de_pago=tySeleccionado;
-          newObject.monto=montot.text;
-          newObject.n_cheke=refitt.text;
-          newObject.id_cheke= refitt.text;
-          newObject.tipo_id=numeritt.text;
-          newObject.banco_cheke= numeritt.text;
-          newObject.tipo_targeta=tipot.currentText;
-          newObject.vencimiento_m=vencimientot.text.split()[0];
-          newObject.vencimiento_a=vencimientot.text.split()[1];
-          newObject.seguridad=reftt.text;
-          newObject.ty_tnd =tySeleccionado;
+                Row{
+                    spacing: dp(5)
+                    anchors.horizontalCenter: lineaDescripcion.horizontalCenter
+                    anchors.bottom: lineaDescripcion.bottom
+                    AppButton{
+                      id:ventaAceptar
+                      icon: IconType.check
+                      text: ""
+                      minimumWidth: dp(80)
+                      minimumHeight: dp(50)
+                      //anchors.left: listaTender.right
+                      //anchors.leftMargin:  lineaDescripcion.width/5
+                      //anchors.bottom: lineaDescripcion.bottom
+                      backgroundColor: "#4a576c"
+                      visible:visibleVenta
+                      onClicked: {
+                          if(parseFloat(montot.text) >= 0)
+                          {
+                              var newObject = {} ;
+                              //newObject.a_pagar = totalt.text;
+                              newObject.a_pagar=totalticketText.text;
+                              newObject.forma_de_pago=tySeleccionado;
+                              newObject.monto=montot.text;
+                              newObject.n_cheke=refitt.text;
+                              newObject.id_cheke= refitt.text;
+                              newObject.tipo_id=numeritt.text;
+                              newObject.banco_cheke= numeritt.text;
+                              newObject.tipo_targeta=tipot.currentText;
+                              newObject.vencimiento_m=vencimientot.text.split()[0];
+                              newObject.vencimiento_a=vencimientot.text.split()[1];
+                              newObject.seguridad=reftt.text;
+                              newObject.ty_tnd =tySeleccionado;
 
-          var resultado =funciones.validacion(newObject);
+                              var resultado =funciones.validacion(newObject);
 
-          console.log("el resultado 1 "+resultado.resultado+resultado.cambio);
-          if(resultado.resultado === "true")
-          {
+                              console.log("el resultado 1 "+resultado.resultado+resultado.cambio);
+                              if(resultado.resultado === "true")
+                              {
 
-              var objeto_aceptar;
-              if (parseFloat(resultado.cambio) > 0)
-              {
-                  totalText.text="Cambio:";
-                  totalticketText.text=resultado.cambio
-                  visibleVenta=false;
-                  console.debug(" clicked cambio: "+resultado.cambio);
-                  objeto_aceptar=funciones.do_pay(newObject);
-                  funciones.finish_ticket(0,{});//clientes
-                  myModelt.clear();
-                  sumat.text="0.00";//total_venta-value.total_impuesto;
-                  impuestost.text="0.00";
-                  totalt.text="0.00";
-                  totalText.text="Cambio";
-              }
-              else
-              {
-                  objeto_aceptar=funciones.do_pay(newObject);
-                  //accept
-                  console.debug("despues el funciones do pay")
-                  //myDisplay.addLineDisplayPago(value);
-                  var value2;
-                  value2=funciones.put_change(objeto_aceptar);
-                  if(value2.respuesta===1){
-                      //myDisplay.addLineDisplay(value2);
-                      var myObject = new Object ;
-                      myObject.textCount = value2.ln ;
-                      myObject.textQuantity = value2.unitario ;
-                      myObject.textName = value2.titulo;
-                      myObject.textPrice = value2.precio_unitario ;
-                      //txtNmItem.text=value.titulo;
-                      //txtValueItem.text=myObject.textPrice;
-                      myObject.textTotal = value2.importe;
-                      sumat.text=value2.suma;//total_venta-value.total_impuesto;
-                      impuestost.text=value2.total_impuesto;
-                      totalt.text=value2.total_venta;
-                      //txtPagado.text=value.pagado;
-                      //txtAPagar.text=value.total_a_pagar;
-                      //txtAPagar1.text=value.total_a_pagar;
-                      totalticketText.text= value2.total_a_pagar;
-                      myObject.isCanceled = false ;
-                      myObject.isCancelation = value2.isCancelation ;
-                      myObject.FOOD_STAMP = value2.FOOD_STAMP ;
-                      myObject.QTY_ITM = value2.QTY_ITM; //
-                      myObject.pack = value2.pack ;
-                      myObject.canceled = false;
-                      myObject.cambios="";
-                      myModelt.insert( funciones.getNumeroLineas()-1, myObject );
-                      funciones.finish_ticket(0,{});//clientes
-                      //myDisplay.clearLines2();
-                      myModelt.clear();
-                      //principal.onmyModeltChanged();
-                      sumat.text="0.00";//total_venta-value.total_impuesto;
-                      impuestost.text="0.00";
-                      totalt.text="0.00";
-                      //txtPagado.text=value.pagado;
-                      //txtAPagar.text=value.total_a_pagar;
-                      //txtAPagar1.text=value.total_a_pagar;
-                      //totalticketText.text= 0.00;
-                      totalText.text="Cambio";
-                  }
-                  else{
-                      if(value2.respuesta===2){ //No hay cambio
-                          funciones.finish_ticket(0,{});//clientes
-                          myModelt.clear();
-                          //principal.onmyModeltChanged();
-                          sumat.text="0.00";//total_venta-value.total_impuesto;
-                          impuestost.text="0.00";
-                          totalt.text="0.00";
-                          //txtPagado.text=value.pagado;
-                          //txtAPagar.text=value.total_a_pagar;
-                          //txtAPagar1.text=value.total_a_pagar;
-                          totalticketText.text= 0.00;
+                                  var objeto_aceptar;
+                                  if (parseFloat(resultado.cambio) > 0)
+                                  {
+                                      totalText.text="Cambio:";
+                                      totalticketText.text=resultado.cambio
+                                      visibleVenta=false;
+                                      console.debug(" clicked cambio: "+resultado.cambio);
+                                      mensajes.tipoM=1;
+                                      mt.text=" clicked cambio: "+resultado.cambio;
+                                      mostrarTexto.start();
+                                      objeto_aceptar=funciones.do_pay(newObject);
+                                      funciones.finish_ticket(0,{});//clientes
+                                      myModelt.clear();
+                                      sumat.text="0.00";//total_venta-value.total_impuesto;
+                                      impuestost.text="0.00";
+                                      totalt.text="0.00";
+                                      totalText.text="Cambio";
+                                      montot.text="";
+                                  }
+                                  else
+                                  {
+                                      objeto_aceptar=funciones.do_pay(newObject);
+                                      //accept
+                                      console.debug("despues el funciones do pay")
+                                      //myDisplay.addLineDisplayPago(value);
+                                      var value2;
+                                      value2=funciones.put_change(objeto_aceptar);
+                                      if(value2.respuesta===1){
+                                          //myDisplay.addLineDisplay(value2);
+                                          var myObject = new Object ;
+                                          myObject.textCount = value2.ln ;
+                                          myObject.textQuantity = value2.unitario ;
+                                          myObject.textName = value2.titulo;
+                                          myObject.textPrice = value2.precio_unitario ;
+                                          //txtNmItem.text=value.titulo;
+                                          //txtValueItem.text=myObject.textPrice;
+                                          myObject.textTotal = value2.importe;
+                                          sumat.text=value2.suma;//total_venta-value.total_impuesto;
+                                          impuestost.text=value2.total_impuesto;
+                                          totalt.text=value2.total_venta;
+                                          //txtPagado.text=value.pagado;
+                                          //txtAPagar.text=value.total_a_pagar;
+                                          //txtAPagar1.text=value.total_a_pagar;
+                                          totalticketText.text= value2.total_a_pagar;
+                                          myObject.isCanceled = false ;
+                                          myObject.isCancelation = value2.isCancelation ;
+                                          myObject.FOOD_STAMP = value2.FOOD_STAMP ;
+                                          myObject.QTY_ITM = value2.QTY_ITM; //
+                                          myObject.pack = value2.pack ;
+                                          myObject.canceled = false;
+                                          myObject.cambios="";
+                                          myModelt.insert( funciones.getNumeroLineas()-1, myObject );
+                                          funciones.finish_ticket(0,{});//clientes
+                                          //myDisplay.clearLines2();
+                                          myModelt.clear();
+                                          sumat.text="0.00";//total_venta-value.total_impuesto;
+                                          impuestost.text="0.00";
+                                          totalt.text="0.00";
+                                           montot.text="";
+                                          totalText.text="Cambio";
+                                          mensajes.tipoM=1;
+                                          mt.text="Venta";
+                                          mostrarTexto.start();
+
+                                      }
+                                      else{
+                                          if(value2.respuesta===2){ //No hay cambio
+                                              funciones.finish_ticket(0,{});//clientes
+                                              myModelt.clear();
+                                              //principal.onmyModeltChanged();
+                                              sumat.text="0.00";//total_venta-value.total_impuesto;
+                                              impuestost.text="0.00";
+                                              totalt.text="0.00";
+                                               montot.text="";
+                                              totalticketText.text= 0.00;
+                                              mensajes.tipoM=1;
+                                              mt.text="Venta";
+                                              mostrarTexto.start();
+
+                                          }
+
+                                          if(value2.respuesta===0){ //No hay cambio
+                                              myObject = new Object ;
+                                              myObject.textCount = objeto_aceptar.ln ;
+                                              myObject.textQuantity = objeto_aceptar.unitario ;
+                                              myObject.textName = objeto_aceptar.titulo;
+                                              myObject.textPrice = objeto_aceptar.precio_unitario ;
+                                              //txtNmItem.text=value.titulo;
+                                              //txtValueItem.text=myObject.textPrice;
+                                              myObject.textTotal = objeto_aceptar.importe;
+                                              sumat.text=objeto_aceptar.suma;//total_venta-value.total_impuesto;
+                                              impuestost.text=objeto_aceptar.total_impuesto;
+                                              totalt.text=objeto_aceptar.total_venta;
+                                              //txtPagado.text=value.pagado;
+                                              //txtAPagar.text=value.total_a_pagar;
+                                              //txtAPagar1.text=value.total_a_pagar;
+                                              totalticketText.text= objeto_aceptar.total_a_pagar;
+                                              montot.text="";
+                                              myObject.isCanceled = false ;
+                                              myObject.isCancelation =objeto_aceptar.isCancelation ;
+                                              myObject.FOOD_STAMP = objeto_aceptar.FOOD_STAMP ;
+                                              myObject.QTY_ITM = objeto_aceptar.QTY_ITM; //
+                                              myObject.pack = objeto_aceptar.pack ;
+                                              myObject.canceled = false;
+                                              myObject.cambios="";
+                                              myModelt.insert( funciones.getNumeroLineas()-1, myObject );
+                                              mensajes.tipoM=1;
+                                              mt.text="Pago";
+                                              mostrarTexto.start();
+
+
+                                          }
+                                      }
+                                      return;
+                                  }
+                              }
+                          }
+                          else
+                          {
+                              //messageLoader.theText = "El monto de pago no puede vacio o cero" ;
+                              //messageLoader.isOk = true ;
+                              //messageLoader.source = "MessageBox.qml" ;
+                              //textField1.text = "" ;
+                              //return ;
+                          }
+                        }
                       }
-
-                      if(value2.respuesta===0){ //No hay cambio
-                          myObject = new Object ;
-                          myObject.textCount = objeto_aceptar.ln ;
-                          myObject.textQuantity = objeto_aceptar.unitario ;
-                          myObject.textName = objeto_aceptar.titulo;
-                          myObject.textPrice = objeto_aceptar.precio_unitario ;
-                          //txtNmItem.text=value.titulo;
-                          //txtValueItem.text=myObject.textPrice;
-                          myObject.textTotal = objeto_aceptar.importe;
-                          sumat.text=objeto_aceptar.suma;//total_venta-value.total_impuesto;
-                          impuestost.text=objeto_aceptar.total_impuesto;
-                          totalt.text=objeto_aceptar.total_venta;
-                          //txtPagado.text=value.pagado;
-                          //txtAPagar.text=value.total_a_pagar;
-                          //txtAPagar1.text=value.total_a_pagar;
-                          totalticketText.text= objeto_aceptar.total_a_pagar;
-                          myObject.isCanceled = false ;
-                          myObject.isCancelation =objeto_aceptar.isCancelation ;
-                          myObject.FOOD_STAMP = objeto_aceptar.FOOD_STAMP ;
-                          myObject.QTY_ITM = objeto_aceptar.QTY_ITM; //
-                          myObject.pack = objeto_aceptar.pack ;
-                          myObject.canceled = false;
-                          myObject.cambios="";
-                          myModelt.insert( funciones.getNumeroLineas()-1, myObject );
-
-                      }
-                  }
-                  return;
-              }
-          }
-      }
-      else
-      {
-          //messageLoader.theText = "El monto de pago no puede vacio o cero" ;
-          //messageLoader.isOk = true ;
-          //messageLoader.source = "MessageBox.qml" ;
-          //textField1.text = "" ;
-          //return ;
-      }
-    }
-  }
-AppButton{
-  id:ventaCancelar
-  icon: IconType.crosshairs
-  minimumWidth: dp(80)
-  minimumHeight: dp(50)
-  //anchors.right: lineaDescripcion.right
-  //anchors.rightMargin:lineaDescripcion.width/5
-  //anchors.bottom: lineaDescripcion.bottom
-  backgroundColor: "#4a576c"
-  visible:visibleVenta
-}
-}
+                    AppButton{
+                      id:ventaCancelar
+                      icon: IconType.crosshairs
+                      minimumWidth: dp(80)
+                      minimumHeight: dp(50)
+                      //anchors.right: lineaDescripcion.right
+                      //anchors.rightMargin:lineaDescripcion.width/5
+                      //anchors.bottom: lineaDescripcion.bottom
+                      backgroundColor: "#4a576c"
+                      visible:visibleVenta
+                    }
+                    }
 
                 //fin venta
 
                 //descripcion linea
-
+                property bool edicionlvisible: false
                 AppButton{
                   id:lineaBorrar
                   icon: IconType.trash
@@ -1571,57 +2296,63 @@ AppButton{
                   visible:visibleDescripcio
                   onClicked: {
                       //supervisorPending = "cancelarLinea" ;
-                      if ( ticketIndice < 0 )
-                      {
-                         // myDisplay.alerta(true, false, "No existe renglón seleccionado");
-                          console.debug("No encontramos que cancelar") ;
-                          return ;
+                      page.operacion_especial=7
+                      var acceso=  funciones.check_permisos("1031")
+                      if(acceso===0){
+                      page.supervisorLogVisible=true;
                       }
-                      var res ={};
-                      console.debug("Antes de validar") ;
-                      res=funciones.validaCancel(ticketIndice)
-
-                      if(res.respuesta === 1)
-                      {
-                          console.debug("CashPad.js Antes de validado") ;
-                          //loginSupervisor();
-                          var value;
-                          value=funciones.do_cancel(ticketIndice);
-                          if (value.respuesta === 1){
-                              //addLine2(value);
-                              var myObject = new Object ;
-                              myObject.textCount = value.ln ;
-                              myObject.textQuantity = value.unitario ;
-                              myObject.textName = value.titulo;
-                              myObject.textPrice = value.precio_unitario ;
-                              //txtNmItem.text=value.titulo;
-                              //txtValueItem.text=myObject.textPrice;
-                              myObject.textTotal = value.importe;
-                              sumat.text="$"+ value.suma;//total_venta-value.total_impuesto;
-                              impuestost.text="$"+value.total_impuesto;
-                              totalt.text=value.total_venta;
-                              //txtPagado.text=value.pagado;
-                              //txtAPagar.text=value.total_a_pagar;
-                              //txtAPagar1.text=value.total_a_pagar;
-                              totalticketText.text= value.total_a_pagar;
-                              myObject.isCanceled = false ;
-                              myObject.isCancelation = value.isCancelation ;
-                              myObject.FOOD_STAMP = value.FOOD_STAMP ;
-                              myObject.QTY_ITM = value.QTY_ITM; //
-                              myObject.pack = value.pack ;
-                              myObject.canceled = false;
-                              myModelt.insert( funciones.getNumeroLineas()-1, myObject );
-                              myModelt.remove(ticketIndice);
-                              value = funciones.getlinea(ticketIndice);
-                              myModelt.insert( ticketIndice, value);
+                      else{
+                          if ( ticketIndice < 0 )
+                          {
+                             // myDisplay.alerta(true, false, "No existe renglón seleccionado");
+                              console.debug("No encontramos que cancelar") ;
+                              return ;
                           }
-                      }
-                      else
-                      {
-                         console.debug("No se puede realizar la cancelación") ;
-                      }
-                      return;
+                          var res ={};
+                          console.debug("Antes de validar") ;
+                          res=funciones.validaCancel(ticketIndice)
 
+                          if(res.respuesta === 1)
+                          {
+                              console.debug("Antes de validado") ;
+                              //loginSupervisor();
+                              var value;
+                              value=funciones.do_cancel(ticketIndice);
+                              if (value.respuesta === 1){
+                                  //addLine2(value);
+                                  var myObject = new Object ;
+                                  myObject.textCount = value.ln ;
+                                  myObject.textQuantity = value.unitario ;
+                                  myObject.textName = value.titulo;
+                                  myObject.textPrice = value.precio_unitario ;
+                                  //txtNmItem.text=value.titulo;
+                                  //txtValueItem.text=myObject.textPrice;
+                                  myObject.textTotal = value.importe;
+                                  sumat.text="$"+ value.suma;//total_venta-value.total_impuesto;
+                                  impuestost.text="$"+value.total_impuesto;
+                                  totalt.text=value.total_venta;
+                                  //txtPagado.text=value.pagado;
+                                  //txtAPagar.text=value.total_a_pagar;
+                                  //txtAPagar1.text=value.total_a_pagar;
+                                  totalticketText.text= value.total_a_pagar;
+                                  myObject.isCanceled = false ;
+                                  myObject.isCancelation = value.isCancelation ;
+                                  myObject.FOOD_STAMP = value.FOOD_STAMP ;
+                                  myObject.QTY_ITM = value.QTY_ITM; //
+                                  myObject.pack = value.pack ;
+                                  myObject.canceled = false;
+                                  myModelt.insert( funciones.getNumeroLineas()-1, myObject );
+                                  myModelt.remove(ticketIndice);
+                                  value = funciones.getlinea(ticketIndice);
+                                  myModelt.insert( ticketIndice, value);
+                              }
+                          }
+                          else
+                          {
+                             console.debug("No se puede realizar la cancelación") ;
+                          }
+                          return;
+                      }
                   }
                 }
                 AppButton{
@@ -1635,10 +2366,17 @@ AppButton{
                   visible:visibleDescripcio
                   onClicked: {
                       var myObject = new Object ;
-                      myObject =myModelt.get(ticketIndice);
-                      myObject.cambios="Aqui un cambio";
-                      myModelt.remove(ticketIndice);
-                      myModelt.insert( ticketIndice, myObject );
+                      page.operacion_especial=9;
+                      var acceso=  funciones.check_permisos("1036")
+                      if(acceso===0){
+                          page.supervisorLogVisible=true;
+                      }
+                      else{
+                          page.cambiopVisible=true;
+                          preciotext.text=t1.text;
+                          motivotext.text="";
+                          observaciontext.text=d3.text;
+                      }
                   }
                 }
 
@@ -1654,7 +2392,6 @@ AppButton{
                  anchors.topMargin: dp(10)
                  visible:visibleDescripcio
                 }
-
                 AppText{
                 id:d1
                 text:"1.00"
@@ -1676,31 +2413,61 @@ AppButton{
                 anchors.leftMargin: dp(10)
                 anchors.topMargin: dp(10)
                 visible:visibleDescripcio
+                property var iditmps: ""
+                property var iditmpsqfr: ""
                 }
-
                 AppText{
                 id:d3
                 text:"cambios"
                 anchors.left: d2.left
                 anchors.top:d1.bottom
-                color:"white"
+                color:"#692333"
                 anchors.leftMargin: dp(10)
                 anchors.topMargin: dp(20)
                 //anchors.right:t1.left
-                visible:visibleDescripcio
+                visible:visibleDescripcio&&!page.edicionlvisible
                 }
+                AppTextField{
+                id:d3e
+                text:"cambios"
+                anchors.left: d2.left
+                anchors.top:d1.bottom
+                color:"#692333"
+                anchors.leftMargin: dp(10)
+                anchors.topMargin: dp(20)
+                //anchors.right:t1.left
+                visible:visibleDescripcio&&page.edicionlvisible
+                showClearButton: true
+                backgroundColor: "white"
+                borderColor: Theme.tintColor
+                borderWidth:  dp(2)
 
+                }
                 AppText{
                 id:t1
                 text:"10.00"
                 anchors.right: t2.left
                 anchors.top:lineaBorrar.bottom
-                color:"white"
+                color:"#692333"
                 anchors.rightMargin: dp(10)
                 anchors.topMargin: dp(10)
-                visible:visibleDescripcio
-                }
+                visible:visibleDescripcio&&!page.edicionlvisible
 
+                }
+                AppTextField{
+                id:t1e
+                text:"10.00"
+                anchors.right: t2.left
+                anchors.top:lineaBorrar.bottom
+                color:"#692333"
+                anchors.rightMargin: dp(10)
+                anchors.topMargin: dp(10)
+                visible:visibleDescripcio&&page.edicionlvisible
+                showClearButton: true
+                backgroundColor: "white"
+                borderColor: Theme.tintColor
+                borderWidth:  dp(2)
+                }
                 AppText{
                 id:t2
                 text:"10.00"
@@ -1711,7 +2478,6 @@ AppButton{
                 anchors.topMargin: dp(10)
                 visible:visibleDescripcio
                 }
-
                 AppText{
                 id:t3
                 text:"T0"
@@ -1731,7 +2497,6 @@ AppButton{
                     anchors.top: d3.bottom
                     visible:visibleDescripcio
                 }
-
                 Image {
                     id:descripcionLogo
                     source: "../assets/felgo-logo.png"
@@ -1743,7 +2508,6 @@ AppButton{
                     anchors.bottomMargin: dp(30)
                     visible:visibleDescripcio
                 }
-
                 AppText{
                     id:descripcionHF
                     text:"28/09/2020 16:14"
@@ -1757,7 +2521,6 @@ AppButton{
                     fontSize: sp(50)
                     visible:visibleDescripcio
                 }
-
                 AppText{
                    id:descripcionDatos
                    text:"Tienda:Demo\nCaja:caja 1\nOperador:usuarion"
@@ -1770,7 +2533,6 @@ AppButton{
                    color:"white"
                    visible:visibleDescripcio
                 }
-
                 //fin descripcion linea
                 //categorias
 
@@ -1828,7 +2590,6 @@ AppButton{
 
                   }
                 }
-
                 JsonListModel {
                        id: jsonModelArbol
                        source: modelocat
@@ -1872,7 +2633,6 @@ AppButton{
                     }
                   }
                    }
-
                 XmlListModel {
                     id: botonesCategorias1
                     query: "/Envelope/Body/GETButtonConfigWResponse/return/buttonconfig"
@@ -1895,7 +2655,6 @@ AppButton{
 
                     //source : "pic.xml"
                 }
-
                 XmlListModel {
                     id: botonesCategorias2
                     query: "/Envelope/Body/GETButtonConfigWResponse/return/buttonconfig"
@@ -1918,8 +2677,6 @@ AppButton{
 
                     //source : "pic.xml"
                 }
-
-
                 GridView {
                     id:listaCategoriasPadres
                        //anchors.top: homeCategoria.bottom//no estoy seguro, pero lo toma mal
@@ -1991,7 +2748,6 @@ AppButton{
 
                        delegate: contactsDelegate1
                 }
-
                 GridView {
                     id:listaProductos
                     anchors.top:homeCategoria.bottom
@@ -2065,6 +2821,8 @@ AppButton{
                                         myObject.textPrice = value.precio_unitario ;
                                         //txtNmItem.text=value.titulo;
                                         //txtValueItem.text=myObject.textPrice;
+                                        myObject.textid_itm_ps=ID_ITM_PS;
+                                        myObject.textid_itm_ps_qfr=ID_ITM_PS_QFR;
                                         myObject.textTotal = value.importe;
                                         sumat.text="$"+ value.suma;//total_venta-value.total_impuesto;
                                         impuestost.text="$"+value.total_impuesto;
@@ -2086,18 +2844,24 @@ AppButton{
                                         //myCashPad.enablePagos( true );
                                         //myCashPad.enableVentaEspera( true );
                                         //myCashPad.enableDevoluciones( false );
-                                        //LoginProcess.resetflDevolucion();
+                                        //funciones.resetflDevolucion();
 
                                     }
                                     else
                                     {
-                                        if( LoginProcess.get_last_set_selected_result() === -1)
+                                        if( funciones.get_last_set_selected_result() === -1)
                                         {
+                                            mensajes.tipoM=2;
+                                            mt.text="El artículo no puede tener fracciones";
+                                            mostrarTexto.start();
                                             console.log( "El artículo no puede tener fracciones");
                                             return;
                                         }
                                         else
                                         {
+                                            mensajes.tipoM=2;
+                                            mt.text="El artículo no existe";
+                                            mostrarTexto.start();
                                             console.log("El artículo no existe");
                                             return;
                                         }
@@ -2115,6 +2879,8 @@ AppButton{
                 //categorias
                 //listabusqueda
 
+                property var busquedaSelectPS:""
+                property var busquedaSelectPSQFR:""
 
                 XmlListModel {
                     id: xmlModelBusca
@@ -2125,18 +2891,16 @@ AppButton{
                      XmlRole { name: "PRICE"; query: "PRICE/string()" }
                      XmlRole { name: "QTY_ITM"; query: "QTY_ITM/string()" }
                 }
-
                 AppListView {
                     id:listaitems
                        anchors.top: lineaDescripcion.top
-                       anchors.bottom: cancelarBusca.top
+                       anchors.bottom: acepCancB.top
                        width:lineaDescripcion.width-dp(40)
                        anchors.left: lineaDescripcion.left
                        anchors.leftMargin: dp(20)
                        anchors.topMargin:  dp(10)
                        model: xmlModelBusca
                        visible:visibleBusqueda
-
                        delegate: Row {
                         id:delegadoitems
                         spacing: dp(10)
@@ -2145,68 +2909,23 @@ AppButton{
                             id:fondoitm
                             color:
                                    index%2===0 ? "white":
-                                                 "#82bee3"
-                            border.color: "grey"
+                                    "#82bee3"
+                            border.color: page.busquedaSelectPS===ID_ITM_PS ? "red":
+                                                                               "grey"
 
                             width:listaitems.width
                             height: dp(40)
                             MouseArea{
                                 anchors.fill: parent
                                         onClicked: {
-                                            console.log("Clicked Item #"+NM_ITM)
-                                            console.log("solo un articulo encontrado con "+funciones.itemsearch_getPosidentity())
-                                            //LoginProcess.itemsearch_getPosidentity(), LoginProcess.itemsearch_getQfr()
-                                            if( cantidadArtIngresados > 9999 )
-                                            {
-                                                NativeDialog.confirm("Error", "No se pueden manejar cantidades mayores a 9999", function(ok) {
-                                                    if(ok) {
+                                            listaitems.focus=true;
+                                            console.log("Clicked Item #"+index);
+                                            // console.log("solo un articulo encontrado con "+funciones.itemsearch_getPosidentity())
+                                            //funciones.itemsearch_getPosidentity(), funciones.itemsearch_getQfr()
+                                             listaitems.currentIndex=index;
+                                            page.busquedaSelectPS=ID_ITM_PS;
+                                            page.busquedaSelectPSQFR=ID_ITM_PS_QFR;
 
-                                                    }
-                                                  })
-                                                return;
-                                            }
-                                            if( cantidadArtIngresados <= 0 )//count multiplicador
-                                            {
-                                                NativeDialog.confirm("Error", "No se pueden manejar cantidades negativas, letras, nada o cero", function(ok) {
-                                                    if(ok) {
-
-                                                    }
-                                                  })
-                                                return;
-                                            }
-                                              var value = funciones.set_selected(ID_ITM_PS ,ID_ITM_PS_QFR ,cantidadArtIngresados);
-                                              if(funciones.get_last_set_selected_result()>0)
-                                              {
-                                                  console.debug("en colocar de la busqueda");
-                                                  //myDisplay.venta2(valor);
-                                                  var myObject = new Object ;
-                                                  myObject.textCount = value.ln ;
-                                                  myObject.textQuantity = value.unitario ;
-                                                  myObject.textName = value.titulo;
-                                                  myObject.textPrice = value.precio_unitario ;
-                                                  //txtNmItem.text=value.titulo;
-                                                  //txtValueItem.text=myObject.textPrice;
-                                                  myObject.textTotal = value.importe+1;
-                                                  sumat.text=value.suma;//total_venta-value.total_impuesto;
-                                                  impuestost.text=value.total_impuesto;
-                                                  totalt.text=value.total_venta;
-                                                  //txtPagado.text=value.pagado;
-                                                  //txtAPagar.text=value.total_a_pagar;
-                                                  //txtAPagar1.text=value.total_a_pagar;
-                                                  totalticketText.text= value.total_a_pagar;
-                                                  myObject.isCanceled = false ;
-                                                  myObject.isCancelation = value.isCancelation ;
-                                                  myObject.FOOD_STAMP = value.FOOD_STAMP ;
-                                                  myObject.QTY_ITM = value.QTY_ITM; //
-                                                  myObject.pack = value.pack ;
-                                                  myObject.canceled = false;
-                                                  myObject.cambios="";
-                                                  myModelt.insert( funciones.getNumeroLineas()-1, myObject );
-                                                  visibleBusqueda=true;
-                                                  visibleDescripcio=false;
-                                                  visibleCategorias=false;
-                                                  visibleVenta=false;
-                                              }
                                         }
                             }
                             AppText{
@@ -2234,20 +2953,115 @@ AppButton{
                             }
                         }
 
+                        Keys.onDownPressed: {
+                            listaitems.incrementCurrentIndex();
+                        console.log("Down key " + listaitems.currentIndex.toString());
+                            xmlModelBusca.get(listaitems.currentIndex).ID_ITM_PS;
+                            console.log("Clicked Item #"+xmlModelBusca.get(listaitems.currentIndex).NM_ITM);
+                            page.busquedaSelectPS=xmlModelBusca.get(listaitems.currentIndex).ID_ITM_PS;
+                            page.busquedaSelectPSQFR=xmlModelBusca.get(listaitems.currentIndex).ID_ITM_PS_QFR;
+
+
+                        }
+                        Keys.onUpPressed: {
+                            listaitems.decrementCurrentIndex();
+                        console.log("Up key " + listaitems.currentIndex.toString());
+                            console.log("Clicked Item #"+xmlModelBusca.get(listaitems.currentIndex).NM_ITM);
+                            page.busquedaSelectPS=xmlModelBusca.get(listaitems.currentIndex).ID_ITM_PS;
+                            page.busquedaSelectPSQFR=xmlModelBusca.get(listaitems.currentIndex).ID_ITM_PS_QFR;
+
+
+                        }
                       }
 
                 }
-                AppButton{
-                id:cancelarBusca
-                icon: IconType.angledoubleleft
-                text:"atras"
-                minimumWidth: ((teclado.width/7)*2)-dp(40)
-                minimumHeight: dp(50)
-                anchors.horizontalCenter: lineaDescripcion.horizontalCenter
-                anchors.bottom: lineaDescripcion.bottom
-                backgroundColor: "#4a576c"
-                visible:visibleBusqueda
-                onClicked:{ visibleBusqueda=false;}
+
+                Row{
+                    id:acepCancB
+                    spacing: dp(10)
+                    anchors.horizontalCenter: lineaDescripcion.horizontalCenter
+                    anchors.bottom: lineaDescripcion.bottom
+                    AppButton{
+                    id:aceptarBusca
+                    icon: IconType.check
+                    text:"Aceptar"
+                    minimumWidth: ((teclado.width/7)*2)-dp(40)
+                    minimumHeight: dp(50)
+                    backgroundColor: "#4a576c"
+                    visible:visibleBusqueda
+                    onClicked:{
+                        visibleBusqueda=false;
+
+                        if( cantidadArtIngresados > 9999 )
+                        {
+                            NativeDialog.confirm("Error", "No se pueden manejar cantidades mayores a 9999", function(ok) {
+                                if(ok) {
+
+                                }
+                              })
+                            return;
+                        }
+                        if( cantidadArtIngresados <= 0 )//count multiplicador
+                        {
+                            NativeDialog.confirm("Error", "No se pueden manejar cantidades negativas, letras, nada o cero", function(ok) {
+                                if(ok) {
+
+                                }
+                              })
+                            return;
+                        }
+                        if(page.busquedaSelectPS.toString().length<=0||page.busquedaSelectPSQFR.toString().length<=0){
+                            mensajes.tipoM=2;
+                            mt.text="Sin Seleccion";
+                            mostrarTexto.start();
+                            return;
+                        }
+                        var value = funciones.set_selected(page.busquedaSelectPS ,page.busquedaSelectPSQFR ,cantidadArtIngresados);
+                          if(funciones.get_last_set_selected_result()>0)
+                          {
+                              console.debug("en colocar de la busqueda");
+                              var myObject = new Object ;
+                              myObject.textCount = value.ln ;
+                              myObject.textQuantity = value.unitario ;
+                              myObject.textName = value.titulo;
+                              myObject.textPrice = value.precio_unitario ;
+                              myObject.textid_itm_ps=page.busquedaSelectPS;
+                              myObject.textid_itm_ps_qfr=page.busquedaSelectPSQFR;
+                              myObject.textTotal = value.importe+1;
+                              sumat.text=value.suma;//total_venta-value.total_impuesto;
+                              impuestost.text=value.total_impuesto;
+                              totalt.text=value.total_venta;
+                              totalticketText.text= value.total_a_pagar;
+                              myObject.isCanceled = false ;
+                              myObject.isCancelation = value.isCancelation ;
+                              myObject.FOOD_STAMP = value.FOOD_STAMP ;
+                              myObject.QTY_ITM = value.QTY_ITM; //
+                              myObject.pack = value.pack ;
+                              myObject.canceled = false;
+                              myObject.cambios="";
+                              myModelt.insert( funciones.getNumeroLineas()-1, myObject );
+                              visibleBusqueda=false;
+                              visibleDescripcio=false;
+                              visibleCategorias=false;
+                              visibleVenta=false;
+                              mensajes.tipoM=1;
+                              mt.text="Añadido articulo";
+                              mostrarTexto.start();
+                              txtBusqueda.text="";
+                          }
+
+                    }
+                    }
+                    AppButton{
+                    id:cancelarBusca
+                    icon: IconType.angledoubleleft
+                    text:"Atras"
+                    minimumWidth: ((teclado.width/7)*2)-dp(40)
+                    minimumHeight: dp(50)
+                    backgroundColor: "#4a576c"
+                    visible:visibleBusqueda
+                    onClicked:{ visibleBusqueda=false;}
+                    }
                 }
 
                 //fin listabusqueda
@@ -2283,8 +3097,11 @@ AppButton{
 
                       numeroArtEncontrados=funciones.itemsearchPrepare(valorABuscar);
                       if(numeroArtEncontrados===1){
-                        console.log("solo un articulo encontrado con "+funciones.itemsearch_getPosidentity())
-                        //LoginProcess.itemsearch_getPosidentity(), LoginProcess.itemsearch_getQfr()
+                        //console.log("solo un articulo encontrado con "+funciones.itemsearch_getPosidentity())
+                          mensajes.tipoM=1;
+                          mt.text="solo un articulo encontrado con "+funciones.itemsearch_getPosidentity();
+                          mostrarTexto.start();
+                        //funciones.itemsearch_getPosidentity(), funciones.itemsearch_getQfr()
                           var value = funciones.set_selected(funciones.itemsearch_getPosidentity() ,funciones.itemsearch_getQfr() ,cantidadArtIngresados);
                           if(funciones.get_last_set_selected_result()>0)
                           {
@@ -2295,15 +3112,12 @@ AppButton{
                               myObject.textQuantity = value.unitario ;
                               myObject.textName = value.titulo;
                               myObject.textPrice = value.precio_unitario ;
-                              //txtNmItem.text=value.titulo;
-                              //txtValueItem.text=myObject.textPrice;
+                              myObject.textid_itm_ps=funciones.itemsearch_getPosidentity() ;
+                              myObject.textid_itm_ps_qfr=funciones.itemsearch_getQfr();
                               myObject.textTotal = value.importe;
-                              txtSuma.text=value.suma;//total_venta-value.total_impuesto;
-                              txtTax.text=value.total_impuesto;
+                              sumat.text=value.suma;//total_venta-value.total_impuesto;
+                              impuestost.text=value.total_impuesto;
                               totalt.text=value.total_venta;
-                              //txtPagado.text=value.pagado;
-                              //txtAPagar.text=value.total_a_pagar;
-                              //txtAPagar1.text=value.total_a_pagar;
                               totalticketText.text= value.total_a_pagar;
                               myObject.isCanceled = false ;
                               myObject.isCancelation = value.isCancelation ;
@@ -2327,6 +3141,11 @@ AppButton{
                           visibleBusqueda=true;
                           visibleDescripcio=false;
                           visibleCategorias=false;
+                          visibleVenta=false;
+                          listaitems.focus=true;
+                          console.log("Clicked Item #"+index);
+
+                           listaitems.currentIndex=0;
                       }
                   }
                 }
@@ -2345,6 +3164,12 @@ AppButton{
                   anchors.left: teclado.left
                   anchors.bottomMargin:  dp(5)
                   height: dp(50)
+                  layer.enabled: true
+                              layer.effect: DropShadow {
+                                  transparentBorder: true
+                                  horizontalOffset: 1
+                                  verticalOffset: 1
+                              }
                 }
 
                 Rectangle{
@@ -2356,329 +3181,639 @@ AppButton{
                     anchors.rightMargin: dp(10)
                     width: totalf.width
                     height: dp(240)
-                }
 
-                AppButton{
-                  id:scan
-                  icon: IconType.barcode
-                  text: "Scan"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: teclado.left
-                  anchors.top:teclado.top
-                  backgroundColor: "#4a576c"
+                    AppButton{
+                      id:scan
+                      icon: IconType.rotateleft
+                      text: "Devolucion"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: teclado.left
+                      anchors.top:teclado.top
+                      backgroundColor: "#4a576c"
+                      onClicked: {
 
-                }
+                        if(funciones.toggleflDevolucion())
+                        scan.backgroundColor="#692333"
+                        else
+                         backgroundColor= "#4a576c"
+                      }
+                    }
 
-                AppButton{
-                  id:uno
-                  text: "1"
-                  textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: scan.right
-                  anchors.top:teclado.top
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"1"}
-                }
-                AppButton{
-                  id:dos
-                  text: "2"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: uno.right
-                  anchors.top:teclado.top
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"2"}
-                }
-                AppButton{
-                  id:tres
-                  text: "3"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: dos.right
-                  anchors.top:teclado.top
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"3"}
-                }
+                    AppButton{
+                      id:uno
+                      text: "1"
+                      textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: scan.right
+                      anchors.top:teclado.top
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"1"}
+                    }
+                    AppButton{
+                      id:dos
+                      text: "2"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: uno.right
+                      anchors.top:teclado.top
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"2"}
+                    }
+                    AppButton{
+                      id:tres
+                      text: "3"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: dos.right
+                      anchors.top:teclado.top
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"3"}
+                    }
 
-                AppButton{
-                  id:pro1
-                  text: "*"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: tres.right
-                  anchors.top:teclado.top
-                  backgroundColor: "#4a576c"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"*"}
-                }
+                    AppButton{
+                      id:pro1
+                      text: "*"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: tres.right
+                      anchors.top:teclado.top
+                      backgroundColor: "#4a576c"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"*"}
+                    }
 
-                AppButton{
-                  id:navegar
-                  icon: IconType.bars
-                  text: "Navegar"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: teclado.left
-                  anchors.top:scan.bottom
-                  backgroundColor: "#4a576c"
-                  onClicked: {
-                    visibleBusqueda=false;
-                    visibleDescripcio=false;
-                    visibleCategorias=true;
-                    visibleVenta=false;
-                  }
-                }
+                    AppButton{
+                      id:navegar
+                      icon: IconType.bars
+                      text: "Navegar"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: teclado.left
+                      anchors.top:scan.bottom
+                      backgroundColor: "#4a576c"
+                      onClicked: {
+                        visibleBusqueda=false;
+                        visibleDescripcio=false;
+                        visibleCategorias=true;
+                        visibleVenta=false;
+                      }
+                    }
 
-                AppButton{
-                  id:cuatro
-                  text: "4"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: navegar.right
-                  anchors.top:uno.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"4"}
-                }
-                AppButton{
-                  id:cinco
-                  text: "5"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: cuatro.right
-                  anchors.top:dos.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"5"}
-                }
-                AppButton{
-                  id:seis
-                  text: "6"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: cinco.right
-                  anchors.top: tres.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"6"}
-                }
+                    AppButton{
+                      id:cuatro
+                      text: "4"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: navegar.right
+                      anchors.top:uno.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"4"}
+                    }
+                    AppButton{
+                      id:cinco
+                      text: "5"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: cuatro.right
+                      anchors.top:dos.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"5"}
+                    }
+                    AppButton{
+                      id:seis
+                      text: "6"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: cinco.right
+                      anchors.top: tres.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"6"}
+                    }
 
-                AppButton{
-                  id:pro2
-                  icon: IconType.dollar
-                  text: "Precio"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: seis.right
-                  anchors.top:pro1.bottom
-                  backgroundColor: "#4a576c"
-                }
+                    AppButton{
+                      id:pro2
+                      //icon: IconType.dollar
+                      icon:IconType.folderopeno
+                      text: "Recuperar V."
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: seis.right
+                      anchors.top:pro1.bottom
+                      backgroundColor: "#4a576c"
+                      onClicked: {
+                          if(funciones.venta_activa())
+                          {
+                              mensajes.tipoM=2;
+                              mt.text="Guarda primero la venta actual";
+                              mostrarTexto.start();
+                              return;
+                          }
+                          if(funciones.getNumeroVentasEspera()>0){
+                              page.ventasSVisible=true;
+                              page.listaComboVentas=funciones.getNombresVentaEspera();
+                            }
+                          else{
+                              mensajes.tipoM=1;
+                              mt.text="No hay ventas en espera";
+                              mostrarTexto.start();
+                          }
+                      }
+                    }
 
-                AppButton{
-                  id:buscar
-                  icon: IconType.search
-                  text: "Buscar"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: teclado.left
-                  anchors.top:navegar.bottom
-                  backgroundColor: "#4a576c"
-                }
+                    AppButton{
+                      id:buscar
+                      icon: IconType.money
+                      text: "Descuento"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: teclado.left
+                      anchors.top:navegar.bottom
+                      backgroundColor: "#4a576c"
+                    }
 
-                AppButton{
-                  id:siete
-                  text: "7"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: buscar.right
-                  anchors.top:cuatro.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"7"}
-                }
-                AppButton{
-                  id:ocho
-                  text: "8"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: siete.right
-                  anchors.top:cinco.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"8"}
-                }
-                AppButton{
-                  id:nueve
-                  text: "9"
-                   textSize: sp(20)
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(50)
-                  anchors.left: ocho.right
-                  anchors.top: seis.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"9"}
-                }
+                    AppButton{
+                      id:siete
+                      text: "7"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: buscar.right
+                      anchors.top:cuatro.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"7"}
+                    }
+                    AppButton{
+                      id:ocho
+                      text: "8"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: siete.right
+                      anchors.top:cinco.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"8"}
+                    }
+                    AppButton{
+                      id:nueve
+                      text: "9"
+                       textSize: sp(20)
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(50)
+                      anchors.left: ocho.right
+                      anchors.top: seis.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"9"}
+                    }
 
-                AppButton{
-                  id:pro3
-                  icon: IconType.money
-                  text: "Descuento"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight:dp(50)
-                  anchors.left: nueve.right
-                  anchors.top:pro2.bottom
-                  backgroundColor: "#4a576c"
-                }
+                    AppButton{
+                      id:pro3
+                      icon: IconType.save
+                      text: "V. en espera"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight:dp(50)
+                      anchors.left: nueve.right
+                      anchors.top:pro2.bottom
+                      backgroundColor: "#4a576c"
+                      onClicked: {
+                          if ( !funciones.venta_activa() )
+                          {
+                              mensajes.tipoM=2;
+                              mt.text="No hay venta";
+                              mostrarTexto.start();
+                              return ;
+                          }
+                          NativeDialog.inputText("Colocar la venta en espera", "Coloque una etiqueta a la venta", "Etiqueta", "miventa", function(ok, text) {
+                                 if(ok) {
+                                     //console.debug("MainUsa.qml waitSaleSave onExiting value.status 1"+value.text)
+                                     if(funciones.waitSaleSave(text))
+                                     {
+                                         myModelt.clear();
+                                         sumat.text="0.00";
+                                         impuestost.text="0.00";
+                                         totalt.text="0.00";
+                                         totalticketText.text="0.00";
+                                         //console.debug("MainUsa.qml waitSaleSave onExiting value.status 4"+value.status)
+                                         //myCashPad.setVentaEnEspera(true);
+                                         visibleBusqueda=false;
+                                         visibleDescripcio=false;
+                                         visibleCategorias=false;
+                                         return;
+                                      }
+                                      else
+                                      {
+                                         mensajes.tipoM=2;
+                                         mt.text="Nombre repetido en las ventas en espera";
+                                         mostrarTexto.start();
+                                      }
+                                 }
+                               })
+                      }
+                    }
 
-                AppButton{
-                  id:opcion2
-                  icon: IconType.angleup
-                  text: "Menu"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: teclado.left
-                  anchors.top:buscar.bottom
-                  backgroundColor: "#4a576c"
-                  onClicked: visibleMenuDespegable1 ? visibleMenuDespegable1=false : visibleMenuDespegable1=true
-                }
+                    AppButton{
+                      id:opcion2
+                      icon: IconType.angleup
+                      text: "Menu"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: teclado.left
+                      anchors.top:buscar.bottom
+                      backgroundColor: "#4a576c"
+                      onClicked: visibleMenuDespegable1 ? visibleMenuDespegable1=false : visibleMenuDespegable1=true
+                    }
 
-                AppButton{
-                  id:asterisco
-                   textSize: sp(20)
-                  text: "."
-                  minimumWidth: (teclado.width/7)
-                  minimumHeight: dp(45)
-                  anchors.left: opcion2.right
-                  anchors.top:ocho.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"."}
-                }
-                AppButton{
-                  id:cero
-                  text: "0"
-                   textSize: sp(20)
-                  minimumWidth: ((teclado.width/7)*2)+dp(15)
-                  minimumHeight: dp(45)
-                  anchors.left: asterisco.right
-                  anchors.top:nueve.bottom
-                  backgroundColor: "#265596"
-                  onClicked: {txtBusqueda.text=txtBusqueda.text+"0"}
-                }
+                    AppButton{
+                      id:asterisco
+                       textSize: sp(20)
+                      text: "."
+                      minimumWidth: (teclado.width/7)
+                      minimumHeight: dp(45)
+                      anchors.left: opcion2.right
+                      anchors.top:ocho.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"."}
+                    }
+                    AppButton{
+                      id:cero
+                      text: "0"
+                       textSize: sp(20)
+                      minimumWidth: ((teclado.width/7)*2)+dp(15)
+                      minimumHeight: dp(45)
+                      anchors.left: asterisco.right
+                      anchors.top:nueve.bottom
+                      backgroundColor: "#265596"
+                      onClicked: {txtBusqueda.text=txtBusqueda.text+"0"}
+                    }
 
-                AppButton{
-                  id:pro4
-                  icon: IconType.check
+                    AppButton{
+                      id:pro4
+                      icon: IconType.check
 
-                  text: "Enter"
-                  minimumWidth: ((teclado.width/7)*2)-dp(40)
-                  minimumHeight: dp(50)
-                  anchors.left: cero.right
-                  anchors.top:pro3.bottom
-                  backgroundColor: "#4a576c"
-                }
+                      text: "Enter"
+                      minimumWidth: ((teclado.width/7)*2)-dp(40)
+                      minimumHeight: dp(50)
+                      anchors.left: cero.right
+                      anchors.top:pro3.bottom
+                      backgroundColor: "#4a576c"
+                      onClicked: {
+                            mostrarTexto.start();
+                      }
+                    }
 
-                //opcion2 menuBar
-                AppButton{
-                  id:m1
-                  text: "Cortez"
-                  minimumWidth: ((teclado.width/7)*2)-dp(45)
-                  minimumHeight: dp(50)
-                  anchors.left: opcion2.left
-                  anchors.leftMargin: dp(30)
-                  anchors.bottom: opcion2.top
-                  verticalMargin: dp(0)
-                  backgroundColor: "#692333" //#82bee3 #692333
-                  visible:visibleMenuDespegable1
-                  borderColor: "white"
-                  borderWidth: dp(1)
-                  textColor: "white"
-                  onClicked: {
-                    visibleMenuDespegable1=false;
-                  }
-                }
-                AppButton{
-                  id:m2
-                  text: "Cortex"
-                  minimumWidth: ((teclado.width/7)*2)-dp(45)
-                  minimumHeight: dp(50)
-                  anchors.left: m1.left
-                  anchors.bottom: m1.top
-                  verticalMargin: dp(0)
-                  backgroundColor: "#692333"
-                  visible:visibleMenuDespegable1
-                  borderColor: "white"
-                  borderWidth: dp(1)
-                  textColor: "white"
-                  onClicked: {
-                  visibleMenuDespegable1=false;
-                  }
-                }
-                AppButton{
-                  id:m3
-                  text: "Depositos"
-                  minimumWidth: ((teclado.width/7)*2)-dp(45)
-                  minimumHeight: dp(50)
-                  anchors.left: m2.left
-                  anchors.bottom: m2.top
-                  //anchors.bottomMargin: dp(10)
-                  backgroundColor: "#692333"
-                  visible:visibleMenuDespegable1
-                  borderColor: "white"
-                  borderWidth: dp(1)
-                  verticalMargin: dp(0)
-                  textColor: "white"
-                  onClicked: {
-                      page.operacion_especial=2
-                  page.despositoVisible=true;
+                    //opcion2 menuBar
+                    AppButton{
+                      id:m1
+                      text: "Cortez"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: opcion2.left
+                      anchors.leftMargin: dp(30)
+                      anchors.bottom: opcion2.top
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333" //#82bee3 #692333
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                        var acceso=  funciones.check_permisos("1034")
+                        visibleMenuDespegable1=false;
+                        if(acceso===0){
+                            page.supervisorLogVisible=true;
+                            page.operacion_especial=1;
+                        }
+                        else{
+                            console.debug("procede al corte");
+                            funciones.do_cortez();
+                            page.loginvisible=true;
+                            funciones.logout();
+                            visibleMenuDespegable1=false;
+                        }
+                      }
+                    }
+                    AppButton{
+                      id:m2
+                      text: "Cortex"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m1.left
+                      anchors.bottom: m1.top
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
                       visibleMenuDespegable1=false;
-                      montoRD.text="";
-                      motivoRD.text="";
-                  }
+                      }
+                    }
+                    AppButton{
+                      id:m3
+                      text: "Depositos"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m2.left
+                      anchors.bottom: m2.top
+                      //anchors.bottomMargin: dp(10)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      verticalMargin: dp(0)
+                      textColor: "white"
+                      onClicked: {
+                          page.operacion_especial=2
+                          visibleMenuDespegable1=false;
+                          var acceso=  funciones.check_permisos("1043")
+                          if(acceso===0){
+                          page.supervisorLogVisible=true;
+                          }
+                          else{
+                          page.despositoVisible=true;
+                          montoRD.text="";
+                          motivoRD.text="";
+                          }
+                      }
+                    }
+                    AppButton{
+                      id:m4
+                      text: "Retiros"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m3.left
+                      anchors.bottom: m3.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                          page.operacion_especial=3
+                          visibleMenuDespegable1=false;
+                          var acceso=  funciones.check_permisos("1042")
+                          if(acceso===0){
+                          page.supervisorLogVisible=true;
+                          }
+                          else{
+                          page.despositoVisible=true;
+                          montoRD.text="";
+                          motivoRD.text="";
+                          }
+                      }
+                    }
+                    AppButton{
+                      id:m5
+                      text: "Pago menor"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m4.left
+                      anchors.bottom: m4.top
+                      //anchors.bottomMargin: dp(10)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      verticalMargin: dp(0)
+                      textColor: "white"
+                      onClicked: {
+                          page.operacion_especial=4
+                          visibleMenuDespegable1=false;
+                          var acceso=  funciones.check_permisos("1039")
+                          if(acceso===0){
+                          page.supervisorLogVisible=true;
+                          }
+                          else{
+                          page.despositoVisible=true;
+                          montoRD.text="";
+                          motivoRD.text="";
+                          }
+                      }
+                    }
+                    AppButton{
+                      id:m6
+                      text: "Cobro Menor"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+
+                      minimumHeight: dp(50)
+                      anchors.left: m5.left
+                      anchors.bottom: m5.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                          page.operacion_especial=5
+                          visibleMenuDespegable1=false;
+                          var acceso=  funciones.check_permisos("1040")
+                          if(acceso===0){
+                          page.supervisorLogVisible=true;
+                          }
+                          else{
+                          page.despositoVisible=true;
+                          montoRD.text="";
+                          motivoRD.text="";
+                          }
+                      }
+                    }
+                    AppButton{
+                      id:m7
+                      text: "V. en espera"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m6.left
+                      anchors.bottom: m6.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                        visibleMenuDespegable1=false;
+                          if ( !funciones.venta_activa() )
+                          {
+                              mensajes.tipoM=2;
+                              mt.text="No hay venta";
+                              mostrarTexto.start();
+                              return ;
+                          }
+                          NativeDialog.inputText("Colocar la venta en espera", "Coloque una etiqueta a la venta", "Etiqueta", "miventa", function(ok, text) {
+                                 if(ok) {
+                                     //console.debug("MainUsa.qml waitSaleSave onExiting value.status 1"+value.text)
+                                     if(funciones.waitSaleSave(text))
+                                     {
+                                         myModelt.clear();
+                                         sumat.text="0.00";
+                                         impuestost.text="0.00";
+                                         totalt.text="0.00";
+                                         totalticketText.text="0.00";
+                                         //console.debug("MainUsa.qml waitSaleSave onExiting value.status 4"+value.status)
+                                         //myCashPad.setVentaEnEspera(true);
+                                         visibleBusqueda=false;
+                                         visibleDescripcio=false;
+                                         visibleCategorias=false;
+                                         return;
+                                      }
+                                      else
+                                      {
+                                         mensajes.tipoM=2;
+                                         mt.text="Nombre repetido en las ventas en espera";
+                                         mostrarTexto.start();
+                                      }
+                                 }
+                               })
+                      }
+                    }
+                    AppButton{
+                      id:m8
+                      text: "Recupera v."
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m7.left
+                      anchors.bottom: m7.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                        visibleMenuDespegable1=false;
+                          if(funciones.venta_activa())
+                          {
+                              mensajes.tipoM=2;
+                              mt.text="Guarda primero la venta actual";
+                              mostrarTexto.start();
+                              return;
+                          }
+                          if(funciones.getNumeroVentasEspera()>0){
+                              page.ventasSVisible=true;
+                              page.listaComboVentas=funciones.getNombresVentaEspera();
+                            }
+                          else{
+                              mensajes.tipoM=1;
+                              mt.text="No hay ventas en espera";
+                              mostrarTexto.start();
+                          }
+                      }
+                    }
+                    AppButton{
+                      id:m9
+                      text: "Cancelar v."
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m8.left
+                      anchors.bottom: m8.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+
+                      onClicked: {
+                          page.operacion_especial=8
+                          visibleMenuDespegable1=false;
+                          var acceso=  funciones.check_permisos("1032")
+                          if(acceso===0){
+                          page.supervisorLogVisible=true;
+                          }
+                          else{
+                              NativeDialog.confirm("Cancelar venta", "¿Desea cancelar la venta?", function(ok) {
+                                  if(ok) {
+                                      if ( funciones.getNumeroLineas() === 0 )
+                                      {
+                                          mensajes.tipoM=2;
+                                          mt.text="No hay venta que cancelar";
+                                          mostrarTexto.start();
+                                          //alerta(true, false, "No hay venta que cancelar")
+                                          return ;
+                                      }
+                                      if ( funciones.getPosibleNoVenta()){
+                                          console.debug("-- INICIA PROCESO NO VENTA --");
+                                          funciones.finish_ticket(1, -1);
+                                          myModelt.clear();
+                                          sumat.text="0.00";
+                                          impuestost.text="0.00";
+                                          totalt.text="0.00";
+                                          totalticketText.text= "0.00";
+                                          mensajes.tipoM=1;
+                                          mt.text="Venta cancelada";
+                                          mostrarTexto.start();
+                                      }
+                                      else{
+                                          mensajes.tipoM=2;
+                                          mt.text="Se deben cancelar los renglones";
+                                          mostrarTexto.start();
+                                          //alerta(true, false, "Se deben cancelar los renglones");
+                                      }
+                                  }
+
+                              })
+                          }
+
+                      }
+                    }
+                    AppButton{
+                      id:m10
+                      text: "Alta Art."
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m9.left
+                      anchors.bottom: m9.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                        //page.loginvisible=true;
+                        //funciones.logout();
+                        visibleMenuDespegable1=false;
+                        visibleAlta=true;
+                      }
+                    }
+
+                    AppButton{
+                      id:m11
+                      text: "Salir"
+                      minimumWidth: ((teclado.width/7)*2)-dp(45)
+                      minimumHeight: dp(50)
+                      anchors.left: m10.left
+                      anchors.bottom: m10.top
+                      //anchors.bottomMargin: dp(10)
+                      verticalMargin: dp(0)
+                      backgroundColor: "#692333"
+                      visible:visibleMenuDespegable1
+                      borderColor: "white"
+                      borderWidth: dp(1)
+                      textColor: "white"
+                      onClicked: {
+                        page.loginvisible=true;
+                        funciones.logout();
+                        visibleMenuDespegable1=false;
+                      }
+                    }
+
                 }
-                AppButton{
-                  id:m4
-                  text: "Retiros"
-                  minimumWidth: ((teclado.width/7)*2)-dp(45)
-                  minimumHeight: dp(50)
-                  anchors.left: m3.left
-                  anchors.bottom: m3.top
-                  //anchors.bottomMargin: dp(10)
-                  verticalMargin: dp(0)
-                  backgroundColor: "#692333"
-                  visible:visibleMenuDespegable1
-                  borderColor: "white"
-                  borderWidth: dp(1)
-                  textColor: "white"
-                  onClicked: {
-                      page.operacion_especial=3
-                      page.despositoVisible=true;
-                      visibleMenuDespegable1=false;
-                      montoRD.text="";
-                      motivoRD.text="";
-                  }
-                }
-                AppButton{
-                  id:m5
-                  text: "Salir"
-                  minimumWidth: ((teclado.width/7)*2)-dp(45)
-                  minimumHeight: dp(50)
-                  anchors.left: m4.left
-                  anchors.bottom: m4.top
-                  //anchors.bottomMargin: dp(10)
-                  verticalMargin: dp(0)
-                  backgroundColor: "#692333"
-                  visible:visibleMenuDespegable1
-                  borderColor: "white"
-                  borderWidth: dp(1)
-                  textColor: "white"
-                  onClicked: {
-                    page.supervisorLogVisible=true;
-                    visibleMenuDespegable1=false;
-                  }
-                }
+
 
                 //login de encargado
                 property bool supervisorLogVisible: false
@@ -2690,9 +3825,54 @@ AppButton{
                 4 pago menor
                 5 cobro menor
                 6 salir
+                7 anular de linea
+                8 cancelacion de venta
+                9 cambio de precio temporal
 */
                 //zona login
                // login form background
+                Rectangle{
+                  id:fondoblock2
+                  width: parent.width
+                  height: parent.height
+                  z:1
+                  visible: page.supervisorLogVisible
+
+                  Image {
+                      id: logo2
+                      source: "../assets/logo.png"
+                      anchors.left: parent.left
+                      anchors.top: parent.top
+                      anchors.margins: dp(30)
+                      width:dp(320)
+                      height: dp(85)
+
+                  }
+
+                  Rectangle{
+                    id:rojo2
+                    anchors.left: logo2.right
+                    anchors.top: parent.top
+                    anchors.topMargin: dp(85)
+                    anchors.leftMargin: dp(10)
+
+                    color: "#FD070C"
+                    height: dp(10)
+                    width: parent.width -dp(500)
+
+                  }
+
+                  Rectangle{
+                    id:azul2
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: dp(80)
+                    color: "#265596"
+                    height: dp(10)
+                    width: parent.width -dp(330)
+
+                  }
+
                   Rectangle {
                     id: loginFormS
                     anchors.centerIn: parent
@@ -2702,6 +3882,213 @@ AppButton{
                     radius: dp(4)
                     visible: page.supervisorLogVisible
                     border.color: "black"
+
+
+                    GridLayout {
+                        id: contentS
+                        anchors.centerIn: loginFormS
+                        columnSpacing: dp(20)
+                        rowSpacing: dp(10)
+                        columns: 2
+                        visible: page.supervisorLogVisible
+                        // headline
+                        z:1
+
+
+                        // email text and field
+                        AppText {
+                          id:txtUsernamelS
+                          text: qsTr("Usuario")
+                          font.pixelSize: sp(12)
+
+                          //fontFamily: geoFont
+                        }
+
+                        AppTextField {
+                          id: txtUsernameS
+                          Layout.preferredWidth: dp(200)
+                          showClearButton: true
+                          font.pixelSize: sp(14)
+                          backgroundColor: "white";
+
+                          borderColor: Theme.tintColor
+                          borderWidth: dp(2)
+                        }
+
+                        // password text and field
+                        AppText {
+                          id:txtPasswordlS
+                          text: qsTr("Contraseña")
+                          font.pixelSize: sp(12)
+
+                          //fontFamily: geoFont
+                        }
+
+                        AppTextField {
+                          id: txtPasswordS
+                          Layout.preferredWidth: dp(200)
+                          showClearButton: true
+                          font.pixelSize: sp(14)
+                          backgroundColor: "white"
+                          borderColor: Theme.tintColor
+                          borderWidth:  dp(2)
+                          echoMode: TextInput.Password
+                        }
+
+                        Column {
+                          Layout.fillWidth: true
+                          Layout.columnSpan: 2
+                          Layout.topMargin: dp(12)
+
+                          // buttons
+                          AppButton {
+                              id:logbutonS
+                            text: "Ingreso"
+                            flat: false
+                            fontCapitalization: Font.MixedCase
+                            backgroundColor: "#4a576c"
+                            backgroundColorPressed: "#d6d6d6"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            fontBold: false
+                            //fontFamily: geoFont
+                            onClicked: {
+                              page.forceActiveFocus() // move focus away from text fields
+                                    var loginresult=funciones.login(txtUsernameS.text,txtPasswordS.text,true);
+                                    if(loginresult!==""){
+
+                                    page.supervisorLogVisible=false;
+                                    page.backgroundColor="aliceblue";
+                                        if(page.operacion_especial===9){
+                                            page.cambiopVisible=true;
+                                            preciotext.text=t1.text;
+                                            motivotext.text="";
+                                            observaciontext.text=d3.text;
+                                            return;
+                                        }
+                                        else if(page.operacion_especial===8){
+                                            NativeDialog.confirm("Cancelar venta", "¿Desea cancelar la venta?", function(ok) {
+                                                if(ok) {
+                                                if ( funciones.getNumeroLineas() === 0 )
+                                                {
+                                                    mensajes.tipoM=2;
+                                                    mt.text="No hay venta que cancelar";
+                                                    mostrarTexto.start();
+                                                    return ;
+                                                }
+                                                if ( funciones.getPosibleNoVenta()){
+                                                    console.debug("-- INICIA PROCESO NO VENTA --");
+                                                    funciones.finish_ticket(1, -1);
+                                                    myModelt.clear();
+                                                    sumat.text="0.00";
+                                                    impuestost.text="0.00";
+                                                    totalt.text="0.00";
+                                                    totalticketText.text= "0.00";
+                                                    mensajes.tipoM=1;
+                                                    mt.text="Venta cancelada";
+                                                    mostrarTexto.start();
+                                                    visibleBusqueda=false;
+                                                    visibleCategorias=false;
+                                                    visibleDescripcio=false;
+                                                    visibleVenta=false;
+                                                    return;
+                                                }
+                                                else{
+                                                    mensajes.tipoM=2;
+                                                    mt.text="Se deben cancelar los renglones";
+                                                    mostrarTexto.start();
+                                                    //alerta(true, false, "Se deben cancelar los renglones");
+                                                }
+                                                return;
+                                                }
+                                        })
+                                            return;
+                                        }
+                                        else if(page.operacion_especial==7){
+                                            if ( ticketIndice < 0 )
+                                            {
+                                               // myDisplay.alerta(true, false, "No existe renglón seleccionado");
+                                                console.debug("No encontramos que cancelar") ;
+                                                return ;
+                                            }
+                                            var res ={};
+                                            console.debug("Antes de validar") ;
+                                            res=funciones.validaCancel(ticketIndice)
+
+                                            if(res.respuesta === 1)
+                                            {
+                                                console.debug("Antes de validado") ;
+                                                //loginSupervisor();
+                                                var value;
+                                                value=funciones.do_cancel(ticketIndice);
+                                                if (value.respuesta === 1){
+                                                    //addLine2(value);
+                                                    var myObject = new Object ;
+                                                    myObject.textCount = value.ln ;
+                                                    myObject.textQuantity = value.unitario ;
+                                                    myObject.textName = value.titulo;
+                                                    myObject.textPrice = value.precio_unitario ;
+                                                    //txtNmItem.text=value.titulo;
+                                                    //txtValueItem.text=myObject.textPrice;
+                                                    myObject.textTotal = value.importe;
+                                                    sumat.text="$"+ value.suma;//total_venta-value.total_impuesto;
+                                                    impuestost.text="$"+value.total_impuesto;
+                                                    totalt.text=value.total_venta;
+                                                    //txtPagado.text=value.pagado;
+                                                    //txtAPagar.text=value.total_a_pagar;
+                                                    //txtAPagar1.text=value.total_a_pagar;
+                                                    totalticketText.text= value.total_a_pagar;
+                                                    myObject.isCanceled = false ;
+                                                    myObject.isCancelation = value.isCancelation ;
+                                                    myObject.FOOD_STAMP = value.FOOD_STAMP ;
+                                                    myObject.QTY_ITM = value.QTY_ITM; //
+                                                    myObject.pack = value.pack ;
+                                                    myObject.canceled = false;
+                                                    myModelt.insert( funciones.getNumeroLineas()-1, myObject );
+                                                    myModelt.remove(ticketIndice);
+                                                    value = funciones.getlinea(ticketIndice);
+                                                    myModelt.insert( ticketIndice, value);
+                                                    return;
+                                                }
+                                            }
+                                            else
+                                            {
+                                               console.debug("No se puede realizar la cancelación") ;
+                                            }
+                                            return;
+                                        }
+                                        else{
+                                          page.despositoVisible=true;
+                                            montoRD.text="";
+                                            motivoRD.text="";
+                                            console.debug("llego aqui desde la operacion "+ page.operacion_especial);
+                                        }
+                                    }
+                                    else{
+                                     NativeDialog.confirm("Error", "Contraseña incorrecta, o no es supervisor", function(ok) {
+                                         if(ok) {
+
+                                         }
+                                       })
+                                    }
+
+                            }//if onclicked
+                          }
+                          AppButton{
+                              id:cancelbuttonS
+                            text: "Cancelar"
+                            flat: false
+                            fontCapitalization: Font.MixedCase
+                            backgroundColor: "#4a576c"
+                            backgroundColorPressed: "#d6d6d6"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            fontBold: false
+                            //fontFamily: geoFont
+                            onClicked: {
+                                page.supervisorLogVisible=false;
+                            }
+                          }
+                        }
+                      }
 
                   }
 
@@ -2715,128 +4102,25 @@ AppButton{
                     radius: dp(4)
                     visible: page.supervisorLogVisible
                     border.color: "black"
+                    z:1
 
-                  }
-
-                  AppText {
-                    id:ingresoS
-                    anchors.verticalCenter: loginFormhS.verticalCenter
-                    anchors.left: loginFormhS.left
-                    anchors.leftMargin: dp(10)
-                    text: "Ingreso"
-                    color: "white"
-                    //anchors.bottomMargin: dp(10)
-                    visible: page.supervisorLogVisible
-                  }
-
-                  // login form content
-                  GridLayout {
-                      id: contentS
-                      anchors.centerIn: loginFormS
-                      columnSpacing: dp(20)
-                      rowSpacing: dp(10)
-                      columns: 2
+                    AppText {
+                      id:ingresoS
+                      anchors.verticalCenter: parent.verticalCenter
+                      anchors.left: parent.left
+                      anchors.leftMargin: dp(10)
+                      text: "Ingreso"
+                      color: "white"
+                      //anchors.bottomMargin: dp(10)
                       visible: page.supervisorLogVisible
-                      // headline
-
-
-                      // email text and field
-                      AppText {
-                        id:txtUsernamelS
-                        text: qsTr("Usuario")
-                        font.pixelSize: sp(12)
-
-                        //fontFamily: geoFont
-                      }
-
-                      AppTextField {
-                        id: txtUsernameS
-                        Layout.preferredWidth: dp(200)
-                        showClearButton: true
-                        font.pixelSize: sp(14)
-                        backgroundColor: "white";
-
-                        borderColor: Theme.tintColor
-                        borderWidth: dp(2)
-                      }
-
-                      // password text and field
-                      AppText {
-                        id:txtPasswordlS
-                        text: qsTr("Contraseña")
-                        font.pixelSize: sp(12)
-
-                        //fontFamily: geoFont
-                      }
-
-                      AppTextField {
-                        id: txtPasswordS
-                        Layout.preferredWidth: dp(200)
-                        showClearButton: true
-                        font.pixelSize: sp(14)
-                        backgroundColor: "white"
-                        borderColor: Theme.tintColor
-                        borderWidth:  dp(2)
-                        echoMode: TextInput.Password
-                      }
-
-                      Column {
-                        Layout.fillWidth: true
-                        Layout.columnSpan: 2
-                        Layout.topMargin: dp(12)
-
-                        // buttons
-                        AppButton {
-                            id:logbutonS
-                          text: "Ingreso"
-                          flat: false
-                          fontCapitalization: Font.MixedCase
-                          backgroundColor: "#4a576c"
-                          backgroundColorPressed: "#d6d6d6"
-                          anchors.horizontalCenter: parent.horizontalCenter
-                          fontBold: false
-                          //fontFamily: geoFont
-                          onClicked: {
-                            page.forceActiveFocus() // move focus away from text fields
-                            if(olvidocontraseña){//if true manda llamar nueva contraseña
-                               console.log("Mandando que se olvido la contreña")
-                            }
-                            else{//sige el proceso login
-                                // call login action
-                                //logic.login(txtUsername.text, txtPassword.text)
-                                  var loginresult=funciones.login(txtUsernameS.text,txtPasswordS.text,false);
-
-                                  if(loginresult!==""){
-                                  page.supervisorLogVisible=false;
-                                  page.backgroundColor="aliceblue";
-                                  }
-                                  else{
-                                   NativeDialog.confirm("Error", "Contraseña incorrecta, o no es supervisor", function(ok) {
-                                       if(ok) {
-
-                                       }
-                                     })
-                                  }
-                            }
-                          }//if onclicked
-                        }
-                        AppButton{
-                            id:cancelbuttonS
-                          text: "Cancelar"
-                          flat: false
-                          fontCapitalization: Font.MixedCase
-                          backgroundColor: "#4a576c"
-                          backgroundColorPressed: "#d6d6d6"
-                          anchors.horizontalCenter: parent.horizontalCenter
-                          fontBold: false
-                          //fontFamily: geoFont
-                          onClicked: {
-                              page.supervisorLogVisible=false;
-                          }
-                        }
-                      }
                     }
-                //fin de zona login
+
+
+                  }
+
+                }
+
+                  //fin de zona login
 
                   //retiro/deposito
                   property bool despositoVisible: false
@@ -2879,8 +4163,6 @@ AppButton{
                     visible: page.despositoVisible
                   }
 
-                  // login form content
-
                   GridLayout {
                   id:contentd
                   anchors.centerIn: depositoRetiro
@@ -2909,7 +4191,6 @@ AppButton{
                     borderWidth: dp(2)
                   }
 
-                  // password text and field
                   AppText {
                     visible: page.despositoVisible
                     text: qsTr("Motivo")
@@ -2965,6 +4246,7 @@ AppButton{
                       fontBold: false
                       //fontFamily: geoFont
                       onClicked: {
+
                           var myObject = {} ;
                          // myObject = xmlModel.get( list_view1.currentIndex ) ;
                           myObject.hasData = true ;
@@ -2998,6 +4280,663 @@ AppButton{
                   }
                   }
                     //retiro/deposito
+
+                  //cambio de precio
+                  property bool cambiopVisible: false
+                  Rectangle {
+                    id: cambiopf
+                    anchors.centerIn: parent
+                    color: "#d6d6d6"
+                    width: contentcambio.width + dp(48)
+                    height: contentcambio.height + dp(80)//16
+                    radius: dp(4)
+                    visible: page.cambiopVisible
+                    border.color: "black"
+
+                    GridLayout {
+                    id:contentcambio
+                    anchors.centerIn: parent
+                    columnSpacing: dp(20)
+                    rowSpacing: dp(10)
+                    columns: 2
+
+                    AppText {
+                      text: qsTr("Precio nuevo")
+                      //font.pixelSize: sp(12)
+
+                      //fontFamily: geoFont
+                    }
+
+                    AppTextField {
+                      id: preciotext
+                      Layout.preferredWidth: dp(200)
+                      showClearButton: true
+                      //font.pixelSize: sp(14)
+                      backgroundColor: "white";
+                      validator:  DoubleValidator {bottom: 0; top: 9999.99;}
+                      borderColor: Theme.tintColor
+                      borderWidth: dp(2)
+                    }
+
+                    AppText {
+                      text: qsTr("Motivo")
+                      //font.pixelSize: sp(12)
+
+                      //fontFamily: geoFont
+                    }
+
+                    AppTextField {
+                      id: motivotext
+                      Layout.preferredWidth: dp(200)
+                      showClearButton: true
+                      //font.pixelSize: sp(14)
+                      backgroundColor: "white"
+                      borderColor: Theme.tintColor
+                      borderWidth:  dp(2)
+                      placeholderText: "Motivo del cambio de precio"
+                    }
+
+                    AppText {
+                      text: qsTr("C. temporal ")
+                      //font.pixelSize: sp(12)
+
+                      //fontFamily: geoFont
+                    }
+
+                    AppCheckBox {
+                        id: temporalP
+                        width: motivoRD.width
+                        height: dp(50)
+
+
+                        //model : botonesTender;
+                    }
+
+                    AppText {
+                      text: qsTr("Datos extras")
+                      //font.pixelSize: sp(12)
+
+                      //fontFamily: geoFont
+                    }
+
+                    AppTextField {
+                      id: observaciontext
+                      Layout.preferredWidth: dp(200)
+                      showClearButton: true
+                      //font.pixelSize: sp(14)
+                      backgroundColor: "white"
+                      borderColor: Theme.tintColor
+                      borderWidth:  dp(2)
+                      placeholderText: "Observaciones extras"
+                    }
+
+
+                    Column {
+                      Layout.fillWidth: true
+                      Layout.columnSpan: 2
+                      Layout.topMargin: dp(12)
+                      // buttons
+                      AppButton {
+                          id:aceptarCP
+                        text: "Aceptar"
+                        flat: false
+                        fontCapitalization: Font.MixedCase
+                        backgroundColor: "#4a576c"
+                        backgroundColorPressed: "#d6d6d6"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        fontBold: false
+                        //fontFamily: geoFont
+                        onClicked: {
+                            var myDate = new Date ;
+
+                            var hour = myDate.getHours()   ;
+                            var minutes = myDate.getMinutes()   ;
+                            var seconds = myDate.getSeconds()    ;
+
+                            var displayDate = (( hour > 9 )  ? hour.toString() : "0" + hour.toString() ) + ":" ;
+                            displayDate += (( minutes > 9 )  ? minutes.toString() : "0" + minutes.toString() ) + ":" ;
+                            displayDate += ( seconds > 9 )  ? seconds.toString() : "0" + seconds.toString() ;
+                            var myObject = {} ;
+                            myObject.hora=displayDate;
+                            myObject.isValid = true ;
+                            if ( motivotext.text.length == 0 )
+                            {
+                                myObject.razon = "default" ;
+                            }
+                            else{
+                            myObject.razon=motivotext.text;
+                            }
+                            if ( parseFloat( preciotext.text) <= 0.0000)
+                            {
+                                return;
+                            }
+                            myObject.temporal=temporalP.pressed;
+                            myObject.permanente=temporalP.pressed;
+                            myObject.precio_Nuevo=preciotext.text;
+                            myObject.id_itm_ps=d2.iditmps;
+                            myObject.id_itm_ps_qfr=d2.iditmpsqfr;
+                            var value= funciones.do_Change_price(myObject,ticketIndice);
+                            funciones.aplicar_cambios(observaciontext.text,ticketIndice);
+                            d3.text=observaciontext.text;
+                            sumat.text=value.suma;//total_venta-value.total_impuesto;
+                            impuestost.text=value.total_impuesto;
+                            totalt.text=value.total_venta;
+                            totalticketText.text= value.total_a_pagar;
+                            myModelt.remove(ticketIndice);
+                            var linea=funciones.getlinea(ticketIndice);
+                            myModelt.insert( ticketIndice, linea );
+                            page.cambiopVisible=false;
+                            return;
+                         }//if onclicked
+                      }
+                      AppButton{
+                          id:cancelbuttonCP
+                        text: "Cancelar"
+                        flat: false
+                        fontCapitalization: Font.MixedCase
+                        backgroundColor: "#4a576c"
+                        backgroundColorPressed: "#d6d6d6"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        fontBold: false
+                        //fontFamily: geoFont
+                        onClicked: {
+                            page.cambiopVisible=false;
+                        }
+                      }
+                    }
+
+                    }
+
+                  }
+                  Rectangle {
+                    id: cambiopheader
+                    anchors.bottom: cambiopf.top
+                    anchors.left: cambiopf.left
+                    color: "#4a576c"
+                    width: cambiopf.width
+                    height: ingresoS.height + dp(16)
+                    radius: dp(4)
+                    visible: page.cambiopVisible
+                    border.color: "black"
+
+                    AppText {
+                      id:tituloCambio
+                      anchors.verticalCenter: parent.verticalCenter
+                      anchors.left: parent.left
+                      anchors.leftMargin: dp(10)
+                      text: "Cambio de precio"
+                      color: "white"
+                      //anchors.bottomMargin: dp(10)
+
+                    }
+
+                  }
+                  //cambio de precio
+
+                  //alta xpress
+                  // alta express
+
+                     Rectangle {
+                       id: altaX
+                       anchors.centerIn: parent
+                       color: "#d6d6d6"
+                       width: contentxx.width + dp(60)
+                       height: contentxx.height + dp(80)//16
+                       radius: dp(4)
+                       visible: visibleAlta
+                       border.color: "black"
+
+                       // login form content
+                       GridLayout {
+                           id: contentxx
+                           anchors.centerIn: parent
+                           columnSpacing: dp(20)
+                           rowSpacing: dp(10)
+                           columns: 2
+                           // headline
+
+
+                           // posidentity
+                           AppText {
+                             text: qsTr("Codigo")
+                             font.pixelSize: sp(12)
+
+                             //fontFamily: geoFont
+                           }
+
+                           AppTextField {
+                             id: txtCodigoxx
+                             Layout.preferredWidth: dp(200)
+                             showClearButton: true
+                             font.pixelSize: sp(14)
+                             backgroundColor: "white";
+
+                             borderColor: Theme.tintColor
+                             borderWidth: dp(2)
+                           }
+
+                           AppText {
+                             text: qsTr("Nombre")
+                             font.pixelSize: sp(12)
+
+                             //fontFamily: geoFont
+                           }
+
+                           AppTextField {
+                             id: txtNombrexx
+                             Layout.preferredWidth: dp(200)
+                             showClearButton: true
+                             font.pixelSize: sp(14)
+                             backgroundColor: "white";
+
+                             borderColor: Theme.tintColor
+                             borderWidth: dp(2)
+                           }
+
+
+                           XmlListModel {
+                               id: impuestosgenerales
+
+                                query: "/impuestos/impuesto"
+
+                                XmlRole { name: "id_gp_tx" ; query: "id_gp_tx/string()" }
+                                XmlRole { name: "nm_ru_tx" ; query: "nm_ru_tx/string()" }
+
+
+
+                                   onStatusChanged: {
+
+                                    if ( status == XmlListModel.Null )
+                                    {
+                                        console.debug( "Status = NULL ") ;
+                                        return ;
+                                    }
+
+                                    if ( status == XmlListModel.Ready  )
+                                    {
+
+                                        if(count > 0){
+                                            var myObject = new Object
+                                            //myListModel2.clear();
+                                            console.debug("impuesttos "+count)
+                                            impuesttos = new Array;
+
+                                            for( var i = 0 ; i < impuestosgenerales.count ; i++ )
+                                            {
+                                                myObject =impuestosgenerales.get( i ) ;
+
+                                                var newObject = new Object ;
+
+                                                 newObject.id_gp_tx = myObject.id_gp_tx ;
+                                                 newObject.nm_ru_tx =  myObject.nm_ru_tx ;
+
+                                                //console.debug( "nm_ru_tx = " + newObject.id_gp_tx ) ;
+                                                //console.debug( "nm_ru_tx = " + newObject.nm_ru_tx ) ;
+
+
+                                                 impuesttos.push(myObject.nm_ru_tx+" "  ) ;
+                                                 myListModel2.append({'text': myObject.nm_ru_tx});
+                                            }
+
+                                        }
+                                        return ;
+
+                                    }
+
+                                    if ( status == XmlListModel.Loading )
+                                    {
+                                        console.debug( "AltaExpress.qml onStatusChanged Status = Loading ") ;
+                                        return ;
+                                    }
+
+                                    if ( status == XmlListModel.Error )
+                                    {
+                                        console.debug( "AltaExpress.qml onStatusChanged Status = Error = " + xmlModel.errorString()) ;
+                                        return ;
+                                    }
+                                }
+                           }
+
+                           XmlListModel {
+                               id: categoriasgenerales
+
+                                query: "/categorias/categoria"
+
+                                XmlRole { name: "id_mrhrc_gp" ; query: "id_mrhrc_gp/string()" }
+                                XmlRole { name: "nm_mrhrc_gp" ; query: "nm_mrhrc_gp/string()" }
+                                XmlRole { name: "id_gp_tx" ; query: "id_gp_tx/string()" }
+                                XmlRole { name: "nm_ru_tx" ; query: "nm_ru_tx/string()" }
+                                XmlRole { name: "food_stamp" ; query: "food_stamp/string()" }
+
+
+
+                                   onStatusChanged: {
+
+                                    if ( status == XmlListModel.Null )
+                                    {
+                                        console.debug( "Status = NULL ") ;
+                                        return ;
+                                    }
+
+                                    if ( status == XmlListModel.Ready  )
+                                    {
+
+                                        if(count > 0){
+                                            var myObject = new Object
+                                            //myListModel3.clear();
+                                            console.debug("cattegorias "+count)
+                                            cattegorias = new Array;
+
+                                            for( var i = 0 ; i < categoriasgenerales.count ; i++ )
+                                            {
+                                                myObject = categoriasgenerales.get( i ) ;
+
+                                                var newObject = new Object ;
+
+                                                 newObject.id_mrhrc_gp = myObject.id_mrhrc_gp ;
+                                                 newObject.nm_mrhrc_gp =  myObject.nm_mrhrc_gp ;
+                                                 newObject.id_gp_tx =  myObject.id_gp_tx ;
+                                                 newObject.nm_ru_tx =  myObject.nm_ru_tx ;
+                                                newObject.food_stamp =  myObject.food_stamp ;
+
+                                                 cattegorias.push( myObject.nm_mrhrc_gp+" " ) ;//en ambas estaba myobject
+                                                 myListModel3.append({'text': myObject.nm_mrhrc_gp+" "});
+                                        }
+                                        return ;
+                                        }
+
+                                    }
+
+                                    if ( status == XmlListModel.Loading )
+                                    {
+                                        console.debug( "Status = Loading ") ;
+                                        return ;
+                                    }
+
+                                    if ( status == XmlListModel.Error )
+                                    {
+                                        console.debug( "Status = Error = " + xmlModel.errorString()) ;
+                                        return ;
+                                    }
+                                }
+                           }
+
+                           ListModel {
+                               id : myListModel2 ;
+                           }
+                           ListModel {
+                               id : myListModel3;
+                           }
+
+                           AppText {
+                             text: qsTr("Categoria")
+                             font.pixelSize: sp(12)
+
+                             //fontFamily: geoFont
+                           }
+
+                           ComboBox{
+                             id: txtCategoriaxx
+                             Layout.preferredWidth: dp(200)
+                             model: myListModel3
+
+                           }
+
+                           AppText {
+                             text: qsTr("Impuesto")
+                             font.pixelSize: sp(12)
+
+                             //fontFamily: geoFont
+                           }
+
+
+                               ComboBox{
+
+                                 Layout.preferredWidth: dp(200)
+                                 model: myListModel2
+
+                             id: txtImpuestoxx
+
+
+                           }
+
+                           AppText {
+                             text: qsTr("Precio Venta")
+                             font.pixelSize: sp(12)
+
+                             //fontFamily: geoFont
+                           }
+
+                           AppTextField {
+                             id: txtVentaxx
+                             Layout.preferredWidth: dp(200)
+                             showClearButton: true
+                             font.pixelSize: sp(14)
+                             backgroundColor: "white";
+                             validator: DoubleValidator{top: 999999.9999 ; bottom: 0.0001; decimals: 4; notation: DoubleValidator.StandardNotation}
+                             borderColor: Theme.tintColor
+                             borderWidth: dp(2)
+                           }
+
+                           AppText {
+                             text: qsTr("Granel")
+                             font.pixelSize: sp(12)
+
+                             //fontFamily: geoFont
+                           }
+
+                           AppCheckBox {
+                             id: txtGranelxx
+                                 height: dp(50)
+                             }
+
+                           // column for buttons, we use column here to avoid additional spacing between buttons
+                           Column {
+                             Layout.fillWidth: true
+                             Layout.columnSpan: 2
+                             Layout.topMargin: dp(12)
+
+                             // buttons
+                             AppButton {
+                                 id:altaAceptar
+                               text: "Aceptar"
+                               flat: false
+                               fontCapitalization: Font.MixedCase
+                               backgroundColor: "#4a576c"
+                               backgroundColorPressed: "#d6d6d6"
+                               anchors.horizontalCenter: parent.horizontalCenter
+                               fontBold: false
+                               //fontFamily: geoFont
+                               onClicked: {
+                                   var myObject=new Object;
+                                   var myitm=new Object;
+                                   //funciones.impresion_dep("Descripción  Unitario  Cant.   Importe\nCHORIZO CHI   1.0000   1.000       1.0\nCHORIZO CHI   1.0000   1.000       1.0\nCHORIZO CHI   1.0000   1.000       1.0\nCHORIZO CHI   1.0000   1.000       1.0\nEfectivo:                      4.00\n                    Subtotal: $         4.00    \n                       Total: $         4.00    \n             Impuesto   0.00%:          0.00    \n             Impuesto   7.00%:          0.00    \n\n"
+                                   //            ,1,212,"11:44:00 07/12/2020",1
+                                   //            );
+                                   var un="";
+                                   if(txtGranelxx.checked)
+                                      un = "WT";
+                                  else
+                                      un = "UN";
+                                   coneccion.send_message_log_conf("AA,"+principal.settings.getValue("instancia")+"/"+
+                                                                   txtNombrexx.text+"/"+categoriasgenerales.get(txtCategoriaxx.currentIndex).food_stamp+"/"+
+                                                                   categoriasgenerales.get(txtCategoriaxx.currentIndex).id_mrhrc_gp+"/1/"+
+                                                                   impuestosgenerales.get(txtImpuestoxx.currentIndex).id_gp_tx+"/"+impuestosgenerales.get(txtImpuestoxx.currentIndex).id_gp_tx+"/"+
+                                                                   txtCodigoxx.text+"/"+txtVentaxx.text+"/"+un
+                                                                   +",email,codigo,email,celular,url");
+
+                                  /*
+
+                                       myObject.NM_ITM=txtNombrexx.text;
+                                       myObject.DE_ITM=txtNombrexx.text;
+
+                                       myObject.FOOD_STAMP_EX = categoriasgenerales.get(txtCategoriaxx.currentIndex).food_stamp;
+                                       myObject.ID_MRHRC_GP =  categoriasgenerales.get(txtCategoriaxx.currentIndex).id_mrhrc_gp;
+
+                                       myObject.ID_STRGRP = LoginProcess.getIdStore();
+
+                                          myObject.ID_GP_TX = impuestosgenerales.get(txtImpuestoxx.currentIndex).id_gp_tx;
+                                          myObject.ID_GP_TX_BUY = impuestosgenerales.get(txtImpuestoxx.currentIndex).id_gp_tx;
+
+
+                                       if(txtGranelxx.checked)
+                                         myObject.LU_CNT_SLS_WT_UN = "WT";
+                                      else
+                                          myObject.LU_CNT_SLS_WT_UN = "UN";
+
+                                       myObject.ID_ITM_PS=txtCodigoxx.text;
+
+                                       myObject.SELL_PRICE=txtVentaxx.text;
+
+
+                                   }
+                               */
+                               }
+
+                             }
+                             AppButton {
+                                 id:altaCancelar
+                               text: "Cancelar"
+                               flat: false
+                               fontCapitalization: Font.MixedCase
+                               backgroundColor: "#4a576c"
+                               backgroundColorPressed: "#d6d6d6"
+                               anchors.horizontalCenter: parent.horizontalCenter
+                               fontBold: false
+                               //fontFamily: geoFont
+                               onClicked: visibleAlta=false
+                             }
+                            }
+                         }
+
+                       }
+                     Rectangle {
+                       id: altaXh
+                       anchors.bottom: altaX.top
+                       anchors.left: altaX.left
+                       color: "#4a576c"
+                       width: altaX.width
+                       height: ingresoX.height + dp(16)
+                       radius: dp(4)
+                       visible: visibleAlta
+
+                       border.color: "black"
+
+                       AppText {
+                         id:ingresoX
+                         anchors.verticalCenter: parent.verticalCenter
+                         anchors.left: parent.left
+                         anchors.leftMargin: dp(10)
+                         //fontSize: sp(0)
+                         text: "Alta expres"
+                         color: "white"
+                       }
+                     }
+
+                  //alta express
+                  //lista de ventas en espera
+                  property bool ventasSVisible: false
+                  property var listaComboVentas: []
+                  Rectangle {
+                    id: ventaS
+                    anchors.centerIn: parent
+                    color: "#d6d6d6"
+                    width: contentVentasS.width + dp(48)
+                    height: contentVentasS.height + dp(40) +botonesVS.height//16
+                    radius: dp(4)
+                    visible: page.ventasSVisible
+                    border.color: "black"
+
+                    ComboBox{
+                        id:contentVentasS
+                        width: dp(300)
+                        model:page.listaComboVentas
+                        anchors.left: parent.left
+                        anchors.leftMargin: dp(10)
+                        anchors.top: parent.top
+                        anchors.topMargin: dp(10)
+                    }
+
+                    Column {
+                      id:botonesVS
+                      anchors.topMargin: dp(10)
+                      anchors.horizontalCenter: contentVentasS.horizontalCenter
+                      anchors.top: contentVentasS.bottom
+                      // buttons
+                      AppButton {
+                          id:aceptarVS
+                        text: "Aceptar"
+                        flat: false
+                        fontCapitalization: Font.MixedCase
+                        backgroundColor: "#4a576c"
+                        backgroundColorPressed: "#d6d6d6"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        fontBold: false
+                        //fontFamily: geoFont
+                        onClicked: {
+                            page.ventasSVisible=false;
+                            console.log(contentVentasS.currentIndex);
+
+                            funciones.waitSaleRecover(contentVentasS.currentIndex);
+                            var Totales = funciones.getTotales();
+                            sumat.text=Totales.Suma;//total_venta-value.total_impuesto;
+                            impuestost.text=Totales.Impuesto;
+                            totalt.text=Totales.Total;
+                            totalticketText.text= Totales.APagar;
+
+                            var rowelement = new Object;
+                            console.debug("Display.qml recuperavtaEspera Numero de Lineas: "+funciones.getNumeroLineas());
+                            for( var  i = 0 ; i < funciones.getNumeroLineas() ; i++  )
+                            {
+                                console.debug("Display.qml recuperavtaEspera "+i);
+                                rowelement = funciones.getlinea(i);
+                                console.debug("Display.qml recuperavtaEspera "+rowelement);
+                                myModelt.set(i, rowelement);
+                            }
+
+                         }//if onclicked
+                      }
+                      AppButton{
+                          id:cancelbuttonVS
+                        text: "Cancelar"
+                        flat: false
+                        fontCapitalization: Font.MixedCase
+                        backgroundColor: "#4a576c"
+                        backgroundColorPressed: "#d6d6d6"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        fontBold: false
+                        //fontFamily: geoFont
+                        onClicked: {
+                            page.ventasSVisible=false;
+                        }
+                      }
+                    }
+
+
+                  }
+                  Rectangle {
+                    id: ventaSheader
+                    anchors.bottom: ventaS.top
+                    anchors.left: ventaS.left
+                    color: "#4a576c"
+                    width: ventaS.width
+                    height: ingresoS.height + dp(16)
+                    radius: dp(4)
+                    visible: page.ventasSVisible
+                    border.color: "black"
+
+                    AppText {
+                      anchors.verticalCenter: parent.verticalCenter
+                      anchors.left: parent.left
+                      anchors.leftMargin: dp(10)
+                      text: "Ventas en espera"
+                      color: "white"
+                      //anchors.bottomMargin: dp(10)
+
+                    }
+
+                  }
+
         }
 
         Component{
@@ -3277,6 +5216,12 @@ AppButton{
         }
 
         onLoginf:{
+            if(instancia===0){
+                NativeDialog.confirm("Error", "Usuario o contraseña incorrecto", function(ok) {
+                                                 if(ok) {}
+                                               })
+            }
+            else{
             principal.settings.setValue("instancia",instancia);
             principal.settings.setValue("tienda",tienda);
 
@@ -3285,6 +5230,7 @@ AppButton{
             principal.login=false;
             principal.codigo=false;
             principal.datos2=true;
+            }
         }
 
         onConfirmado:{
@@ -3302,6 +5248,12 @@ AppButton{
               })
         }
 
+        onAltaExpress:{
+            onClicked: NativeDialog.confirm("Exito", mensaje, function(ok) {
+                if(ok) {}
+                visibleAlta=false;
+              })
+        }
     }
     Connections{
         target: funciones

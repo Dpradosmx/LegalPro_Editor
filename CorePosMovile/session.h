@@ -73,7 +73,7 @@ public:
     QString id_rpsty_tnd;
     QString OPERADOR;//nombre del operador
     Settings settings;
-    QStringList permisosadmin;
+    QList<QMap<QString,QString>> permisosadmin;
 
 private :
     int numero_de_intentos=0;

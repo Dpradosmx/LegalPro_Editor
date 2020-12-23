@@ -2,6 +2,8 @@
 #include <FelgoApplication>
 #include <QQmlContext>
 #include <QQmlApplicationEngine>
+#include <QComboBox>
+#include <qcombobox.h>
 #include "websocket_syncronizacion.h"
 #include "principal.h"
 // uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
     websocket_syncronizacion* client= new websocket_syncronizacion(QUrl(QStringLiteral("wss://localhost:8080/WebBackofficeV2/actualizacion")), true);
     client->iniciar(QUrl(QStringLiteral("wss://localhost:8080/WebBackofficeV2/confirmacion")));
     //client->iniciar2(QUrl(QStringLiteral("wss://localhost:8080/WebBackofficeV2/endpoint")));
-   // client->base_de_datos();
+    //client->base_de_datos();
     //client->insertar();
     client->select();
    // client->get_tender()

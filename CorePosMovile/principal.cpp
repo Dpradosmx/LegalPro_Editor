@@ -116,7 +116,7 @@ QVariant principal::set_selected(QString posidentity, QString posidentity_qfr, d
     double fracciones;
     bool fraccional;
 
-    qDebug() << "LoginProcess.cpp chacon lookitem 1 " << posidentity << " " << posidentity_qfr;
+    qDebug() << ".cpp chacon lookitem 1 " << posidentity << " " << posidentity_qfr;
     articulo = new Item();
     cantidad1 = cantidad;
     fracciones = cantidad-cantidad1;
@@ -127,7 +127,7 @@ QVariant principal::set_selected(QString posidentity, QString posidentity_qfr, d
         {
             if(articulo->lu_cnt_sls_wt_un != "WT")
             {
-                qDebug() << "LoginProcess.cpp Articulo no encontrado " << QString::number(fracciones,'f',6) << articulo->lu_cnt_sls_wt_un;
+                qDebug() << ".cpp Articulo no encontrado " << QString::number(fracciones,'f',6) << articulo->lu_cnt_sls_wt_un;
                 resultado["respuesta"]=-1;
                 delete articulo;
                 articulo = NULL;
@@ -142,7 +142,7 @@ QVariant principal::set_selected(QString posidentity, QString posidentity_qfr, d
     }
     else{
         last_set_selected_result=0;
-        qDebug() << "LoginProcess.cpp Articulo no encontrado ";
+        qDebug() << ".cpp Articulo no encontrado ";
         resultado["respuesta"]=0;
         delete articulo;
         articulo=NULL;
@@ -156,7 +156,7 @@ int principal::getNumeroLineas()
     if (tiket==NULL)
         ret = 0;
     else ret = tiket->getNumeroLineas();
-    qDebug() << "LoginProcess::getNumeroLineas() "<<ret;
+    qDebug() << "::getNumeroLineas() "<<ret;
     return ret;
 }
 
@@ -169,7 +169,7 @@ QVariant principal::validacion(QVariant values)
 
     lol=values.toMap();
     till_tender tender;
-    qDebug() << "LoginProcess::validacion" <<lol.value("a_pagar").toString() << lol.value("forma_de_pago").toString() << lol.value("monto").toString() << lol.value("n_cheke").toString() << lol.value("id_cheke").toString() << lol.value("tipo_id").toString() << lol.value("banco_cheke").toString();
+    qDebug() << "::validacion" <<lol.value("a_pagar").toString() << lol.value("forma_de_pago").toString() << lol.value("monto").toString() << lol.value("n_cheke").toString() << lol.value("id_cheke").toString() << lol.value("tipo_id").toString() << lol.value("banco_cheke").toString();
     QMap<QString,QVariant> resultado = tender.valida_Operacion(lol.value("forma_de_pago").toString(),lol.value("a_pagar").toDouble(),lol.value("monto").toDouble(),lol);
     lol.insert("mensaje",resultado.value("mensaje"));
     lol.insert("resultado",resultado.value("resultado"));
@@ -190,7 +190,7 @@ QVariant principal::do_pay(QVariant value){
     QString tipo;
     pay_info=value.toMap();
     tipo=pay_info.value("ty_tnd").toString();
-    qDebug() << "Loginprocess()::do_pay() " << tipo << pay_info.value("monto").toDouble();
+    qDebug() << "()::do_pay() " << tipo << pay_info.value("monto").toDouble();
     if(tipo.compare("CASH")==0)
     {
         rt_lineitem = new RT_LineItem(tipo, pay_info.value("monto").toDouble(), false);
@@ -223,7 +223,7 @@ QVariant principal::do_pay(QVariant value){
             }
         }
     }
-    qDebug() << "LoginProcess::do_pay linea insertada de pago b";
+    qDebug() << "::do_pay linea insertada de pago b";
     respuesta=tiket->add_line(rt_lineitem);
     if(pay_info.value("monto").toDouble()>=pay_info.value("a_pagar").toDouble()){
         respuesta["cambio"]=pay_info.value("monto").toDouble()-pay_info.value("a_pagar").toDouble();
@@ -232,7 +232,7 @@ QVariant principal::do_pay(QVariant value){
         respuesta["accepted"]=true;
     }
     else{respuesta["respuesta"]=0;//se pago a medias
-        qDebug() << "LoginProcess::do_pay se pago " <<respuesta.value("a_pagar");
+        qDebug() << "::do_pay se pago " <<respuesta.value("a_pagar");
         respuesta["accepted"]=true;
     }
     return respuesta;
@@ -245,7 +245,7 @@ QVariant principal::put_change(QVariant value){
 
         pay_info=value.toMap();
         if(pay_info.value("cambio").isValid()&&pay_info.value("cambio").toDouble()>0){
-            qDebug() << "LoginProcess::put_change() hay cambio " <<pay_info.value("cambio").toString() << " " << pay_info.value("cambio").toDouble();
+            qDebug() << "::put_change() hay cambio " <<pay_info.value("cambio").toString() << " " << pay_info.value("cambio").toDouble();
             //rtlineitem = new RT_LineItem(pay_info.value("ty_tnd").toString(),pay_info.value("cambio").toDouble(),true);
             rtlineitem = new RT_LineItem("CASH",pay_info.value("cambio").toDouble(),true);
             respuesta =tiket->add_line(rtlineitem);
@@ -296,7 +296,7 @@ QVariant principal::finish_ticket(int is_cancelacion,QVariant cliente){
         ai_trn2 = sqlQuery2.value("trn").toInt()+1;
         qDebug() << "loginproces::finish_ticket() resultado 2 " << ai_trn2;
         qDebug() << "loginproces::finish_ticket()\n" << tiket->string_impresion ;
-        //impresion_dep(tiket->string_impresion,1,ai_trn2,TS_TRN_BGN,settings.getIdWorkStation().toInt());
+        impresion_dep(tiket->string_impresion,1,ai_trn2,TS_TRN_BGN,settings.getIdWorkStation().toInt());
         //xml del ticket
         QString xmlt ="<?xml version=\"1.0\"?><WriteRetailTransaction><Oper>WriteRetailTransaction</Oper>";
             xmlt+="<id_instancia>"+settings.getIdInstancia()+"</id_instancia><RetailTransaction>";
@@ -314,8 +314,8 @@ QVariant principal::finish_ticket(int is_cancelacion,QVariant cliente){
             xmlt+="<QU_ITM_LN_SC>0</QU_ITM_LN_SC><PE_ITM_LN_SC>0</PE_ITM_LN_SC><QU_ITM_LN_KY>"+QString::number(tiket->lineas.length())+"</QU_ITM_LN_KY><ID_FACTURA>0</ID_FACTURA>";
             xmlt+=xmlt2 + "</RetailTransaction>";
             xmlt+="</WriteRetailTransaction>";
-            //QString query2="insert into transaction values ("+settings.getIdStore()+","+settings.getIdWorkStation()+",'"+dia_trabajo+"',"+QString::number(ai_trn2)+","+sesion_actual.Get_Oper()+",'"+sesion_actual.Get_ts_tm_str()+"','TIEN','"+TS_TRN_BGN+"','"+TS_TRN_BGN+"',"+QString::number(is_cancelacion)+",0,"+QString::number(training)+",1,'"+xmlt+"')";
-            QString query2="insert into transaction values (1,1,'"+dia_trabajo+"',"+QString::number(ai_trn2)+","+1+",'"+TS_TRN_END+"','TIEN','"+TS_TRN_BGN+"','"+TS_TRN_BGN+"',"+QString::number(is_cancelacion)+",0,"+QString::number(training)+",1,'"+xmlt+"')";
+            //QString query2="insert into transactions values ("+settings.getIdStore()+","+settings.getIdWorkStation()+",'"+dia_trabajo+"',"+QString::number(ai_trn2)+","+sesion_actual.Get_Oper()+",'"+sesion_actual.Get_ts_tm_str()+"','TIEN','"+TS_TRN_BGN+"','"+TS_TRN_BGN+"',"+QString::number(is_cancelacion)+",0,"+QString::number(training)+",1,'"+xmlt+"')";
+            QString query2="insert into transactions values ("+settings.getIdStore()+","+settings.getIdWorkStation()+",'"+dia_trabajo+"',"+QString::number(ai_trn2)+","+sesion_actual.Get_Oper()+",'"+sesion_actual.Get_ts_tm_str()+"','TIEN','"+TS_TRN_BGN+"','"+TS_TRN_BGN+"',"+QString::number(is_cancelacion)+",0,"+QString::number(training)+",1,'"+xmlt+"')";
             ok = sqlQuery2.exec( query2 ) ;
 
     qDebug() << "finish_ticket \n" << query2;
@@ -386,13 +386,13 @@ QVariant principal::do_cortez(){
     dia_trabajo=sqlQuery.value("dc_dy_bsn").toString();
     qDebug() << "loginproces.cpp do_cortez resultado 1 " << dia_trabajo;
     query ="select coalesce(max(ai_trn),0) as trn from transactions where TY_TRN='corte' and dc_dy_bsn = '"+dia_trabajo+"' and id_str_rt="+settings.getIdStore()+" and id_ws="+settings.getIdWorkStation();
-    qDebug() << "LoginProcess::Do_Cortez() " << query;
+    qDebug() << "::Do_Cortez() " << query;
     ok = sqlQuery.exec( query ) ;
     if(sqlQuery.first())
         ai_trn2 = sqlQuery.value("trn").toInt();
     else
         ai_trn2 = 0;
-    qDebug() << "loginprocess::do_corte() primera transaccion despues del corte anterior " << ai_trn2;
+    qDebug() << "::do_corte() primera transaccion despues del corte anterior " << ai_trn2;
     //Obtiene el folio de la transaccion del corte Z
     query="select coalesce(max(ai_trn)+1,1) as trn from transactions where dc_dy_bsn = '"+dia_trabajo+"' and id_str_rt="+settings.getIdStore()+" and id_ws="+settings.getIdWorkStation();
     ok = sqlQuery.exec( query ) ;
@@ -400,36 +400,36 @@ QVariant principal::do_cortez(){
         ai_trn=sqlQuery.value("trn").toInt();
     else
         ai_trn = 1;
-    qDebug() << "loginprocess::do_corte folio de la transaccion del corte" << ai_trn;
-    query="select * from transaction where ty_trn = 'TIEN' and dc_dy_bsn = '" + dia_trabajo + "' and fl_trg_trn = 0 and (xml is not null or xml != '') and ai_trn > " + QString::number(ai_trn2) + " and ID_STR_RT = " + settings.getIdStore() + " and ID_WS = " + settings.getIdWorkStation() + " order by ai_trn";
+    qDebug() << "::do_corte folio de la transaccion del corte" << ai_trn;
+    query="select * from transactions where ty_trn = 'TIEN' and dc_dy_bsn = '" + dia_trabajo + "' and fl_trg_trn = 0 and (xml is not null or xml != '') and ai_trn > " + QString::number(ai_trn2) + " and ID_STR_RT = " + settings.getIdStore() + " and ID_WS = " + settings.getIdWorkStation() + " order by ai_trn";
     ok = sqlQuery.exec( query ) ;
-    qDebug() << "loginprocess::do_corte PASO 0" << query;
+    qDebug() << "::do_corte PASO 0" << query;
     Ticket T;
     while( sqlQuery.next()  ){//get todos las transacciones
-        qDebug() << "loginprocess::do_corte PASO 1";
+        qDebug() << "::do_corte PASO 1";
         venta=false;
         xmlt.setContent(sqlQuery.value("xml").toByteArray());
-        qDebug() << "loginprocess::do_corte PASO 1.1" << sqlQuery.value("xml").toString();
+        qDebug() << "::do_corte PASO 1.1" << sqlQuery.value("xml").toString();
         RetailTransactionLineItem=xmlt.elementsByTagName("RetailTransactionLineItem");//get todos los writetendercontroltransactions
         cancelado= xmlt.elementsByTagName("FL_CNCL").at(0).toElement().text().toInt();//es cancelado
         anulado= xmlt.elementsByTagName("FL_VD").at(0).toElement().text().toInt();//es cancelado
-        qDebug() << "loginprocess::do_corte PASO 1.1";
+        qDebug() << "::do_corte PASO 1.1";
         tillhist.qu_tran++;
-        qDebug() << "loginprocess::do_corte PASO 1.2";
+        qDebug() << "::do_corte PASO 1.2";
         if(cancelado){
             tillhist.qu_tran_void++;
         }
         else if(anulado)
             tillhist.qu_tran_no_sale++;
-        qDebug() << "loginprocess::do_corte PASO 1.3";
+        qDebug() << "::do_corte PASO 1.3";
         for(int x=0;x<RetailTransactionLineItem.length();x++){//recorrer todos los writetendercontroltransactions
             TY_LN_ITEM = (RetailTransactionLineItem.at(x).toElement()).elementsByTagName("TY_LN_ITEM");
             FL_VD_LN_ITEM = (RetailTransactionLineItem.at(x).toElement()).elementsByTagName("FL_VD_LN_ITEM").at(0).toElement().text().toInt();
-            qDebug() << "loginprocess::do_corte PASO 1.4" << TY_LN_ITEM.at(0).toElement().text();
+            qDebug() << "::do_corte PASO 1.4" << TY_LN_ITEM.at(0).toElement().text();
             if(TY_LN_ITEM.at(0).toElement().text().compare("VE")==0)
             {
                 SaleReturnLineItem =(RetailTransactionLineItem.at(x).toElement()).elementsByTagName("SaleReturnLineItem");
-                qDebug() << "loginprocess::do_corte PASO 1.5 " << SaleReturnLineItem.length();
+                qDebug() << "::do_corte PASO 1.5 " << SaleReturnLineItem.length();
                 if(SaleReturnLineItem.length() > 0){
                     ID_ITM_PS = (SaleReturnLineItem.at(0).toElement()).elementsByTagName("ID_ITM_PS");
                     ID_ITM_PS_QFR = (SaleReturnLineItem.at(0).toElement()).elementsByTagName("ID_ITM_PS_QFR");
@@ -442,13 +442,13 @@ QVariant principal::do_cortez(){
                     QU_ITM=(SaleReturnLineItem.at(0).toElement()).elementsByTagName("QU_ITM");
                     MO_IMPORTE_BASE = (SaleReturnLineItem.at(0).toElement()).elementsByTagName("MO_IMPORTE_BASE");
                     MO_IMPORTE_FULL = (SaleReturnLineItem.at(0).toElement()).elementsByTagName("MO_IMPORTE_FULL");
-                    qDebug() << "loginprocess::do_corte PASO 2 " << cancelado << " " << anulado;
+                    qDebug() << "::do_corte PASO 2 " << cancelado << " " << anulado;
                     if(!cancelado & !anulado)
                     {
-                        qDebug() << "loginprocess::do_corte PASO 2.1 " << FL_VD_LN_ITEM;
+                        qDebug() << "::do_corte PASO 2.1 " << FL_VD_LN_ITEM;
                         if(FL_VD_LN_ITEM <= 0)
                         {
-                            qDebug() << "loginprocess::do_corte PASO 2.3 " << FL_VD_LN_ITEM;
+                            qDebug() << "::do_corte PASO 2.3 " << FL_VD_LN_ITEM;
                             xml_cortez+=T.text_lista("Imp: Ventas articulos:",u.FormatoNumero(QString::number(tillhist.cu_sls_itm),1,2),48);
                             xml_cortez+=T.text_lista("Tax: Ventas articulos:",u.FormatoNumero(QString::number(tillhist.cu_sls_tx_itm),1,2),48);
                             xml_cortez+=T.text_lista("Imp: Ventas anuladas:",u.FormatoNumero(QString::number(tillhist.cu_void_itm),1,2),48);
@@ -460,7 +460,7 @@ QVariant principal::do_cortez(){
                             xml_cortez+=T.text_lista("Imp: Ventas servicios:",u.FormatoNumero(QString::number(tillhist.cu_sls_svc),1,2),48);
                             xml_cortez+=T.text_lista("Tax: Ventas servicios:",u.FormatoNumero(QString::number(tillhist.cu_sls_tx_svc),1,2),48);
                             if(corteztillsalessumary == NULL){
-                                qDebug() << "loginprocess::do_corte PASO 10";
+                                qDebug() << "::do_corte PASO 10";
                                 corteztillsalessumary = new tillsalessumary(ID_ITM.at(0).toElement().text().toInt(), cajon, almacen);
                                 temp_tillsalessum = corteztillsalessumary;
                                 if(QU_ITM_LM_RTN_SLS.at(0).toElement().text().toFloat() >= 0)
@@ -587,7 +587,7 @@ QVariant principal::do_cortez(){
             }
         }
     }
-    qDebug() << "loginprocess::do_corte PASO A";
+    qDebug() << "::do_corte PASO A";
     xml_cortez+=T.text_centrado("Corte de Caja",48);
     xml_cortez+="\n\n"+T.text_centrado("Seccion de Tracciones",48)+"\n\n";
     xml_cortez+=T.text_lista("Lineas de venta en articulos:",QString::number(tillhist.qu_sls_itm),48);
@@ -613,13 +613,13 @@ QVariant principal::do_cortez(){
     xml_cortez+=T.text_lista("Total:",u.FormatoNumero(QString::number(total_ventas),1,2),48);
     xml_cortez+="\n\n\n\n"+T.text_centrado("Seccion de Impuesto",48)+"\n\n\n";
     xmltilltaxhistory="";
-    qDebug() << "loginprocess::do_corte PASO B";
+    qDebug() << "::do_corte PASO B";
     if(corteztilltaxhistory!=NULL)
     {
         xml_cortez+=corteztilltaxhistory->get_linea();
         xmltilltaxhistory=corteztilltaxhistory->get_xml();
     }
-    qDebug() << "loginprocess::do_corte PASO C";
+    qDebug() << "::do_corte PASO C";
     /*
     for(int x=0;x<corteztilltaxhistory.length();x++){
         xml_cortez+=T.text_centrado(corteztilltaxhistory.at(x).nm_gp_tx,48)+"\n\n";
@@ -630,7 +630,7 @@ QVariant principal::do_cortez(){
     xml_cortez+=T.text_centrado("Impuesto anulado",48)+"\n\n";
     xml_cortez+=T.text_lista("Base Gravable",u.FormatoNumero(QString::number(tillhist.cu_void_itm),1,2),48);
     xml_cortez+=T.text_lista("Total del impuesto",u.FormatoNumero(QString::number(tillhist.cu_void_tx_itm),1,2),48)+"\n\n";
-    qDebug() << "loginprocess::do_corte PASO D";
+    qDebug() << "::do_corte PASO D";
 
     /*
     float totalb=0;
@@ -650,7 +650,7 @@ QVariant principal::do_cortez(){
     QString xmltilltender="";
     query="select tt.*, t.de_tnd from tilltender tt, tender t where tt.ty_tnd = t.ty_tnd";
     if(!sqlQuery.exec( query ))
-        qDebug() << "LoginProcess::do_cortez() error en query" << query;
+        qDebug() << "::do_cortez() error en query" << query;
     else{
         while( sqlQuery.next()){//todos los till tender
             sub_entradas=0;
@@ -680,11 +680,11 @@ QVariant principal::do_cortez(){
         xmlCorte+="<TillSalesTaxSummary><ID_ITM>"+QString::number(corteztilltaxsumary.at(x).id_itm)+"</ID_ITM><NM_ITM></NM_ITM><AI_LN_TAX>"+QString::number(corteztilltaxsumary.at(x).ai_ln_tax)+"</AI_LN_TAX><ID_GP_TX>"+QString::number(corteztilltaxsumary.at(x).id_gp_tx)+"</ID_GP_TX><AI_ATHY_TX>"+QString::number(corteztilltaxsumary.at(x).ai_athy_tx)+"</AI_ATHY_TX><MO_TXBL_RTN_SLS>"+QString::number(corteztilltaxsumary.at(x).mo_txbl_rtn_sls)+"</MO_TXBL_RTN_SLS><MO_TX_RTN_SLS>"+QString::number(corteztilltaxsumary.at(x).mo_tx_rtn_sls)+"</MO_TX_RTN_SLS><MO_EXM_TXBL_SLS>"+QString::number(corteztilltaxsumary.at(x).mo_exm_txbl_sls)+"</MO_EXM_TXBL_SLS><MO_EXM_TX>"+QString::number(corteztilltaxsumary.at(x).mo_exm_tx)+"</MO_EXM_TX></TillSalesTaxSummary>";
     }
     */
-    qDebug() << "loginprocess::do_corte PASO E";
+    qDebug() << "::do_corte PASO E";
     xmlCorte="";
     if(corteztillsalessumary != NULL)
         xmlCorte=corteztillsalessumary->get_xml();
-    qDebug() << "loginprocess::do_corte PASO F";
+    qDebug() << "::do_corte PASO F";
     xml="<Cortes><corte><WriteControlTransaction><ControlTransaction>";
     xml+="<Transaction><ID_STR_RT>"+settings.getIdStore()+"</ID_STR_RT><ID_WS>"+settings.getIdWorkStation()+"</ID_WS><DC_DY_BSN>"+dia_trabajo+"</DC_DY_BSN><AI_TRN>"+QString::number(ai_trn)+"</AI_TRN><ID_OPR>"+sesion_actual.Get_Oper()+"</ID_OPR><TS_TM_STR>"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"</TS_TM_STR><TY_TRN>CORTE</TY_TRN><TS_TRN_BGN>"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"</TS_TRN_BGN><TS_TRN_END>"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"</TS_TRN_END><FL_CNCL>0</FL_CNCL><FL_VD>0</FL_VD>";
     if(settings.getTraining().compare("FALSE")==0||settings.getTraining().compare("false")==0){
@@ -695,38 +695,38 @@ QVariant principal::do_cortez(){
     xml+="<ID_RPSTY_TND>"+sesion_actual.id_rpsty_tnd+"</ID_RPSTY_TND><QU_SLS_ITM>"+QString::number(tillhist.qu_sls_itm)+"</QU_SLS_ITM><QU_VOID_ITM>"+QString::number(tillhist.qu_void_itm)+"</QU_VOID_ITM><QU_VOID_ITM_TR>"+QString::number(tillhist.qu_void_itm_tr)+"</QU_VOID_ITM_TR><QU_RTN_ITM>"+QString::number(tillhist.qu_rtn_itm)+"</QU_RTN_ITM><QU_SLS_SVC>"+QString::number(tillhist.qu_sls_svc)+"</QU_SLS_SVC><QU_TRAN>"+QString::number(tillhist.qu_tran)+"</QU_TRAN><QU_TRAN_NO_SALE>"+QString::number(tillhist.qu_tran_no_sale)+"</QU_TRAN_NO_SALE><QU_TRAN_VOID>"+QString::number(tillhist.qu_tran_void)+"</QU_TRAN_VOID><CU_SLS_ITM>"+QString::number(tillhist.cu_sls_itm)+"</CU_SLS_ITM><CU_VOID_ITEM>"+QString::number(tillhist.cu_void_itm)+"</CU_VOID_ITEM><CU_RTN_ITM>"+QString::number(tillhist.cu_rtn_itm)+"</CU_RTN_ITM><CU_VOID_ITM_TR>"+QString::number(tillhist.cu_void_itm_tr)+"</CU_VOID_ITM_TR>";
     xml+="<CU_SLS_SVC>"+QString::number(tillhist.cu_sls_svc)+"</CU_SLS_SVC><CU_SLS_TX_ITM>"+QString::number(tillhist.cu_sls_tx_itm)+"</CU_SLS_TX_ITM><CU_VOID_TX_ITM>"+QString::number(tillhist.cu_void_tx_itm)+"</CU_VOID_TX_ITM><CU_RTN_TX_ITM>"+QString::number(tillhist.cu_rtn_tx_itm)+"</CU_RTN_TX_ITM><CU_VOID_TX_ITM_TR>"+QString::number(tillhist.cu_void_tx_itm_tr)+"</CU_VOID_TX_ITM_TR><CU_SLS_TX_SVC>"+QString::number(tillhist.cu_sls_tx_svc)+"</CU_SLS_TX_SVC>";
     xml+=xmlCorte;
-    qDebug() << "loginprocess::do_corte PASO G";
+    qDebug() << "::do_corte PASO G";
     xml+=xmltilltender;
     xml+=xmltilltaxhistory;
-    qDebug() << "loginprocess::do_corte PASO H";
+    qDebug() << "::do_corte PASO H";
     xml+="</TillHistory></TillSettlementTransaction></ControlTransaction></WriteControlTransaction></corte></Cortes>";
-    query = "insert into transaction values("+settings.getIdStore()+","+settings.getIdWorkStation()+",'"+dia_trabajo+"',"+QString::number(ai_trn)+","+sesion_actual.Get_Oper()+",'"+sesion_actual.Get_ts_tm_str()+"','CORTE', '"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"', '"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"',0,0,0,1,'"+xml+"')";
-    qDebug() << "LoginProcess::Logout() en el insert " << query;
+    query = "insert into transactions values("+settings.getIdStore()+","+settings.getIdWorkStation()+",'"+dia_trabajo+"',"+QString::number(ai_trn)+","+sesion_actual.Get_Oper()+",'"+sesion_actual.Get_ts_tm_str()+"','CORTE', '"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"', '"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"',0,0,0,1,'"+xml+"')";
+    qDebug() << "Logout() en el insert " << query;
     ok = sqlQuery.exec( query ) ;
     if(ok){
         impresion_dep(xml_cortez,5,ai_trn,dia_trabajo,settings.getIdWorkStation().toInt());
-        qDebug() << "LoginProcess::do_corte()obtiene cajas de dinero de los workstation";
+        qDebug() << "do_corte()obtiene cajas de dinero de los workstation";
         //query = "SELECT id_rpsty_tnd FROM core_pos.till where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and id_opr = " + id_opr;
         query = "SELECT id_rpsty_tnd FROM core_pos.till where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation();//  + " and id_opr = " + id_opr;
         ok = sqlQuery.exec( query ) ;
         sqlQuery.first();
         if(sqlQuery.isValid()){
             cajon=sqlQuery.value("id_rpsty_tnd").toInt();}
-        qDebug() << "LoginProcess::do_corte() update tilltender" ;
+        qDebug() << "::do_corte() update tilltender" ;
         query = "update tilltender set total_depositos = 0,total_retiros = 0, total_ingresos = 0, total_cambios= 0, total_pagos = 0, total_pagos_menores = 0, total_cobros_menores = 0 where ";
         query+= " id_str_rt = " + settings.getIdStore() + " and id_rpsty_tnd = " + QString::number(cajon) + " and id_ws = " + settings.getIdWorkStation();
         ok = sqlQuery.exec( query ) ;
-        if(!ok){qDebug() << "LoginProcess::do_corte() error al update el tilltender" << query;}
-        qDebug() << "LoginProcess::do_corte() update till" ;
+        if(!ok){qDebug() << "::do_corte() error al update el tilltender" << query;}
+        qDebug() << "::do_corte() update till" ;
         query = "update till set id_opr = NULL where id_str_rt = " + settings.getIdStore() + " and id_rpsty_tnd = " + QString::number(cajon) + " and id_ws = " + settings.getIdWorkStation();
         ok = sqlQuery.exec( query ) ;
-        if(!ok){qDebug() << "LoginProcess::do_corte() error al update el till" << query ;}
+        if(!ok){qDebug() << "::do_corte() error al update el till" << query ;}
         sesion_actual.logout(ai_trn);
     }
     else
     {
         qDebug() << "";
-        qDebug() << "LoginProcess::Logout() error en el insert " << query;
+        qDebug() << "::Logout() error en el insert " << query;
     }
 
 
@@ -744,11 +744,11 @@ void principal::impresion_dep(QString texto, int tipo,int transaction,QString fe
     QString separador="";
     Ticket T;
 
-    qDebug() <<"LoginProcess::impresion_dep en la prueba";
+    qDebug() <<"::impresion_dep en la prueba";
 
     int ypoint=0;
     int saltos_de_linea=0;
-    qDebug() <<"LoginProcess: impresion_dep()";
+    qDebug() <<": impresion_dep()";
 
     QPrinter printer(QPrinter::HighResolution);
 
@@ -756,12 +756,245 @@ void principal::impresion_dep(QString texto, int tipo,int transaction,QString fe
     printer.setOrientation(QPrinter::Portrait);
     printer.setPageMargins (1,1,1,1,QPrinter::Millimeter);
     //printer.setFullPage(false);
-    printer.setFullPage(false);
+    //printer.setFullPage(false);
     //printer.setPrinterName("PRP Thermal Printer");
-    printer.setPrinterName("PRP-188");
+    //printer.setPrinterName("PRP-188");
+
+    QPrintDialog dialog(&printer);
+            dialog.setWindowTitle(tr("Print Document"));
+
+            if (dialog.exec() != QDialog::Accepted) {
+                return;
+            }
+            else{
+
+                qDebug() << "impresion en proceso";
+
+                    if(tipo==1){//ticket
+                        //titulo
+                        QPainter painter(&printer); // create a painter which will paint 'on printer'.
+                        painter.setFont(QFont("Tahoma",15));
+                        qDebug()<<"Metrics, tamaño  de fuente"<<painter.fontMetrics().height()<<" tamaño de la hoja "<<printer.pageRect().width();
+
+                        //width 1550.0
+
+                        QRectF rectangle(15.0, ypoint, 3400.0, painter.fontMetrics().height());
+                        painter.drawText(rectangle,Qt::AlignCenter,"bienvenidos");
+                        //painter.drawRect(rectangle);
+                        ypoint=ypoint+painter.fontMetrics().height()+20;
+                        //qDebug() <<ypoint;
+                        QRectF rectangle2(15.0, ypoint, 3400.0, painter.fontMetrics().height());
+                        //painter.drawRect(rectangle2);
+                        painter.drawText(rectangle2,Qt::AlignCenter,"Abarrotes duero Y MAS");
+                        ypoint=ypoint+painter.fontMetrics().height()+20;
+                        //qDebug() <<ypoint;
+                        //200 widt
+                        QRectF target(200.0, ypoint, 200.0, 200.0);//tamaño de la imagen
+                        QPixmap pixmap("assets/default.png");
+                        QRectF source(80.0, 0.0,pixmap.width(), pixmap.height());//parte de la imagen que se tomara
+                        //QRectF source(2000-pixmap.width()/2, 0.0,4000, pixmap.height());
+                        painter.drawPixmap(target, pixmap, source);
+
+                        ypoint=ypoint+210;
+
+                        //fin titulo
+
+                        painter.setFont(QFont("Tahoma",9));
+
+                        impresion=separador.leftJustified(48,'-')+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        //550.0
+                        QRectF rectangles1(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles1,Qt::AlignCenter,impresion);
+                        //qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+                        //datos tiket
+                        impresion="Tran. NO. "+QString::number(transaction)+"\nFecha:"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"\n"+"caja:"+QString::number(caja)+"\n";
+                        impresion+="cajero: "+sesion_actual.OPERADOR+"\n"+"D. de negocio: "+sesion_actual.fechaBusinessday.toString("yyyy-MM-dd hh:mm:ss")+"\n";
+
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles1x(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles1x,Qt::AlignLeft,impresion);
+                        //qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
 
 
+                        //separador
+                        impresion=separador.leftJustified(48,'-')+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles2(15.0, ypoint, 3400, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles2,Qt::AlignCenter,impresion);
+                        qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
 
+
+                        //cuerpo  del tiket
+
+                        impresion=texto+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles4(15.0, ypoint, 3000.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles4,Qt::AlignRight,impresion);
+                        qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+                        //footer
+                        painter.setFont(QFont("Tahoma",15));
+                        impresion=datos_ticket.pie1+"\n"+datos_ticket.pie2;
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangle4(15.0, ypoint, 3000.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle4);
+                        painter.drawText(rectangle4,Qt::AlignCenter,impresion);
+
+                    }
+                    if(tipo==2 || tipo==3){
+                        //titulo
+                        QPainter painter(&printer); // create a painter which will paint 'on printer'.
+                        painter.setFont(QFont("Tahoma",15));
+                        //550 width
+                        QRectF rectangle(15.0, ypoint, 3400.0, painter.fontMetrics().height());
+                        painter.drawText(rectangle,Qt::AlignCenter,datos_ticket.encabezado1);
+                        //painter.drawRect(rectangle);
+                        ypoint=ypoint+painter.fontMetrics().height()+20;
+                        //qDebug() <<ypoint;
+                        QRectF rectangle2(15.0, ypoint, 3400.0, painter.fontMetrics().height());
+                        //painter.drawRect(rectangle2);
+                        painter.drawText(rectangle2,Qt::AlignCenter,datos_ticket.encabezado2);
+                        ypoint=ypoint+painter.fontMetrics().height()+20;
+                        //qDebug() <<ypoint;
+
+                        QRectF target(200.0, ypoint, 200, 200.0);//tamaño de la imagen
+                        QPixmap pixmap("assets/default.png");
+                        QRectF source(0.0, 0.0,pixmap.width(), pixmap.height());//parte de la imagen que se tomara
+
+                        painter.drawPixmap(target, pixmap, source);
+
+                        ypoint=ypoint+210;
+
+                        //fin titulo
+
+                        painter.setFont(QFont("Tahoma",9));
+
+                        impresion=separador.leftJustified(48,'-')+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles1(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles1,Qt::AlignCenter,impresion);
+                        //qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+                        //datos tiket
+                        impresion="Tran. NO. "+QString::number(transaction)+"\nFecha:"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"\n"+"caja:"+QString::number(caja)+"\n";
+                        impresion+="cajero: "+sesion_actual.OPERADOR+"\n"+"D. de negocio: "+sesion_actual.fechaBusinessday.toString("yyyy-MM-dd hh:mm:ss")+"\n";
+
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles1x(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles1x,Qt::AlignLeft,impresion);
+                        //qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+
+                        //separador
+                        impresion=separador.leftJustified(48,'-')+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles2(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles2,Qt::AlignCenter,impresion);
+                        qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+
+                        //cuerpo  del tiket
+
+                        impresion=texto+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles4(15.0, ypoint, 3000.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles4,Qt::AlignRight,impresion);
+                        qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+                    }
+                    if(tipo==4 || tipo== 5){
+                        //titulo
+                        QPainter painter(&printer); // create a painter which will paint 'on printer'.
+                        painter.setFont(QFont("Tahoma",15));
+                        //550 widht
+                        QRectF rectangle(15.0, ypoint, 3400.0, painter.fontMetrics().height());
+                        painter.drawText(rectangle,Qt::AlignCenter,datos_ticket.encabezado1);
+                        //painter.drawRect(rectangle);
+                        ypoint=ypoint+painter.fontMetrics().height()+20;
+                        //qDebug() <<ypoint;
+                        QRectF rectangle2(15.0, ypoint, 3400.0, painter.fontMetrics().height());
+                        //painter.drawRect(rectangle2);
+                        painter.drawText(rectangle2,Qt::AlignCenter,datos_ticket.encabezado2);
+                        ypoint=ypoint+painter.fontMetrics().height()+20;
+                        //qDebug() <<ypoint;
+
+                        QRectF target(200.0, ypoint, 200, 200.0);//tamaño de la imagen
+                        QPixmap pixmap("assets/default.png");
+                        QRectF source(0.0, 0.0,pixmap.width(), pixmap.height());//parte de la imagen que se tomara
+
+                        painter.drawPixmap(target, pixmap, source);
+
+                        ypoint=ypoint+210;
+
+                        //fin titulo
+
+                        painter.setFont(QFont("Tahoma",9));
+
+                        impresion=separador.leftJustified(48,'-')+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles1(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles1,Qt::AlignCenter,impresion);
+                        //qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+                        //datos tiket
+                        impresion="Tran. NO. "+QString::number(transaction)+"\nFecha:"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"\n"+"caja:"+QString::number(caja)+"\n";
+                        impresion+="cajero: "+sesion_actual.OPERADOR+"\n"+"D. de negocio: "+sesion_actual.fechaBusinessday.toString("yyyy-MM-dd hh:mm:ss")+"\n";
+
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles1x(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles1x,Qt::AlignLeft,impresion);
+                        //qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+
+                        //separador
+                        impresion=separador.leftJustified(48,'-')+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles2(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles2,Qt::AlignCenter,impresion);
+                        qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+
+                        //cuerpo  del tiket
+
+                        impresion=texto+"\n\n";
+                        saltos_de_linea=impresion.count('\n')+1;
+                        QRectF rectangles4(15.0, ypoint, 3400.0, painter.fontMetrics().height()*saltos_de_linea);
+                        //painter.drawRect(rectangle3);
+                        painter.drawText(rectangles4,Qt::AlignRight,impresion);
+                        qDebug() <<saltos_de_linea << " " <<ypoint;
+                        ypoint+=painter.fontMetrics().height()*saltos_de_linea;
+
+
+                    }
+
+                qDebug() << "impresion terminó";
+            }
+
+/*
     if(tipo==1){//ticket
         //titulo
         QPainter painter(&printer); // create a painter which will paint 'on printer'.
@@ -975,6 +1208,8 @@ void principal::impresion_dep(QString texto, int tipo,int transaction,QString fe
 
 
     }
+*/
+
 }
 
 void principal::add_tilltender(QVariant values)
@@ -1012,10 +1247,10 @@ void principal::add_tilltender(QVariant values)
             }
         }
 
-        //dep_impresion=tik.text_lista("Concepto","Valor",48)+"\n";
-        //dep_impresion+=tik.text_lista(till_info.value("concepto").toString(),till_info.value("amount").toString(),48);
+        dep_impresion=tik.text_lista("Concepto","Valor",48)+"\n";
+        dep_impresion+=tik.text_lista(till_info.value("concepto").toString(),till_info.value("amount").toString(),48);
 
-        //impresion_dep(dep_impresion,till_info.value("operacion").toInt(),1,QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"),settings.getIdWorkStation().toInt());
+        impresion_dep(dep_impresion,till_info.value("operacion").toInt(),1,QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"),settings.getIdWorkStation().toInt());
 
         QString dia_trabajo = "";
         int ai_trn= 0;
@@ -1066,7 +1301,7 @@ QVariant principal::do_cancel(QVariant value){
     RT_LineItem* linea;
     bool novalida=false;
 
-    qDebug() << "LoginProcess::do_cancel" << value;
+    qDebug() << "::do_cancel" << value;
     int indice=value.toInt();
     linea =tiket->get_line(indice);
     if (linea->get_cancelable()){
@@ -1082,10 +1317,10 @@ QVariant principal::validaCancel(QVariant value){
     RT_LineItem* linea;
     QMap<QString,QVariant> respuesta;
     int indice=value.toInt();
-    qDebug() << "LoginProcess::validaCancel;" << value;
+    qDebug() << "::validaCancel;" << value;
     linea =tiket->get_line(indice);
     if (linea->get_cancelable()){
-        qDebug() << "LoginProcess::validaCancel es cancelable" << value;
+        qDebug() << "::validaCancel es cancelable" << value;
         respuesta["respuesta"]=1;//cancelacion exitosa
     }
     else respuesta["respuesta"] = 0;
@@ -1112,7 +1347,7 @@ QString principal::login(QString u, QString p, bool supervisor){
     else{
         l=sesion_actual.setLogin(u,p);
     }
-    qDebug() << "LoginProcess.cpp resultado:" << l;
+    qDebug() << ".cpp resultado:" << l;
     return l.toString();
 }
 
@@ -1123,8 +1358,8 @@ QString principal::logout(){
     QString query;
     QSqlQuery sqlQuery( sqlDatabasebut.database( "Origen") ) ;
 
-    query = "select coalesce(max(ai_trn)+1,1) as ai_trn from transaction where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and dc_dy_bsn = (select max(dc_dy_bsn) from businessday where ts_end is null or ts_end = '2000-01-01 00:00:00')";
-    qDebug()<< "Session.cpp set_login "<<query;
+    query = "select coalesce(max(ai_trn)+1,1) as ai_trn from transactions where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and dc_dy_bsn = (select max(dc_dy_bsn) from businessday where ts_end is null or ts_end = '2000-01-01 00:00:00')";
+    qDebug()<< "Session.cpp logout "<<query;
     ok = sqlQuery.exec( query ) ;
     if(sqlQuery.first())
         ai_trn =sqlQuery.value("ai_trn").toInt();
@@ -1132,6 +1367,233 @@ QString principal::logout(){
         ai_trn = 1;
      query= "update till set id_opr = NULL where id_str_rt = " + settings.getIdStore() + " and id_rpsty_tnd = " + sesion_actual.id_rpsty_tnd + " and id_ws = " + settings.getIdWorkStation();
     ok = sqlQuery.exec( query ) ;
-    if(!ok){qDebug() << "LoginProcess::do_corte() error al update el till" << query ;}
+    if(!ok){qDebug() << "::do_corte() error al update el till" << query ;}
     sesion_actual.logout(ai_trn);
+    return "";
 }
+
+int principal::check_permisos(QString permiso ){
+for(int x=0;x<sesion_actual.permisos.size();x++){
+    qDebug()<<"el permiso "<<permiso<<" el actual "<<sesion_actual.permisos.at(x)["id_rs"]<<sesion_actual.permisos.at(x)["ps_acs_gp_wr"];
+    if(permiso.compare(sesion_actual.permisos.at(x)["id_rs"])==0&&sesion_actual.permisos.at(x)["ps_acs_gp_wr"].compare("1")==0){
+        qDebug()<<"Se encontro el permiso "<<permiso;
+        return 1;
+    }
+}
+
+return 0;
+
+}
+
+int principal::check_permisos_supervisor(QString permiso ){
+for(int x=0;x<sesion_actual.permisosadmin.size();x++){
+    qDebug()<<"el permiso "<<permiso<<" el actual "<<sesion_actual.permisosadmin.at(x)["id_rs"]<<sesion_actual.permisosadmin.at(x)["ps_acs_gp_wr"];
+    if(permiso.compare(sesion_actual.permisosadmin.at(x)["id_rs"])==0&&sesion_actual.permisosadmin.at(x)["ps_acs_gp_wr"].compare("1")==0){
+        qDebug()<<"Se encontro el permiso "<<permiso;
+        return 1;
+    }
+}
+
+return 0;
+
+}
+
+
+QVariant principal::before_change_price(QVariant value){
+    QMap<QString,QVariant> respuesta;
+
+    int indice=value.toInt();
+    RT_LineItem* line;
+    line = tiket->get_line(indice);
+    qDebug() << "::before_change_price" << QString::number(indice);
+    if(line->get_cancelable()){
+       if(line->get_tipo_renglon() == "VE") respuesta["respuesta"]=1;
+       else {
+           respuesta["respuesta"]=0;
+           respuesta["mensaje"]="Esta linea no es una venta";
+       }
+    }
+    else {
+       respuesta["respuesta"]=0;
+       respuesta["mensaje"]="No se pueden hacer cambios en esta linea";
+    }
+    return respuesta;
+}
+
+QVariant principal::do_Change_price(QVariant value, int indice){
+    //2020 Participa en el cambio de precios
+    QMap<QString,QVariant> regreso=value.toMap();
+    QMap<QString,QVariant> respuesta;
+    QString price  =regreso.value("precio_Nuevo").toString();
+    QString pos    =regreso.value("id_itm_ps").toString();
+    QString pos_qr =regreso.value("id_itm_ps_qfr").toString();
+    bool permanente=regreso.value("permanente").toBool();
+    if(sesion_actual.Get_OperSup()==0)//el usuario ya es supervisor
+    {
+        regreso["id_supervisor"]=sesion_actual.Get_Oper();
+    }else{regreso["id_supervisor"]=sesion_actual.Get_OperSup(); }
+
+    qDebug() << ".cpp do_Change_price(): precio nuevo " << price << " indice " << QString::number(indice);
+    if(permanente){
+        QSqlQuery sqlQuery( sqldatabasecortex.database( "Origen") )  ;
+        QString query = "select * from posidentity where ID_ITM_PS = '"+pos+ "' and ID_ITM_PS_QFR = '"+pos_qr+"'";
+        qDebug() << ".cpp do_Change_price(): precio nuevo " << query;
+        sqlQuery.exec( query ) ;
+        sqlQuery.first();
+        if(sqlQuery.isValid()){
+            QString sellprice=sqlQuery.value("ID_ITM_SL_PRC").toString();
+            qDebug() << "se busco el sell price y dio  "+sellprice;
+            QSqlQuery sqlQuery2( sqldatabasecortex.database( "Origen") )  ;
+            QString query2 = "update itemsellprice set sell_price = "+price+"  where id_itm_sl_prc ="+sellprice;
+            sqlQuery2.exec( query2 ) ;
+            qDebug() << ".cpp do_Change_price() se cambio el precio "+query2;
+        }
+        else qDebug() << ".cpp do_Change_price(): query inválido";
+    }
+    else         qDebug() << ".cpp do_Change_price(): no permanente ";
+    respuesta=tiket->do_cambio_precio(indice, regreso);
+    respuesta["respuesta"]=1;//cancelacion exitosa
+    return respuesta;
+}
+
+bool principal::toggleflDevolucion()
+{
+    if (tiket == NULL)
+        return true;
+    else
+        return tiket->toggleflDevolucion();
+}
+
+bool principal::getflDevolucion(){
+    if (tiket == NULL)
+        return false;
+    else
+        return tiket->getflDevolucion();
+}
+
+void principal::resetflDevolucion(){
+    if (tiket != NULL) tiket->resetflDevolucion();
+}
+
+bool principal::waitSaleSave(QVariant nombre){
+    int position;
+    bool ret;
+    bool igual;
+
+    ret = false;
+    if (tiket->venta_activa())
+    {
+        position = -1;
+        if (tiket_esperan.length() > 0)
+        {
+            position = 0;
+            igual=false;
+            while (position < tiket_esperan.length() && !igual)
+            {
+                if(tiket_esperan.at(position) == nombre)
+                {
+                    igual=true;
+                }
+                else
+                    position++;
+            }
+            if(!igual) position = -1;
+        }
+        if (position < 0)
+        {
+            tiket_espera.append(tiket);
+            tiket_esperan.append(nombre.toString());
+            tiket = new (retail_Transaction);
+            tiket->inicializar(settings.getDesglosaImpuestos()=="TRUE", Taxes);
+            ret=true;
+        }
+    }
+    return ret;
+}
+
+bool principal::waitSaleRecover(int position){
+    bool ret;
+
+    ret = false;
+    if(!tiket->venta_activa())
+    {
+        delete tiket;
+        tiket=NULL;
+        tiket = tiket_espera.at(position);
+        tiket_espera.remove(position);
+        tiket_esperan.removeAt(position);
+        ret=true;
+    }
+    return ret;
+}
+
+QVariant principal::getNombresVentaEspera()
+{
+    return QVariant::fromValue(tiket_esperan);
+}
+
+int principal::getNumeroVentasEspera()
+{
+    return tiket_espera.length();
+}
+
+bool principal::venta_activa(){
+    bool ret = tiket->venta_activa();
+    if (ret)
+        qDebug() << "::venta_activa() true";
+    else
+        qDebug() << "::venta_activa() false";
+    return ret;
+}
+
+bool principal::getPosibleNoVenta(){
+    bool ret;
+
+    if (tiket == NULL) ret = false;
+    else ret=tiket->getPosibleNoVenta();
+    return ret;
+}
+
+QString principal::get_taxs(){
+    QString xml="";
+    QString query="";
+    qDebug() << "get_taxs() ";
+    QSqlQuery sqlQuery( sqldatabasecortex.database("Origen") )  ;
+    query="select * from taxablegroup";
+
+    qDebug() << "get_taxs() " <<query;
+
+    sqlQuery.exec( query ) ;
+
+    while(sqlQuery.next()){
+
+        xml+="<impuesto><id_gp_tx>"+sqlQuery.value("id_gp_tx").toString()+"</id_gp_tx><nm_ru_tx>"+sqlQuery.value("nm_gp_tx").toString()+"</nm_ru_tx></impuesto>";
+    }
+
+        xml="<impuestos>"+xml+"</impuestos>";
+
+return xml;
+}
+
+QString principal::get_categorias(QString valor){
+    QString xml="";
+    QString query="";
+
+    QSqlQuery sqlQuery( sqldatabasecortex.database("Origen") )  ;
+    query="select m.*,t.nm_gp_tx from merchandisehierarchygroup m,taxablegroup t where m.id_gp_tx = t.id_gp_tx and m.NM_MRHRC_GP like '%"+valor+"%' order by m.nm_MRHRC_GP limit 0,25";
+    qDebug() << "query "<<query;
+
+    sqlQuery.exec( query ) ;
+
+    while(sqlQuery.next()){
+
+        xml+="<categoria><id_mrhrc_gp>"+sqlQuery.value("id_mrhrc_gp").toString()+"</id_mrhrc_gp><nm_mrhrc_gp>"+sqlQuery.value("nm_mrhrc_gp").toString()+"</nm_mrhrc_gp><id_gp_tx>"+sqlQuery.value("id_gp_tx").toString()+"</id_gp_tx><nm_ru_tx>"+sqlQuery.value("nm_gp_tx").toString()+"</nm_ru_tx><food_stamp>"+sqlQuery.value("food_stamp_ex").toString()+"</food_stamp></categoria>";
+    }
+
+        xml="<categorias>"+xml+"</categorias>";
+
+    //qDebug() << "fin de itemsearch "<<xml;
+
+return xml;
+}
+

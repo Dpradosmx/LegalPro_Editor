@@ -225,7 +225,7 @@ QVariant session::setLogin(QString usuario, QString password)
      }
      else fechaBusinessday1 = fechaBusinessday;
     //crear la transaccion de apertura de sesion
-    query = "select coalesce(max(ai_trn)+1,1) as ai_trn from transaction where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and dc_dy_bsn = (select max(dc_dy_bsn) from businessday where ts_end is null or ts_end = '2000-01-01 00:00:00')";
+    query = "select coalesce(max(ai_trn)+1,1) as ai_trn from transactions where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and dc_dy_bsn = (select max(dc_dy_bsn) from businessday where ts_end is null or ts_end = '2000-01-01 00:00:00')";
     qDebug()<< "Session.cpp set_login "<<query;
     ok = sqlQuery.exec( query ) ;
     if(sqlQuery.first())
@@ -233,7 +233,7 @@ QVariant session::setLogin(QString usuario, QString password)
     else
         ai_trn = 1;
     qDebug()<< "Session.cpp set_login " << ai_trn << " " << QString::number(ai_trn);
-    query = "insert into transaction(id_str_rt,id_ws,dc_dy_bsn,ai_trn,ty_trn,ts_trn_bgn,fl_cncl,fl_vd,fl_trg_trn,fl_key_ofl) values(" + settings.getIdStore() + "," + settings.getIdWorkStation() + ",'" +fechaBusinessday.toString("yyyy/MM/dd HH:mm:ss") + "'," + QString::number(ai_trn) + "," +  "'TIEN', '" + fechaBusinessday.toString("yyyy/MM/dd HH:mm:ss") + "',0,0,0,0)";
+    query = "insert into transactions(id_str_rt,id_ws,dc_dy_bsn,ai_trn,ty_trn,ts_trn_bgn,fl_cncl,fl_vd,fl_trg_trn,fl_key_ofl) values(" + settings.getIdStore() + "," + settings.getIdWorkStation() + ",'" +fechaBusinessday.toString("yyyy/MM/dd HH:mm:ss") + "'," + QString::number(ai_trn) + "," +  "'TIEN', '" + fechaBusinessday.toString("yyyy/MM/dd HH:mm:ss") + "',0,0,0,0)";
     ok = sqlQuery.exec( query ) ;
     if(!ok)
         qDebug() <<"session.cpp::setLogin() error " << query;
@@ -252,7 +252,7 @@ QVariant session::setLogin(QString usuario, QString password)
     ok = sqlQuery.exec( query ) ;
     if(ok){qDebug() << "session.cpp se creo la session " <<query;}
     //actualizando la transaccion de apertura
-    query = "update transaction set id_opr ="+ id_opr+", ts_tm_str = '" + fsession.toString("yyyy/MM/dd HH:mm:ss") + "'" + " where id_str_rt = " + settings.getIdStore() + " and id_WS = " + settings.getIdWorkStation() + " and dc_dy_bsn = '" + fechaBusinessday.toString("yyyy/MM/dd HH:mm:ss") + "' and ai_trn = " + QString::number(ai_trn);
+    query = "update transactions set id_opr ="+ id_opr+", ts_tm_str = '" + fsession.toString("yyyy/MM/dd HH:mm:ss") + "'" + " where id_str_rt = " + settings.getIdStore() + " and id_WS = " + settings.getIdWorkStation() + " and dc_dy_bsn = '" + fechaBusinessday.toString("yyyy/MM/dd HH:mm:ss") + "' and ai_trn = " + QString::number(ai_trn);
     qDebug() << "session.cpp se creo la transaccion " <<query;
     ok = sqlQuery.exec( query ) ;
     if(ok){qDebug() << "la transaccion de apertura hecha con exito" <<query;}
@@ -313,9 +313,11 @@ QString session::login_operador(QString usuario, QString password)
             query = "select g.id_rs,g.ps_acs_gp_rd,g.ps_acs_gp_wr from operator o inner join operatorgroup og on og.id_opr = o.id_opr inner join groupresourceaccess g on g.id_gp_wrk = og.id_gp_wrk where o.id_str_rt = "+settings.getIdStore()+" and o.id_opr = "+id_opr_sup;
             ok = sqlQuery.exec( query ) ;
             while(sqlQuery.next()){
-                if(sqlQuery.value("ps_acs_gp_wr").toInt()>0){
-                    permisosadmin<<sqlQuery.value("id_rs").toString();
-                }
+                QMap<QString,QString> map;
+                    map["id_rs"]=sqlQuery.value("id_rs").toString();
+                    map["ps_acs_gp_rd"]= sqlQuery.value("ps_acs_gp_rd").toString();
+                    map["ps_acs_gp_wr"]= sqlQuery.value("ps_acs_gp_wr").toString();
+                    permisosadmin.append(map);
             }
             return xml;
         }
@@ -339,7 +341,7 @@ QString session::get_cortez(QSqlDatabase sql)
     qDebug() << "misma maquina" ;
     QSqlQuery sqlQuery( sqlDatabasebut.database( "Origen") )  ;
 
-    QString query = "select ai_trn, xml from transaction where ty_trn = 'CORTE' and FL_KEY_OFL = 1 LIMIT 0, 1";
+    QString query = "select ai_trn, xml from transactions where ty_trn = 'CORTE' and FL_KEY_OFL = 1 LIMIT 0, 1";
     bool ok = sqlQuery.exec( query ) ;
     if(ok){
     QString tmp=sqlQuery.value("xml").toString();
@@ -382,8 +384,10 @@ void session::logout(int ultima_trn)
             fechaSesion=QDateTime::fromString(sqlQuery.value("ts_tm_str").toString(),"yyyy/MM/dd HH:mm:ss");
         }
         qDebug() << "session.cpp logout update session";
-        QString query = "update session set ai_trn_end = " + QString::number(ultima_trn) + ",dc_dy_bsn_end = '" + QDateTime::currentDateTime().toString("yyyy/MM/dd HH:mm:ss")  + "', ts_end = '" + QDateTime::currentDateTime().toString("yyyy/MM/dd HH:mm:ss")  + "' where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and id_opr = " + this->id_opr + " and ts_tm_str = '" + fechaSesion.toString("yyyy/MM/dd HH:mm:ss") + "'"; ;
-         ok = sqlQuery.exec( query ) ;
+        QString query = "update session set ai_trn_end = " + QString::number(ultima_trn) + ",dc_dy_bsn_end = '" + QDateTime::currentDateTime().toString("yyyy/MM/dd HH:mm:ss")  + "', ts_end = '" + QDateTime::currentDateTime().toString("yyyy/MM/dd HH:mm:ss")  + "' where id_str_rt = " + settings.getIdStore() + " and id_ws = " + settings.getIdWorkStation() + " and id_opr = " + this->id_opr + " and ts_tm_str = '" + fechaSesion.toString("yyyy/MM/dd HH:mm:ss") + "'";
+        qDebug() << "session.cpp::antes del logout" << query;
+        ok = sqlQuery.exec( query ) ;
+        qDebug() << "session.cpp::despues del logout" << query;
     }
     else{qDebug() << "session.cpp::logout() error al dar de baja al usuario" << query;}
 }

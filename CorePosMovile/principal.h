@@ -12,6 +12,7 @@
 #include <QPrinter>
 #include <QPrinterInfo>
 #include "qpainter.h"
+#include <qprintdialog.h>
 
 #include "tillsalessumary.h"
 #include "tillsalestaxsumary.h"
@@ -37,6 +38,7 @@ public:
     //ticket
     retail_Transaction* tiket;
     QVector<retail_Transaction*> tiket_espera;
+    QStringList tiket_esperan;
     //fin ticket
 signals:
     void actualizaMesa(int lista,QVariantList modelo);
@@ -69,6 +71,22 @@ public slots:
    QVariant validaCancel(QVariant value);
    QMap<QString, QVariant> getlinea(int i);
    QString logout();
+   int check_permisos(QString permiso );
+   int check_permisos_supervisor(QString permiso );
+   QVariant before_change_price(QVariant value);
+   QVariant do_Change_price(QVariant value, int indice);
+   bool toggleflDevolucion();
+   bool getflDevolucion();
+   void resetflDevolucion();
+   bool waitSaleSave(QVariant nombre);
+   bool waitSaleRecover(int posicion);
+   QVariant getNombresVentaEspera();
+   int getNumeroVentasEspera();
+   bool venta_activa();
+   QVariant getTotales() {return tiket->getTotales();}
+   bool getPosibleNoVenta();
+   QString get_taxs();
+   QString get_categorias(QString valor);
 };
 
 #endif // PRINCIPAL_H

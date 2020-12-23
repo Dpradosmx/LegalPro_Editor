@@ -29,6 +29,7 @@ signals:
     void loginf(int instancia,int tienda);
     void confirmado(int valor);//1 si 0 no
     void instalacionCompleta(int instancia,int tienda);
+    void altaExpress(QString mensaje);
 private Q_SLOTS:
     void onConnected();
     void onConnected2();
@@ -59,6 +60,12 @@ private:
     QUrl m_url;
     bool m_debug;
     double m_progreso_actualizacion;
+    QString ejecutaQuery(QString quer);
+    QString abc_item(QString idt, QString sl_prc, QString merch, QString brand, QString exm_tx,
+                      QString nombre, QString descripcion, QString ty, QString food,
+                      QString spr,QString lu_cnt,QString cp_un_sl,
+                      QString id_sl_prc,QString sell,QString list,QString ofer,QString fl_vl, QString itm_ps,
+                      QString qfr,QString prep_cc,QString qu);
 };
 
 #endif // WEBSOCKET_SYNCRONIZACION_H

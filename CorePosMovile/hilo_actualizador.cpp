@@ -481,80 +481,103 @@ hilo_actualizador * hilo_actualizador::instance( QObject * o)
 }
 
 
-
+//CORRECTA
 QString hilo_actualizador::abc_item(QString idt, QString sl_prc, QString merch, QString brand, QString exm_tx,
                   QString nombre, QString descripcion, QString ty, QString food,
                   QString spr,QString lu_cnt,QString cp_un_sl,
                   QString id_sl_prc,QString sell,QString list,QString ofer,QString fl_vl, QString itm_ps,
                   QString qfr,QString prep_cc,QString qu){//pic null
 
+    if(prep_cc.length()<=0){
+        prep_cc="null";
+    }
+    if(exm_tx.length()<=0){
+        exm_tx="null";
+    }
+
+    if(fl_vl.length()<=0||fl_vl.compare("NULL")==0){
+        fl_vl="";
+    }
+
     QString query="insert into itemsellprice(id_itm_sl_prc,sell_price,price_list,ofer_price,fl_vl_price) values("+id_sl_prc+","+sell+","+list+","+ofer+",'"+fl_vl+"');"+
             "insert into item(id_itm,id_itm_sl_prc,id_mrhrc_gp,id_brn,lu_exm_tx,nm_itm,de_itm,ty_itm,food_stamp_ex) values("+idt+","+id_sl_prc+","+merch+","+brand+","+exm_tx+",'"+nombre+"','"+descripcion+"','"+ty+"','"+food+"');"+
             "insert into stockitem (id_itm,id_spr,lu_cnt_sls_wt_un,cp_un_sl_ls_rsv) values("+idt+","+spr+",'"+lu_cnt+"',"+cp_un_sl+");"+
             "insert into posidentity(id_itm_ps,id_itm_ps_qfr,id_itm_sl_prc,id_itm,id_prep_cc,qu_itm,activo) values('"+itm_ps+"',"+qfr+","+id_sl_prc+","+idt+","+prep_cc+","+qu+",'S');"+
             "insert into itempictures(id_itm,picture) values ("+idt+", null);";
+    qDebug()<< " query "+query;
    return ejecutaQuery(query);
 
 }
 
+//CORRECTA, REVISION DE NULOS PENDIENTE
 QString hilo_actualizador::abc_disbursement_a(QString rcv,QString de,QString ty){
-    QString query="insert into disbursementfundreceiptreason (id_rcv_dsb,de_rcv,ty_rcv) values ("+rcv+",'"+de+"','"+ty+"')";
+    QString query="insert into disbursementfundreceiptreason (id_rcv_dsb,de_rcv_dsb,ty_rcv) values ("+rcv+",'"+de+"','"+ty+"')";
 
     return ejecutaQuery(query);
 }
 
+//CORRECTA, REVISION DE NULOS PENDIENTE
 QString hilo_actualizador::abc_disbursement_c(QString rcv,QString de,QString ty){
-    QString query="update disbursementfundreceiptreason set id_rcv_dsb="+rcv+",de_rcv='"+de+"',ty_rcv='"+ty+"' where id_rcv_dsb="+rcv;
+    QString query="update disbursementfundreceiptreason set id_rcv_dsb="+rcv+",de_rcv_dsb='"+de+"',ty_rcv='"+ty+"' where id_rcv_dsb="+rcv;
     return ejecutaQuery(query);
 }
 
+//CORRECTA
 QString hilo_actualizador::abc_merchandisegroup_a(QString gp,QString prnt,QString nm,QString pe,QString tx,QString food){
     QString query="insert into merchandisehierarchygroup (id_mrhrc_gp,id_mrhc_prnt,nm_mrhrc_gp,pe_profit,id_gp_tx,food_stamp_ex) values ("+gp+","+prnt+",'"+nm+"',"+pe+","+tx+",'"+food+"')";
     return ejecutaQuery(query);
 }
 
+//CORRECTA
 QString hilo_actualizador::abc_merchandisegroup_c(QString gp,QString prnt,QString nm,QString pe,QString tx,QString food){
     QString query="update merchandisehierarchygroup set id_mrhrc_gp="+gp+",id_mrhc_prnt="+prnt+",nm_mrhrc_gp='"+nm+"',pe_profit="+pe+",id_gp_tx="+tx+",food_stamp_ex='"+food+"' "+
     " where id_mrhrc_gp="+gp;
     return ejecutaQuery(query);
 }
-
+//correcta
 QString hilo_actualizador::abc_operator_a(QString opr,QString str,QString nm,QString pwd){
     QString query="insert into operator (id_str_rt,id_opr,nm_opr,pwd_acs_opr) values ("+str+","+opr+",'"+nm+"','"+pwd+"');";
     return ejecutaQuery(query);
 }
-
+//correcta
 QString hilo_actualizador::abc_operator_c(QString opr,QString str,QString nm,QString pwd){
     QString query="update operator set id_str_rt="+str+",id_opr="+opr+",nm_opr='"+nm+"',pwd_acs_opr ='"+pwd+"'"+
     " where id_opr="+opr+" and id_str_rt="+str+";";
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_operatorgroup_a(QString str,QString gp,QString opr){
     QString query="insert into operatorgroup (id_str_rt,id_gp_wrk,id_opr) values ("+str+","+gp+","+opr+");";
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_operatorgroup_c(QString str,QString gp,QString opr){
     QString query="update operatorgroup set id_str_rt="+str+",id_gp_wrk="+gp+",id_opr="+opr+
     "  where id_str_rt="+str+" and id_gp_wrk="+gp+" and id_opr="+opr+";";
     return ejecutaQuery(query);
 }
-
+//correcto revision de nulos pendiente
 QString hilo_actualizador::abc_posidentity_a(QString itm_ps,QString qfr,QString id_sl_prc,QString idt,QString prep_cc,
                           QString qu,QString sell,QString list, QString ofer,QString fl_vl){
+    if(prep_cc.length()<=0){
+        prep_cc="null";
+    }
+
+    if(fl_vl.length()<=0||fl_vl.compare("NULL")==0){
+        fl_vl="";
+    }
     QString query="insert into itemsellprice(id_itm_sl_prc,sell_price,price_list,ofer_price,fl_vl_price) values("+id_sl_prc+","+sell+","+list+","+ofer+",'"+fl_vl+"');insert into posidentity(id_itm_ps,id_itm_ps_qfr,id_itm_sl_prc,id_itm,id_prep_cc,qu_itm,activo) values('"+itm_ps+"',"+qfr+","+id_sl_prc+","+idt+","+prep_cc+","+qu+",'S');";
 
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_posidentity_b(QString id_sl_prc,QString itm_ps,QString qfr){
     QString query="delete from itemsellprice where id_itm_sl_prc="+id_sl_prc+";"+
     "delete from posidentity where id_itm_ps='"+itm_ps+"' and id_itm_ps_qfr="+qfr+";";
 
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_retailstore_a(QString id_str,QString prty,QString ty_ro,QString strgrp,QString nm,
                           QString enc1,QString enc2,QString pie1,QString pie2,
                           QString id_merchant,QString p1,QString p2,QString p3,QString p4,
@@ -564,45 +587,46 @@ QString hilo_actualizador::abc_retailstore_a(QString id_str,QString prty,QString
 return ejecutaQuery(query);
 }
 
+//correcto
 QString hilo_actualizador::abc_suplier_a(QString spr,QString prty,QString ty,QString nm,QString mf,QString peri){
     QString query="insert into supplier (id_spr,id_prty,ty_ro_prty,nm_spr,fl_mf_spr_is,periodicity) values ("+spr+","+prty+",'"+ty+"','"+nm+"','"+mf+"',"+peri+");";
 return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_suplier_c(QString spr,QString prty,QString ty,QString nm,QString mf,QString peri){
     QString query="update supplier set id_spr="+spr+",id_prty="+prty+",ty_ro_prty='"+ty+"'"+
             ",nm_spr='"+nm+"',fl_mf_spr_is='"+mf+"',periodicity= "+peri+
     " where id_spr=spr;";
 return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_taxablegroup_a(QString idg,QString nm,QString cd){
     QString query="insert into taxablegroup (id_gp_tx,nm_gp_tx,cd_rcpt_prn) values ("+idg+",'"+nm+"','"+cd+"');";
 return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_taxablegroup_c(QString idg,QString nm,QString cd){
     QString query="update taxablegroup set id_gp_tx="+idg+",nm_gp_tx='"+nm+"',cd_rcpt_prn='"+cd+"'"+
     "where id_gp_tx="+idg+";";
 return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_taxgrouprule_a(QString athy,QString gp, QString ai, QString nm, QString acnt){
     QString query="insert into taxgrouprule (id_athy_tx,id_gp_tx,ai_cmpnd,nm_ru_tx,id_acnt_ldg) values ("+athy+","+gp+","+ai+",'"+nm+"',"+acnt+");";
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_taxgrouprule_c(QString athy,QString gp, QString ai, QString nm,QString acnt){
     QString query ="update taxgrouprule set id_athy_tx="+athy+",id_gp_tx="+gp+",ai_cmpnd="+ai+","+
                    "nm_ru_tx='"+nm+"',id_acnt_ldg="+acnt+" where id_athy_tx="+athy+" and id_gp_tx="+gp+";";
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_taxraterule_a(QString athy,QString gp, QString ai, QString ty, QString txbm,QString txbl,QString mo,QString pe){
     QString query="insert into taxraterule (id_athy_tx,id_gp_tx,ai_tx_rt_ru,ty_tx_rt_ru,mo_txbm_mnm,mo_txbl_mxm,mo_rt_tx,pe_rt_tx) values ("+athy+","+gp+","+ai+",'"+ty+"',"+txbm+","+txbl+","+mo+","+pe+");";
     return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_taxraterule_c(QString athy,QString gp,QString ai, QString ty,QString txbm,QString txbl,QString mo,QString pe){
    QString query=" update taxraterule set id_athy_tx="+athy+",id_gp_tx="+gp+",ai_tx_rt_ru="+ai+","+
             "ty_tx_rt_ru='"+ty+"',mo_txbm_mnm="+txbm+",mo_txbl_mxm="+txbl+",mo_rt_tx="+mo+",pe_rt_tx="+pe+
@@ -610,13 +634,14 @@ QString hilo_actualizador::abc_taxraterule_c(QString athy,QString gp,QString ai,
     return ejecutaQuery(query);
 }
 
+//correcto, revisar nulos pendiente
 QString hilo_actualizador::abc_tender_a(QString ty,QString act,QString cny,QString tnd,QString nmb_srz,QString azn_rq,QString mth_azn,QString ep_rq,QString mxm_alow,QString rq_ct,QString prsl_rq,
                      QString lcl_cny,QString ct_rq,QString tnd_chn,QString drw_open,QString tndce_off,QString endsm_rq,QString plaz,QString itm_ps,QString btn,QString food
                      ){
-    QString query="insert into tender (ty_tnd,id_act_ldg,id_cny,de_tnd,fl_nmb_srz,fl_azn_rq,lu_mth_azn,fl_dt_azn_ep_rq,in_wit_azn_mxm_alow,fl_idtn_rq_ct,fl_id_prsl_rq,fl_avlb_lcl_cny,fl_sgntr_ct_rq,mo_th_tnd_chn,fl_drw_open,mo_apvl_tndce_off,fl_endsm_rq,plazos,id_itm,btn_asigned,food_stamp_ex) values ('"+ty+"',"+act+","+cny+",'"+tnd+"',"+nmb_srz+","+azn_rq+",'"+mth_azn+"','"+ep_rq+"',"+mxm_alow+","+rq_ct+","+prsl_rq+","+lcl_cny+","+ct_rq+","+tnd_chn+","+drw_open+","+tndce_off+","+endsm_rq+",'"+plaz+"','"+itm_ps+"','"+btn+"','"+food+"' );";
+    QString query="insert into tender (ty_tnd,id_act_ldg,id_cny,de_tnd,fl_nmb_srz,fl_azn_rq,lu_mth_azn,fl_dt_azn_ep_rq,in_wit_azn_mxm_alow,fl_idtn_rq_ct,fl_id_prsl_rq,fl_avlb_lcl_cny,fl_sgntr_ct_rq,mo_th_tnd_chn,fl_drw_open,mo_apvl_tndce_off,fl_endsm_rq,plazos,btn_asigned,food_stamp_ex) values ('"+ty+"',"+act+","+cny+",'"+tnd+"',"+nmb_srz+","+azn_rq+",'"+mth_azn+"','"+ep_rq+"',"+mxm_alow+","+rq_ct+","+prsl_rq+","+lcl_cny+","+ct_rq+","+tnd_chn+","+drw_open+","+tndce_off+","+endsm_rq+",'"+plaz+"','"+btn+"','"+food+"' );";
 return ejecutaQuery(query);
 }
-
+//correcto, revisar nulos pendiente
 QString hilo_actualizador::abc_tender_c(QString ty,QString act,QString cny,QString tnd,QString nmb_srz,QString azn_rq,
                      QString mth_azn,QString ep_rq,QString mxm_alow,QString rq_ct,QString prsl_rq,
                      QString lcl_cny,QString ct_rq,QString  tnd_chn,QString drw_open,QString  tndce_off,
@@ -626,37 +651,50 @@ QString hilo_actualizador::abc_tender_c(QString ty,QString act,QString cny,QStri
             "fl_azn_rq="+azn_rq+",lu_mth_azn='"+mth_azn+"',fl_dt_azn_ep_rq='"+ep_rq+"',in_wit_azn_mxm_alow="+mxm_alow+","+
             "fl_idtn_rq_ct="+rq_ct+",fl_id_prsl_rq="+prsl_rq+",fl_avlb_lcl_cny="+lcl_cny+",fl_sgntr_ct_rq="+ct_rq+","+
             "mo_th_tnd_chn="+tnd_chn+",fl_drw_open="+drw_open+",mo_apvl_tndce_off="+tndce_off+",fl_endsm_rq="+endsm_rq+",plazos='"+plaz+"',"+
-            "id_itm='"+itm_ps+"',btn_asigned='"+btn+"',food_stamp_ex='"+food+"' "+
+            "btn_asigned='"+btn+"',food_stamp_ex='"+food+"' "+
     "where ty_tnd="+ty+";";
     return ejecutaQuery(query);
 }
 
+//correcto, revisar nulos pendiente
 QString hilo_actualizador::abc_till_a(QString str,QString rpsty,QString ws,QString opr,QString sc,QString  opn, QString  mxm){
+    if(opr.length()<=0){
+        opr="null";
+    }
     QString query="insert into till (id_str_rt,id_rpsty_tnd,id_ws,id_opr,cp_blnc_dflt_opn,lu_tnd_mxm_alw) values ("+str+","+rpsty+","+ws+","+opr+","+opn+","+mxm+");";
     return ejecutaQuery(query);
 }
 
+//correcto, revisar nulos pendiente
 QString hilo_actualizador::abc_till_c(QString str,QString rpsty,QString ws,QString opr,QString sc,QString  opn, QString  mxm){
+    if(opr.length()<=0){
+        opr="null";
+    }
     QString query="update till set id_str_rt="+str+",id_rpsty_tnd="+rpsty+",id_ws="+ws+",id_opr="+opr+","+
             "cp_blnc_dflt_opn="+opn+",lu_tnd_mxm_alw="+mxm+
      " where id_str_rt=str and id_rpsty_tnd=rpsty and id_ws=ws;";
 return ejecutaQuery(query);
 }
-
+//correcto
 QString hilo_actualizador::abc_workstation_a(QString str,QString ws,QString eq, QString se, QString  qu,QString fl){
+    if(eq.length()<=0){
+        eq="null";
+    }
     QString query="insert into workstation (id_str_rt,id_ws,id_eq,serie,qu_tl_ws,fl_mod_trg)"
     "values ("+str+","+ws+","+eq+",'"+se+"',"+qu+","+fl+");";
 return ejecutaQuery(query);
 }
 
+//correcto, revision de nulos pendiente
 QString hilo_actualizador::abc_buttonconfig_a(QString id_str,QString btnset,QString btn,QString prnt,QString ty,QString wt,
                        QString nm, QString de,QString itm, QString icon,QString strgrp,
                        QString itm_ps,QString qfr,QString webserv,QString params,QString pos){
+
     QString query="insert into buttonconfig (id_str_rt,id_btnset,id_btn,id_btn_prnt,ty_btn,btn_wt,nm_btn,de_btn,id_itm,icon_address,id_strgrp,id_itm_ps,id_itm_ps_qfr,webserv_name,params_list,position) values ("+id_str+","+btnset+","+btn+","+prnt+",'"+ty+"',"+wt+",'"+nm+"','"+de+"',"+itm+",'"+icon+"',"+strgrp+",'"+itm_ps+"',"+qfr+",'"+webserv+"','"+params+"',"+pos+");";
 
 return ejecutaQuery(query);
 }
-
+//correcto, revision de nulos pendiete
 QString hilo_actualizador::buttonconfig_c(QString id_str,QString btnset,QString btn,QString prnt,QString ty,QString wt,
                        QString nm, QString de,QString itm, QString icon,QString strgrp,
                        QString itm_ps,QString qfr,QString webserv,QString param,QString pos){
