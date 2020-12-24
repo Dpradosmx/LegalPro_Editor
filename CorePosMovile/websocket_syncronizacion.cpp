@@ -131,7 +131,8 @@ void websocket_syncronizacion::iniciar(const QUrl &url2){
     m_webSocket2.open(QUrl(url2));
 }
 
-void websocket_syncronizacion::iniciar2(const QUrl &url3){
+void websocket_syncronizacion::iniciar2(const QString &url3){
+
     if (m_debug)
         qDebug() << "WebSocket server:" << url3;
 
@@ -139,7 +140,7 @@ void websocket_syncronizacion::iniciar2(const QUrl &url3){
     connect(&m_webSocket3, &QWebSocket::connected, this, &websocket_syncronizacion::onConnected3);
     connect(&m_webSocket3, &QWebSocket::disconnected, this, &websocket_syncronizacion::closed);
     connect(&m_webSocket3, &QWebSocket::disconnected, this, &websocket_syncronizacion::closed);
-    m_webSocket2.open(QUrl(url3));
+    m_webSocket3.open(QUrl(url3));
 }
 
 void websocket_syncronizacion::cerrar_slot(){
@@ -152,6 +153,7 @@ void websocket_syncronizacion::send_message(QString mensaje,int actual){
     if(ai_ln_actual==0)  ai_ln_actual=actual;
 }
 void websocket_syncronizacion::send_message_log_conf(QString mensaje){
+
     m_webSocket2.sendTextMessage(mensaje);
 }
 void websocket_syncronizacion::send_message_inst(QString mensaje){

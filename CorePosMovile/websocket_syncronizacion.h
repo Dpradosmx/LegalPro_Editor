@@ -38,7 +38,7 @@ private Q_SLOTS:
 
 public slots:
     void iniciar(const QUrl &url2);
-    void iniciar2(const QUrl &url3);
+    void iniciar2(const QString &url3);
     void send_message(QString mensaje,int actual);
     void send_message_log_conf(QString mensaje);
     void send_message_inst(QString mensaje);

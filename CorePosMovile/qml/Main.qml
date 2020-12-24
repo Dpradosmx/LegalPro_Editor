@@ -124,28 +124,28 @@ App {
              // if undefined is returned, this means the app was not started before
              //funcion que crea las tablas
                console.log("No hay instancia aun")
-             //coneccion.base_de_datos()
-             //page.navigationStack.push(nuevo)//antes abria otra cosa
+               if(principal.settings.getValue("numberAppStarts")===undefined)
+                coneccion.base_de_datos()
                registroN=true;
-             //principal.settings.setValue("numberAppStarts", 1)
-               console.log("creada bd "+principal.settings.getValue("instalacionpendiente"))
-               principal.settings.setValue("instancia", 1)
+               principal.settings.setValue("numberAppStarts", 1)
+               coneccion.iniciar2("wss://localhost:8080/WebBackofficeV2/endpoint");
            }
            else{
-                console.log("ya fue creada con anterioridad")
-                //principal.settings.setValue("instancia", 0)
+                console.log("Iniciando variables")
+               //var equisml=
+               //botonesCategorias1.xml=funciones.buttonsRoot()
+               //botonesCategorias1.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado>"
+               botonesCategorias1.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
+               botonesCategorias2.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
+               //botonesTender.xml=coneccion.get_tender();
+               botonesTender.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>CCAR</ID_STR_RT><ID_BTNSET>CARD</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CASH</ID_STR_RT><ID_BTNSET>CASH</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CHEC</ID_STR_RT><ID_BTNSET>CHEC</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>FDST</ID_STR_RT><ID_BTNSET>Food Stamp</ID_BTNSET></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
+               //coneccion.send_message("0,1,36,x",0)
+               categoriasgenerales.xml=funciones.get_categorias("");
+               impuestosgenerales.xml=funciones.get_taxs();
            }
-           //var equisml=
-           //botonesCategorias1.xml=funciones.buttonsRoot()
-           //botonesCategorias1.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado>"
-           botonesCategorias1.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
-           botonesCategorias2.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
-           //botonesTender.xml=coneccion.get_tender();
-           botonesTender.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>CCAR</ID_STR_RT><ID_BTNSET>CARD</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CASH</ID_STR_RT><ID_BTNSET>CASH</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CHEC</ID_STR_RT><ID_BTNSET>CHEC</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>FDST</ID_STR_RT><ID_BTNSET>Food Stamp</ID_BTNSET></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
-           //coneccion.send_message("0,1,36,x",0)
-           categoriasgenerales.xml=funciones.get_categorias("");
-           impuestosgenerales.xml=funciones.get_taxs();
-           principal.settings.setValue("instancia",78);
+           //pruebas
+           coneccion.iniciar2("wss://localhost:8080/WebBackofficeV2/endpoint");
+           registroN=true;
 
 
         }
@@ -1132,7 +1132,7 @@ App {
                                          //datos, si es nuevo, usuario, password, instancia, rfc,nombretienda, encabezadotienda,id_tienda
                                          console.log("aceptar log");
                                          coneccion.send_message_log_conf("N,"+usuariod2.text+","+passwordd2.text+",0,"+emaild2.text+",felgo3443,url");
-                                         principal.settings.setValue("instalacionpendiente", "O,"+usuariod2.text+","+passwordd2.text+","+principal.settings.getValue("instancia")+",n,n,"+principal.settings.getValue("tienda"));
+                                         principal.settings.setValue("instalacionpendiente", "U,"+usuariod2.text+","+passwordd2.text+","+principal.settings.getValue("instancia")+",n,n,n,"+principal.settings.getValue("tienda"));
                                          usuario=false;
                                          datos=false;
                                          login=false;
@@ -1180,18 +1180,14 @@ App {
                                      //visible: codigo
                                      onClicked: {
                                          coneccion.send_message_log_conf("C,usuario,password,"+codigoc.text+",email,felgo4334,url");
-
                                          usuario=true;
                                          datos=false;
                                          login=false;
                                          codigo=false;
                                          datos2=false;
-                                         //principal.settings.setValue("instancia", 1)
                                          page.loginvisible=true;
                                          registroN=false;
-                                         //page.navigationStack.pop();//regresa a la pantalla de login
-
-
+                                         alcooo
                                      }
                                      //anchors.horizontalCenter: parent.horizontalCenter
                                      //anchors.top: codigoc.bottom
@@ -1221,7 +1217,6 @@ App {
                                  visible:datos
                                  //fontFamily: geoFont
                                }
-
                                AppTextField {
                                        id: usuarioCampo
                                        Layout.preferredWidth: dp(200)
@@ -1235,14 +1230,12 @@ App {
                                        placeholderText: "Usuario"
 
                                      }
-
                                AppText {
                                  text: qsTr("Password")
                                  font.pixelSize: sp(12)
                                  visible:datos
                                  //fontFamily: geoFont
                                }
-
                                AppTextField {
                                        id: passwordCampo
                                        Layout.preferredWidth: dp(200)
@@ -1255,14 +1248,12 @@ App {
                                        visible:datos
                                        placeholderText: "password"
                                      }
-
                                AppText {
                                  text: qsTr("E-mail")
                                  font.pixelSize: sp(12)
                                  visible:datos
                                  //fontFamily: geoFont
                                }
-
                                AppTextField {
                                        id: correoCampo
                                        Layout.preferredWidth: dp(200)
@@ -1325,7 +1316,6 @@ App {
                                        visible:datos
                                        placeholderText: "RFC"
                                      }
-
                                AppText {
                                  text: qsTr("Encabezado tiquet")
                                  font.pixelSize: sp(12)
@@ -1408,8 +1398,9 @@ App {
                                    Layout.topMargin: dp(12)
                                    onClicked: NativeDialog.confirm("Confirmar", "¿Subir datos?", function(ok) {
                                        if(ok) {
-                                           coneccion.send_message_log_conf("N,usuarionuevo,usuarionuevo,0,fireshaitan@hotmail.com,felo3443,url");
-                                           principal.settings.setValue("instalacionpendiente", "N,usuarionuevo,usuarionuevo,?,rfc,nombre,encabezadotienda,0");
+                                           //solicita un codigo nuevo N
+                                           coneccion.send_message_log_conf("N,"+usuarioCampo.text+","+passwordCampo.text+",0,"+correoCampo+",felo3443,url");
+                                           principal.settings.setValue("instalacionpendiente", "N,"+usuarioCampo.text+","+passwordCampo.text+",0,"+rfcCampo.text+","+tiendaCampo.text+","+enc2Campo.text+"/"+pie1Campo.text+"/"+pie2Campo.text+",1");
                                            usuario=false;
                                            datos=false;
                                            login=false;
@@ -4936,271 +4927,7 @@ App {
                     }
 
                   }
-
         }
-
-        Component{
-            id:nuevo
-            Page {
-              title: "usuario nuevo"
-              id:p3
-              navigationBarHidden: true;
-
-              MouseArea {
-                     anchors.fill: parent
-                     //onClicked: textEdit.focus = false
-                   }
-
-              AppButton{
-                    id:nuevou
-                    text: "¿Usuario nuevo?"
-                    visible: usuario
-                    onClicked:{
-                        usuario=false;
-                        datos=true;
-                        login=false;
-                        codigo=false;
-                        datos2=false;
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: parent.top
-                    }
-
-              AppButton{
-                        id:nuevoy
-
-                    text: "¿Usuario ya registrado?"
-                    visible: usuario // otherwise FloatingActionButton only shows when run on Android
-                    onClicked:{
-                        usuario=false;
-                        datos=false;
-                        login=true;
-                        codigo=false;
-                        datos2=false;
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: nuevou.bottom
-                    }
-
-              AppTextInput {
-                      id: usuariol
-                      width: dp(200)
-                      visible:login
-                      placeholderText: "Usuario ya registrado"
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      anchors.top: parent.top
-                    }
-              AppTextInput {
-                      id: passwordl
-                      width: dp(200)
-                      visible:login
-                      placeholderText: "password registrado"
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      anchors.top: usuariol.bottom
-                    }
-              AppButton{
-                        id:aceptarl
-                    text: "Aceptar login"
-                    visible: login
-                    onClicked: {
-                        //datos, L login, N nuevo codigo, C confirmar, usuario, password, codigo,email,celular,url
-                        console.log("aceptar log");
-                        coneccion.send_message_log_conf("L,"+usuariol.text+","+passwordl.text+",codigo,email,celular,url");
-                        //activa onloginf
-                        /*usuario=false;
-                        datos=false;
-                        login=false;
-                        codigo=true;*/
-                        aceptarl.enabled=false;
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: passwordl.bottom
-                    }
-              AppButton{
-                        id:cancelar
-                    text: "Cancelar"
-                    visible: login
-                    onClicked: {
-                        usuario=true;
-                        datos=false;
-                        login=false;
-                        codigo=false;
-                        datos2=false;
-                        principal.settings.setValue("instancia", 0);
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: aceptarl.bottom
-                    }
-
-              AppTextInput {
-                      id: codigoc
-                      width: dp(200)
-                      visible:codigo
-                      placeholderText: "Codigo"
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      anchors.top: parent.top
-                    }
-              AppButton{
-                        id:aceptarc
-                    text: "Aceptar codigo"
-                    visible: codigo
-                    onClicked: {
-                        coneccion.send_message_log_conf("C,usuario,password,"+codigoc.text+",email,felgo4334,url");
-
-                        usuario=true;
-                        datos=false;
-                        login=false;
-                        codigo=false;
-                        datos2=false;
-                        //principal.settings.setValue("instancia", 1)
-                        page.navigationStack.pop();//regresa a la pantalla de login
-
-
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: codigoc.bottom
-                    }
-              AppButton{
-                        id:cancelarc
-                    text: "Cancelar"
-                    visible: codigo
-                    onClicked: {
-                        usuario=true;
-                        datos=false;
-                        login=false;
-                        codigo=false;
-                        datos2=false;
-                        principal.settings.setValue("instancia", 0);
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: aceptarc.bottom
-                    }
-
-
-              AppTextInput {
-                      id: usuariod2
-                      width: dp(200)
-                      visible:datos2
-                      placeholderText: "Usuario"
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      anchors.top: parent.top
-                    }
-              AppTextInput {
-                      id: passwordd2
-                      width: dp(200)
-                      visible:datos2
-                      placeholderText: "Password"
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      anchors.top: usuariol.bottom
-                    }
-              AppTextInput {
-                      id: emaild2
-                      width: dp(200)
-                      visible:datos2
-                      placeholderText: "Correo electronico"
-                      anchors.horizontalCenter: parent.horizontalCenter
-                      anchors.top: passwordd2.bottom
-                    }
-              AppButton{
-                        id:aceptard2
-                    text: "Aceptar datos2"
-                    visible: datos2
-                    onClicked: {
-                        //datos, si es nuevo, usuario, password, instancia, rfc,nombretienda, encabezadotienda,id_tienda
-                        console.log("aceptar log");
-                        coneccion.send_message_log_conf("N,"+usuariod2.text+","+passwordd2.text+",0,"+emaild2.text+",felgo3443,url");
-                        principal.settings.setValue("instalacionpendiente", "O,"+usuariod2.text+","+passwordd2.text+","+principal.settings.getValue("instancia")+",n,n,"+principal.settings.getValue("tienda"));
-                        usuario=false;
-                        datos=false;
-                        login=false;
-                        codigo=true;
-                        datos2=false;
-                        onClicked: NativeDialog.confirm("Confirmado", "Pronto recibira  un correo con un codigo de confirmacion", function(ok) {
-                            if(ok) {}
-                          })
-                    }
-                    anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: emaild2.bottom
-                    }
-              AppListView {
-                         id:listaCampos
-                         visible: datos
-                         x: dp(10) // left margin
-                         y: dp(10) // top margin
-                        spacing: dp(20)
-
-
-                         model: [
-                                    {day: "Nombre",    tempMax: 21},
-                                    {day: "Password",   tempMax: 24},
-                                    {day: "Nombre tienda", tempMax: 26},
-                                    {day: "Correo", tempMax: 26},
-                                    {day: "Encabezado ticket",  tempMax: 32},
-                                    {day: "Segunda linea ticket",    tempMax: 28},
-                                    {day: "Primer pie de ticket",  tempMax: 26},
-                                    {day: "Segundo pie de ticket",    tempMax: 25}
-                                  ]
-
-                         header: Row {
-                                    spacing: dp(20)
-                                    AppText {
-                                      id: maxMinTempHeader
-                                      text: "Datos"
-                                      horizontalAlignment: Text.AlignHCenter
-
-                                    }
-                                  }
-                         delegate: Row {
-                             id: delegados
-                             spacing:dp(10)
-                             AppText {
-                                          text:modelData.day
-
-                                          // make all days the same width
-
-                                          anchors.verticalCenter: parent.verticalCenter
-                                        }
-                             Column {
-
-                                          anchors.verticalCenter: parent.verticalCenter
-                             AppTextInput {
-                                          width: dp(200)
-                                          placeholderText: modelData.day
-
-                                          anchors.horizontalCenter: parent.horizontalCenter
-                                        }
-                             }
-                         }
-
-                     }
-              FloatingActionButton {
-                     icon: IconType.check
-                     visible: datos
-                     onClicked: NativeDialog.confirm("Confirmar", "¿Subir datos?", function(ok) {
-                         if(ok) {
-                             coneccion.send_message_log_conf("N,usuarionuevo,usuarionuevo,0,fireshaitan@hotmail.com,felo3443,url");
-                             principal.settings.setValue("instalacionpendiente", "N,usuarionuevo,usuarionuevo,?,rfc,nombre,encabezadotienda,0");
-                             usuario=false;
-                             datos=false;
-                             login=false;
-                             codigo=true;
-                             datos2=false;
-                             onClicked: NativeDialog.confirm("Confirmado", "Pronto recibira  un correo con un codigo de confirmacion", function(ok) {
-                                 if(ok) {}
-                               })
-                         }
-                         else{
-                             usuario=true;
-                             datos=false;
-                             login=false;
-                             codigo=false;
-                             datos2=false;
-                         }
-                       })
-                   }
-            }
-        }
-
     }
 
     Connections{
@@ -5222,6 +4949,7 @@ App {
                                                })
             }
             else{
+                console.debug("instancia "+instancia+" tienda "+tienda);
             principal.settings.setValue("instancia",instancia);
             principal.settings.setValue("tienda",tienda);
 
@@ -5235,7 +4963,7 @@ App {
 
         onConfirmado:{
             coneccion.send_message_inst(principal.settings.getValue("instalacionpendiente"));
-            onClicked: NativeDialog.confirm("Creando instancia", "Creando instancia, espere", function(ok) {
+            onClicked: NativeDialog.confirm("Creando instancia", "Creando instancia, espere un mensaje de confirmacion.", function(ok) {
                 if(ok) {}
               })
         }
@@ -5243,7 +4971,7 @@ App {
         onInstalacionCompleta:{
             principal.settings.setValue("instancia",instancia);
             principal.settings.setValue("tienda",tienda);
-            onClicked: NativeDialog.confirm("Exito", "Instancia creada y base de datos lista", function(ok) {
+            onClicked: NativeDialog.confirm("Exito", "Instancia creada y base de datos lista, favor de reiniciar la aplicacion", function(ok) {
                 if(ok) {}
               })
         }
