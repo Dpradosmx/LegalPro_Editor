@@ -120,6 +120,7 @@ App {
 
            var isFirstStartApplication = principal.settings.getValue("instancia")
 
+           console.debug("instancia de pruebas "+isFirstStartApplication);
            if(isFirstStartApplication === undefined||isFirstStartApplication === 0) {
              // if undefined is returned, this means the app was not started before
              //funcion que crea las tablas
@@ -162,6 +163,47 @@ App {
             useSafeArea: false // do not consider safe area insets of screen
             property bool loginvisible: true
 
+            Rectangle{
+                color:"red"
+                //border.color: "black";
+                width:page.width-dp(300)
+                x:dp(20)
+                height: page.height-dp(300)
+                z:1
+                visible:false
+                property var sourse: "https://www.dzoom.org.es/wp-content/uploads/2017/09/larga-exposicion-13-810x540.jpg"
+                property int valor: 1
+                MouseArea{
+                    anchors.fill: parent
+                            onClicked: {
+                                if(parent.valor==5)
+                                    parent.valor=1;
+                                else
+                                    parent.valor++;
+                                if(parent.valor==1)
+                                    parent.sourse="https://www.dzoom.org.es/wp-content/uploads/2017/09/larga-exposicion-13-810x540.jpg";
+                                else if(parent.valor==2)
+                                    parent.sourse="https://www.dzoom.org.es/wp-content/uploads/2020/12/me-gustaria.png";
+                                else if(parent.valor==3)
+                                    parent.sourse="https://img.wattpad.com/49e3d667d5bb8f317c3122231a8464239c28e752/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f4c2d616b734e6d624967493168413d3d2d322e313539633439313136383234346461343332383235343438313134302e6a7067?s=fit&w=720&h=720";
+                                else if(parent.valor==4)
+                                    parent.sourse="https://st.depositphotos.com/1771835/2012/i/950/depositphotos_20120691-stock-photo-serious-woman-portrait-real-high.jpg";
+                                else if(parent.valor==5)
+                                    parent.sourse="https://st2.depositphotos.com/1034986/6164/i/950/depositphotos_61643183-stock-photo-young-beautiful-girl-with-confetti.jpg";
+
+                            }
+                }
+                AppImage {
+                           id: resultImage
+                           width: parent.width-dp(10)
+                           //x: dp(20)
+                           height: parent.height-dp(10)
+                           fillMode: Image.PreserveAspectFit
+                           autoTransform: true
+                           source: parent.sourse
+
+                         }
+            }
 
 
                 /*
@@ -973,6 +1015,21 @@ App {
 
                                      }
 
+                               AppButton{
+                                         id:yacodi
+                                     Layout.columnSpan: 2
+                                     text: "ya tengo un codigo"
+                                     visible: usuario && principal.settings.getValue("instalacionpendiente")!==undefined
+                                     onClicked:{
+                                         usuario=false;
+                                         datos=false;
+                                         login=false;
+                                         codigo=true;
+                                         datos2=false;
+                                     }
+
+                                     }
+
                                //ya existente 2
                                AppText {
                                  text: qsTr("Usuario")
@@ -1131,7 +1188,7 @@ App {
                                      onClicked: {
                                          //datos, si es nuevo, usuario, password, instancia, rfc,nombretienda, encabezadotienda,id_tienda
                                          console.log("aceptar log");
-                                         coneccion.send_message_log_conf("N,"+usuariod2.text+","+passwordd2.text+",0,"+emaild2.text+",felgo3443,url");
+                                         coneccion.send_message_log_conf("N,"+usuariod2.text+","+passwordd2.text+",0,"+emaild2.text+",felo3443,url");
                                          principal.settings.setValue("instalacionpendiente", "U,"+usuariod2.text+","+passwordd2.text+","+principal.settings.getValue("instancia")+",n,n,n,"+principal.settings.getValue("tienda"));
                                          usuario=false;
                                          datos=false;
@@ -1179,7 +1236,7 @@ App {
                                      text: "Aceptar codigo"
                                      //visible: codigo
                                      onClicked: {
-                                         coneccion.send_message_log_conf("C,usuario,password,"+codigoc.text+",email,felgo4334,url");
+                                         coneccion.send_message_log_conf("C,usuario,password,"+codigoc.text+",email,felo3443,url");
                                          usuario=true;
                                          datos=false;
                                          login=false;
@@ -1187,7 +1244,7 @@ App {
                                          datos2=false;
                                          page.loginvisible=true;
                                          registroN=false;
-                                         alcooo
+
                                      }
                                      //anchors.horizontalCenter: parent.horizontalCenter
                                      //anchors.top: codigoc.bottom
@@ -1399,8 +1456,9 @@ App {
                                    onClicked: NativeDialog.confirm("Confirmar", "¿Subir datos?", function(ok) {
                                        if(ok) {
                                            //solicita un codigo nuevo N
-                                           coneccion.send_message_log_conf("N,"+usuarioCampo.text+","+passwordCampo.text+",0,"+correoCampo+",felo3443,url");
+                                           coneccion.send_message_log_conf("N,"+usuarioCampo.text+","+passwordCampo.text+",0,"+correoCampo.text+",felo3443,url");
                                            principal.settings.setValue("instalacionpendiente", "N,"+usuarioCampo.text+","+passwordCampo.text+",0,"+rfcCampo.text+","+tiendaCampo.text+","+enc2Campo.text+"/"+pie1Campo.text+"/"+pie2Campo.text+",1");
+                                           console.debug("instalacion pendiente "+principal.settings.getValue("instalacionpendiente"));
                                            usuario=false;
                                            datos=false;
                                            login=false;
@@ -4971,6 +5029,7 @@ App {
         onInstalacionCompleta:{
             principal.settings.setValue("instancia",instancia);
             principal.settings.setValue("tienda",tienda);
+            console.log("instancia ,"+instancia+", tienda, "+tienda);
             onClicked: NativeDialog.confirm("Exito", "Instancia creada y base de datos lista, favor de reiniciar la aplicacion", function(ok) {
                 if(ok) {}
               })

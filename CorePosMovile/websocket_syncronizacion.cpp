@@ -271,6 +271,7 @@ void websocket_syncronizacion::onTextMessageReceived(QString message)
     case 4:
         qDebug()<< "respuesta confirmacion" <<obj["value"].toString();
         emit confirmado(obj["value"].toInt());
+        break;
     case 5:
         qDebug()<< "respuesta a altaexpress" <<obj["value"].toString();
         valores=obj["value"].toString().split(",");
