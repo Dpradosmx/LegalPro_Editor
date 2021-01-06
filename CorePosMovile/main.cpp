@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     //client->iniciar2(QUrl(QStringLiteral("wss://localhost:8080/WebBackofficeV2/endpoint")));
     //client->base_de_datos();
     //client->insertar();
-    client->select();
+    //client->select();
    // client->get_tender()
     engine.rootContext()->setContextProperty("coneccion", client);
     principal* princi=new principal();

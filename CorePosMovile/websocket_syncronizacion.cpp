@@ -20,8 +20,12 @@ websocket_syncronizacion::websocket_syncronizacion(const QUrl &url, bool debug, 
     if(!db.open()){
         qDebug() << "Error syncronizacion 1: " << db.lastError();
     }
+    settings.setUp();
     opciones<<"mensaje"<<"syncronizacionResultado"<<"loginRespuesta"<<"respuestainstalacion"<<"respuestaconfirmacion"<<"respuestaaltaitem";
     //0,1,2....,n
+    //settings.setNewLineMax(0);
+    //settings.setIdStore("1");
+    //settings.setIdInstancia("87");
 }
 //funcion que crea la base de datos si es una nueva instalacion,
 //solo se ejecuta la primera vez que se abre la aplicacion
@@ -89,10 +93,11 @@ void websocket_syncronizacion::select(){
         return;
     }
     QSqlQuery query(db);
-    query.exec("select coalesce(max(ai_trn)+1,1) as ai_trn from transactions");
+    query.exec("SELECT * FROM operator  ");
+    qDebug() << "SELECT * FROM HistCatalogos ORDER BY ai_ln";
     while (query.next()) {
 
-        qDebug() << "id" << query.value("ai_trn").toString();
+        qDebug() << "id" << query.value("nm_opr").toString()<<query.value("id_opr").toString();
     }
 
 }
@@ -149,8 +154,12 @@ void websocket_syncronizacion::cerrar_slot(){
 }
 
 void websocket_syncronizacion::send_message(QString mensaje,int actual){
+    actual=settings.getLineMax().toInt();
+    mensaje=mensaje.replace(QString("N"),settings.getLineMax());
+    if(ai_ln_actual==0){  ai_ln_actual=actual;}
+    qDebug()<< "send_message "+mensaje;
     m_webSocket.sendTextMessage(mensaje);
-    if(ai_ln_actual==0)  ai_ln_actual=actual;
+
 }
 void websocket_syncronizacion::send_message_log_conf(QString mensaje){
 
@@ -167,7 +176,10 @@ void websocket_syncronizacion::onConnected()
         qDebug() << "WebSocket connected syncronizacion";
     connect(&m_webSocket, &QWebSocket::textMessageReceived,
             this, &websocket_syncronizacion::onTextMessageReceived);
-    //m_webSocket.sendTextMessage(QStringLiteral("Hello, world!"));
+    //actual=settings.getLineMax().toInt();
+    QString mensaje=settings.getLineMax()+","+settings.getIdStore()+","+settings.getIdInstancia()+",x";
+    qDebug() << "Inicia gethistcatalogos "<<mensaje;
+    m_webSocket.sendTextMessage(mensaje);
 
 
 }
@@ -227,30 +239,32 @@ void websocket_syncronizacion::onTextMessageReceived(QString message)
         break;
     case 1:{
          QSqlQuery query(db);
-         QJsonArray npcArray = obj["arras"].toArray();
+         QJsonArray npcArray = obj["value"].toArray();
          ai_ln_max=npcArray[0].toObject()["ailnmax"].toInt();
-         QString insert="insert into histcatalogos(AI_LN,CAT_ACT,OPER,XML) values ";
+         QString insert="insert into histcatalogos(AI_LN,CAT_ACT,OPER,XML,APLICADO) values ";
+         qDebug()<<"size "<< npcArray.size() << "ailnmax " <<ai_ln_max;
          for(int x=0;x<npcArray.size();x++){
               QJsonObject npcObject =npcArray[x].toObject();
              if(x==npcArray.size()-1){
-                 insert=insert+" ("+QString::number(npcObject["ailn"].toInt())+",'"+npcObject["catact"].toString()+"','"+npcObject["oper"].toString()+"','"+npcObject["xml"].toString()+"');";
+                 insert=insert+" ("+QString::number(npcObject["ailn"].toInt())+",'"+npcObject["catact"].toString()+"','"+npcObject["oper"].toString()+"','"+npcObject["xml"].toString()+"',0);";
              }
              else{
-                 insert=insert+" ("+QString::number(npcObject["ailn"].toInt())+",'"+npcObject["catact"].toString()+"','"+npcObject["oper"].toString()+"','"+npcObject["xml"].toString()+"'),";
+                 insert=insert+" ("+QString::number(npcObject["ailn"].toInt())+",'"+npcObject["catact"].toString()+"','"+npcObject["oper"].toString()+"','"+npcObject["xml"].toString()+"',0),";
              }
          }
 
+         qDebug()<<insert;
          if(!query.exec(insert)){
            qDebug() << "ERROR3: " << query.lastError().text();
          }
          query.finish();
          ai_ln_actual=get_max();
          if(ai_ln_actual<ai_ln_max){
-
-             send_message(QString::number(ai_ln_actual)+",1,36,x",ai_ln_actual);
+             settings.setNewLineMax(QString::number(ai_ln_actual));
+             send_message(QString::number(ai_ln_actual)+","+settings.getIdStore()+","+settings.getIdInstancia()+",x",ai_ln_actual);
          }
          else{
-
+            settings.setNewLineMax(QString::number(ai_ln_actual));
             qDebug()<< "terminada " <<ai_ln_actual;
             cerrar_slot();
          }
@@ -266,6 +280,8 @@ void websocket_syncronizacion::onTextMessageReceived(QString message)
         valores=obj["value"].toString().split(",");
         a=valores.at(1);
         b= valores.at(2);
+        settings.setIdStore(valores.at(2));
+        settings.setIdInstancia(valores.at(1));
         emit instalacionCompleta(a.toInt(),b.toInt());
         break;
     case 4:

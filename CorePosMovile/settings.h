@@ -73,6 +73,7 @@ public:
     Q_INVOKABLE void setScaleRemLeft(QString value);
     Q_INVOKABLE void setScaleRemRight(QString value);
     Q_INVOKABLE void setScaleRequest(QString value);
+    Q_INVOKABLE void setIdInstancia(QString value);
     Q_INVOKABLE QString getSerie() ; // Se nos proporciona el numero de serie de la maquina
     Q_INVOKABLE QString getTaxInPrice() ;
     Q_INVOKABLE void    setTaxInPrice(QString value);

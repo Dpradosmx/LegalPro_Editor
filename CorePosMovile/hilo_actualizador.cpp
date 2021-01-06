@@ -44,7 +44,7 @@ void hilo_actualizador::CicloRecover()
     QTime myTimer;
     myTimer.start();
     QSqlQuery query(db);
-
+    QSqlQuery query2(db);
     query.prepare("SELECT count(*) as valor FROM HistCatalogos where APLICADO=0 ORDER BY ai_ln ");
 
     if(!query.exec()){
@@ -53,6 +53,11 @@ void hilo_actualizador::CicloRecover()
     }
 
     while(query.next()){
+        qDebug() << "son : " << query.value("valor").toString()+" actualizaciones";
+        if(query.value("valor").toInt()==0){
+             valorxquery=1;
+            break;
+        }
         valorxquery=1/query.value("valor").toInt();
 
     }
@@ -460,10 +465,19 @@ void hilo_actualizador::CicloRecover()
                else if(operacion=="C"){}
                else if(operacion=="B"){}
                }
-       if(ejecutado){
+       if(queryy.compare("ok")==0){
            qDebug() << " correto " <<queryy ;
-           emit setservice(valorxquery*contador);
+           query.prepare("update HistCatalogos set aplicado=1 where "+query.value("ai_ln").toString());
+
+           if(!query.exec()){
+             qDebug() << "ERRORth4: " << query.lastError().text();
+             //return 0;
+           }
+           //emit setservice(valorxquery*contador);
             contador++;
+       }
+      else{
+        qDebug() <<"Error en la actualizazcio" << catAct;
        }
        ///fin de las actualizaciones
      qDebug()<<"transcurridos: "<<myTimer.elapsed() <<" milisegundos";
@@ -713,7 +727,7 @@ return "";
 QString hilo_actualizador::ejecutaQuery(QString quer){
    QSqlQuery query(db);
    //separados por ; cada insert
-
+    QString resultado="ok";
    QStringList scriptQueries = quer.split(";");
    foreach (QString queryTxt, scriptQueries)
        {
@@ -725,9 +739,10 @@ QString hilo_actualizador::ejecutaQuery(QString quer){
                qDebug() << "ERROR: " << query.lastError().text();
                //qFatal(QString("One of the query failed to execute."
                  //          " Error detail: " + query.lastError().text()).toLocal8Bit());
+                resultado ="no";
            }
            query.finish();
        }
-return "ok";
+return resultado;
 }
 

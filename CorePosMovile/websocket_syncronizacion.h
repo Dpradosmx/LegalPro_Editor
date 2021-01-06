@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <settings.h>
 
 class websocket_syncronizacion : public QObject
 {
@@ -19,6 +20,7 @@ public:
     int ai_ln_max;
     int ai_ln_actual;
     QSqlDatabase db;
+    Settings settings;
     explicit websocket_syncronizacion(const QUrl &url, bool debug = false, QObject *parent = nullptr);
     QStringList opciones;
 Q_SIGNALS:

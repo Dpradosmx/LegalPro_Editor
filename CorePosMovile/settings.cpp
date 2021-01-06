@@ -352,6 +352,13 @@ void Settings::setImpuestoPOrig(QString value){
     settings.setValue( "IMPUESTOPORIG" , value);
 }
 
+void Settings::setIdInstancia(QString value){
+    QSettings settings(  "CORE" , "POSMOBILE") ;
+    idInstancia = value;
+    settings.setValue( "IDINSTANCIA" , value);
+
+}
+
 QString Settings::getIsNew()
 {
 

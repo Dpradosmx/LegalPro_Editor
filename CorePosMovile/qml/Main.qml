@@ -12,23 +12,16 @@ import QtGraphicalEffects 1.0
 
 App {
 
-    // This item contains example code for the chosen Felgo Plugins
-    // It is hidden by default and will overlay the QML items below if shown
-    /*PluginMainItem {
-        id: pluginMainItem
-        z: 1           // display the plugin example above other items in the QML code below
-        visible: false // set this to true to show the plugin example
+    //Pasos
+    //primero hace una comparacion, pues guarda la instancia y  la  tienda  de manera global
+    //si ya hay una instancia inicia con normalidad, busca impuestos, busca categorias, botones y login
+    //si no hay instancia, y si no es la primera vez que se abre la aplicacion, crea la base de datos,
+    //y abre la seccion de instalacion
+    //si es nuevo, pide datos y  manda una solicitud para un codigo
+    //si es para una tienda, pide  el usuario y solo hay que dar de alta usuario y password, pide codigo
+    //al introducir el codigo se manda validar y si es correcto inicia el proceso de instalacion nuevo o Para
+    //una tienda, al terminar el proceso, manda un mensaje donde ya quedan guardadas en el cel la instancia  y la tienda
 
-        // keep only one instance of these plugin-pages alive within app
-        // this prevents crashes due to destruction of plugin items when popping pages from the stack
-        property alias facebookPage: facebookPage
-
-        FacebookPage {
-            id: facebookPage
-            visible: false
-            onPopped: { facebookPage.parent = pluginMainItem; visible = false }
-        }
-    }*/
     id:principal
     //secciones de la zona de registro
     property bool registroN: false
@@ -119,10 +112,9 @@ App {
     Component.onCompleted:{
 
            var isFirstStartApplication = principal.settings.getValue("instancia")
-
-           console.debug("instancia de pruebas "+isFirstStartApplication);
+           //principal.settings.setValue("instancia",87)
+           console.debug("instancia "+isFirstStartApplication);
            if(isFirstStartApplication === undefined||isFirstStartApplication === 0) {
-             // if undefined is returned, this means the app was not started before
              //funcion que crea las tablas
                console.log("No hay instancia aun")
                if(principal.settings.getValue("numberAppStarts")===undefined)
@@ -133,22 +125,23 @@ App {
            }
            else{
                 console.log("Iniciando variables")
-               //var equisml=
+
                //botonesCategorias1.xml=funciones.buttonsRoot()
                //botonesCategorias1.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado>"
                botonesCategorias1.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
                botonesCategorias2.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
                //botonesTender.xml=coneccion.get_tender();
                botonesTender.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>CCAR</ID_STR_RT><ID_BTNSET>CARD</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CASH</ID_STR_RT><ID_BTNSET>CASH</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CHEC</ID_STR_RT><ID_BTNSET>CHEC</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>FDST</ID_STR_RT><ID_BTNSET>Food Stamp</ID_BTNSET></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
-               //coneccion.send_message("0,1,36,x",0)
                categoriasgenerales.xml=funciones.get_categorias("");
                impuestosgenerales.xml=funciones.get_taxs();
+               console.log("Syncronizacion");
+               //lleva una N para ser remplazada por la linea actual
+               coneccion.send_message("N,"+principal.settings.getValue("tienda")+","+principal.settings.getValue("instancia")+",x",0);//primera vez
+               coneccion.run_hilo_actualizador();
            }
            //pruebas
-           coneccion.iniciar2("wss://localhost:8080/WebBackofficeV2/endpoint");
-           registroN=true;
-
-
+           //coneccion.iniciar2("wss://localhost:8080/WebBackofficeV2/endpoint");
+           //registroN=true;
         }
 
 
@@ -5030,9 +5023,11 @@ App {
             principal.settings.setValue("instancia",instancia);
             principal.settings.setValue("tienda",tienda);
             console.log("instancia ,"+instancia+", tienda, "+tienda);
-            onClicked: NativeDialog.confirm("Exito", "Instancia creada y base de datos lista, favor de reiniciar la aplicacion", function(ok) {
+            onClicked: NativeDialog.confirm("Exito", "Instancia creada y base de datos lista, iniciala syncronizacion", function(ok) {
                 if(ok) {}
               })
+            coneccion.send_message("0,"+tienda+","+instancia+",x",0);//primera vez
+            coneccion.run_hilo_actualizador();
         }
 
         onAltaExpress:{
