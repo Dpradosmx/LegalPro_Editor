@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     //client->select();
    // client->get_tender()
     engine.rootContext()->setContextProperty("coneccion", client);
-    principal* princi=new principal();
+    principal* princi=new principal(1);
     engine.rootContext()->setContextProperty("funciones", princi);
     engine.load(QUrl(felgo.mainQmlFileName()));
 

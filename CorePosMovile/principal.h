@@ -23,6 +23,7 @@ class principal : public QObject
 {
 Q_OBJECT
 public:
+    principal(int a);
     principal();
     Settings settings;
     QSqlDatabase sqldatabasecortex;
@@ -45,6 +46,7 @@ signals:
 //public signals:
   // void actualiza_mesa(int lista,QString modelo);
 public slots:
+    void init_principal();
    void estado_Mesa(int lista, int mesa,QString modelo,int estado);
    int itemsearchPrepare(QVariant value);
    QVariant itemsearch();

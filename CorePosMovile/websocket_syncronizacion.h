@@ -21,6 +21,7 @@ public:
     int ai_ln_actual;
     QSqlDatabase db;
     Settings settings;
+    websocket_syncronizacion();
     explicit websocket_syncronizacion(const QUrl &url, bool debug = false, QObject *parent = nullptr);
     QStringList opciones;
 Q_SIGNALS:
@@ -39,6 +40,7 @@ private Q_SLOTS:
     void onTextMessageReceived(QString message);
 
 public slots:
+    void init_websocket();
     void iniciar(const QUrl &url2);
     void iniciar2(const QString &url3);
     void send_message(QString mensaje,int actual);
@@ -54,6 +56,7 @@ public slots:
     void setProgreso_actualizacion(double value);
     void insertar();
     void select();
+    void selectquery(QString query);
     QString get_tender();
 private:
     QWebSocket m_webSocket;//syncronizacion

@@ -1,7 +1,26 @@
 #include "principal.h"
 
 
+principal::principal(int a){
 
+
+}
+void principal::init_principal(){
+    tiket = new retail_Transaction();
+    modoventa = true;
+    settings.setUp();
+    sqldatabasecortex =QSqlDatabase::addDatabase("QSQLITE","Origen"); // El acceso es a traves del driver de ODBC
+    sqldatabasecortex.setDatabaseName("pruebas");
+    if(!sqldatabasecortex.open()){
+        qDebug() << "Error syncronizacion 1: "; //<< sqldatabasecortex.lastError();
+    }
+    Taxes = new RT_Total_Tax(true);
+    tiket->inicializar(settings.getDesglosaImpuestos()=="TRUE", Taxes);
+    datos_ticket.inicializar();
+    //sesion_actual.setLogin("usuarion","usuarion");
+
+
+}
 principal::principal()
 {
 tiket = new retail_Transaction();
