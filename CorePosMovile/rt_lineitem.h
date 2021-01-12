@@ -34,6 +34,8 @@ public:
     double get_total_cambio();
     double get_total_pagadofs();
     double get_total_cambiofs();
+    QList<QVariant> get_imagenes();
+    QString imagenes="";
     void set_line(int line){ai_ln_item=line;}
     QString get_lu_mth_ltm_rtl_trn();
     QString get_print_line(bool venta);

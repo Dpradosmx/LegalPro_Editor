@@ -33,6 +33,7 @@ RT_LineItem::RT_LineItem(Item *warticulo, double cantidad, RT_Total_Tax *taxes, 
 {
     //2020 Es la creacion de la linea de venta
     ty_ln_item = "VE";
+    imagenes=warticulo->itempictures;
     qDebug() << "RTLineItem::RT_LineItem 3: " << ty_ln_item;
     fl_vd_ln_item = -1; //numero de la linea que anula a esta
     lu_mth_ltm_rtl_trn = ""; //como se crea la linea
@@ -352,3 +353,13 @@ RT_LineItem::~RT_LineItem()
     }
 }
 
+QList<QVariant> RT_LineItem::get_imagenes(){
+    QList<QVariant> list;
+    for(int x=0;x<imagenes.split(',').length();x++){
+        if(x==imagenes.split(',').length()-1)
+            break;
+        list.append(imagenes.split(',')[x]);
+    }
+
+    return list;
+}

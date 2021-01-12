@@ -34,6 +34,7 @@ private :
                       QString spr,QString lu_cnt,QString cp_un_sl,
                       QString id_sl_prc,QString sell,QString list,QString ofer,QString fl_vl, QString itm_ps,
                       QString qfr,QString prep_cc,QString qu);
+    void abc_itempicture(QString idt,QString idseq,QString picture,QString url);
 
     QString abc_disbursement_a(QString rcv,QString de,QString ty);
 

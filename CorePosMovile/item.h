@@ -14,6 +14,7 @@ public:
     //Q_INVOKABLE Item_tax get_item_tax(){return impuestos;}
     //Q_INVOKABLE double get_total_tax(){return total_tax;}
     Q_INVOKABLE QVariant get_item();
+    void getpicture();
     Q_INVOKABLE int itemsearchPrepare(QVariant value);
     Q_INVOKABLE QString itemsearch();
     Q_INVOKABLE QString itemsearch_getPosidentity();
@@ -43,6 +44,7 @@ public:
     double offer_price;
     QVariant precio_volumen;
     double precio;
+    QString itempictures="";
 //    Item_tax impuestos;
 //    double total_tax;
 

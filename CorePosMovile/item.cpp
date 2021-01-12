@@ -38,6 +38,7 @@ void Item::set_item(QString ID_ITM, QString ID_ITM_PS_QFR)
          food_stamp_ex=sqlQuery.value("FOOD_STAMP_EX").toString();
          qDebug() << nm_itm << " item sell prices = " << id_itm_sl_prc;
          getprecios();
+
 //         impuestos.set_tax(id_gp_tx,cantidad);
 //         total_tax = impuestos.get_tax(id_gp_tx,get_precio_indice(0).toDouble(),sql);//aqui hay una excepcio si es en estados unidos
     }
@@ -63,9 +64,24 @@ datositem["food_stamp_ex"] = food_stamp_ex;
 datositem["precio"] = precio;
 datositem["precio_volumen"] = precio_volumen;
 datositem["qu_itm"] = qu_itm;
+datositem["itempictures"]=itempictures;
 //datositem["total_tax"] = total_tax;
 
 return datositem;
+}
+
+void Item::getpicture(){
+    QSqlDatabase sql;
+    QSqlQuery sqlQuery( sql.database( "Origen") )  ;
+    QString queryprecios ="select * from ItemPictures where ID_ITM="+QString::number(id_itm);
+    qDebug() << "item.cpp getpictures() query?" << queryprecios;
+    bool ok = sqlQuery.exec( queryprecios ) ;
+
+    if(ok){
+        while( sqlQuery.next()){
+            itempictures+=sqlQuery.value("url").toString()+",";
+        }
+    }
 }
 
 void Item::getprecios(){
@@ -145,6 +161,7 @@ int Item::search_items(QString item, QString ps_qfr){
             qu_itm=sqlQuery.value("QU_ITM").toInt();
             qDebug() << "item.cpp set_item: " << nm_itm << " item sell prices = " << id_itm_sl_prc;
             getprecios();
+            getpicture();
 //            impuestos.set_tax(id_gp_tx,cantidad);
 //            total_tax = impuestos.get_tax(id_gp_tx,get_precio_indice(0).toDouble(),sql);//aqui hay una excepcion si es en estados unidos
         }
@@ -165,8 +182,8 @@ int Item::itemsearchPrepare(QVariant value){
 
     posidentity="";
     qfr="";
-    QSqlQuery sqlQuery( sqldatabasecortex.database("Origen") )  ;        
-    query="select p.id_itm,id_itm_ps,id_itm_ps_qfr,nm_itm,sell_price,qu_itm from item it left outer join posidentity p on p.id_itm = it.id_itm left outer join itemsellprice i on p.id_itm_sl_prc = i.id_itm_sl_prc where lower(id_itm_ps) = lower('" + value.toString() + "');";
+    QSqlQuery sqlQuery( sqldatabasecortex.database("Origen") )  ;                                                                                                                                                                                       //esto fue agregado para obtener una imagen de muestra
+    query="select p.id_itm,id_itm_ps,id_itm_ps_qfr,nm_itm,sell_price,qu_itm, pics.URL as url from item it left outer join posidentity p on p.id_itm = it.id_itm left outer join itemsellprice i on p.id_itm_sl_prc = i.id_itm_sl_prc left join (select id_itm,url from ItemPictures GROUP by id_itm) as pics on pics.id_itm=it.ID_ITM where lower(id_itm_ps) = lower('" + value.toString() + "');";
     qDebug() << "item.cpp::itemsearchprepare() query: "<<query;
     if(value.toString()> "")
     {
@@ -181,7 +198,7 @@ int Item::itemsearchPrepare(QVariant value){
                     qfr = sqlQuery.value("id_itm_ps_qfr").toString();
                     qDebug() << "item.cpp::itemsearchprepare() posidentity"<< posidentity << " qufr "<<qfr;
                 }
-                xml+="<ItemList><ID_ITM_PS>"+sqlQuery.value("id_itm_ps").toString()+"</ID_ITM_PS><ID_ITM_PS_QFR>"+sqlQuery.value("id_itm_ps_qfr").toString()+"</ID_ITM_PS_QFR><NM_ITM>"+sqlQuery.value("nm_itm").toString()+"</NM_ITM><PRICE>"+sNumber+"</PRICE><QTY_ITM>"+sqlQuery.value("qu_itm").toString()+"</QTY_ITM></ItemList>";
+                xml+="<ItemList><ID_ITM_PS>"+sqlQuery.value("id_itm_ps").toString()+"</ID_ITM_PS><ID_ITM_PS_QFR>"+sqlQuery.value("id_itm_ps_qfr").toString()+"</ID_ITM_PS_QFR><NM_ITM>"+sqlQuery.value("nm_itm").toString()+"</NM_ITM><PRICE>"+sNumber+"</PRICE><QTY_ITM>"+sqlQuery.value("qu_itm").toString()+"</QTY_ITM><PIC>"+sqlQuery.value("url").toString()+"</PIC></ItemList>";
             }
             xml="<ItemSearch><Oper>ItemSearch</Oper><resultado>1</resultado><resultadoMsg>Exito</resultadoMsg>"+xml+"</ItemSearch>";
         }
@@ -191,14 +208,14 @@ int Item::itemsearchPrepare(QVariant value){
     if(Contador == 0)
     {
         xml="";
-        query="select  p.id_itm,id_itm_ps,id_itm_ps_qfr,nm_itm,sell_price,qu_itm from item it left outer join posidentity p on p.id_itm = it.id_itm left outer join itemsellprice i on p.id_itm_sl_prc = i.id_itm_sl_prc where UPPER(nm_itm) like UPPER('%" + value.toString() + "%') or UPPER(de_itm) like UPPER('%" + value.toString() + "%') or UPPER(id_itm_ps) like UPPER('%" + value.toString() + "%') ORDER BY nm_itm LIMIT 25;";
+        query="select  p.id_itm,id_itm_ps,id_itm_ps_qfr,nm_itm,sell_price,qu_itm,pics.url as url from item it left outer join posidentity p on p.id_itm = it.id_itm left outer join itemsellprice i on p.id_itm_sl_prc = i.id_itm_sl_prc left join (select id_itm,url from ItemPictures GROUP by id_itm) as pics on pics.id_itm=it.ID_ITM where UPPER(nm_itm) like UPPER('%" + value.toString() + "%') or UPPER(de_itm) like UPPER('%" + value.toString() + "%') or UPPER(id_itm_ps) like UPPER('%" + value.toString() + "%') ORDER BY nm_itm LIMIT 25;";
         qDebug() << "item.qpp query "<<query;
         if (sqlQuery.exec( query ))
         {
             while(sqlQuery.next()){
                 Contador++;
                 sNumber = u.FormatoNumero(sqlQuery.value("sell_price").toString(),7,4);
-                xml+="<ItemList><ID_ITM_PS>"+sqlQuery.value("id_itm_ps").toString()+"</ID_ITM_PS><ID_ITM_PS_QFR>"+sqlQuery.value("id_itm_ps_qfr").toString()+"</ID_ITM_PS_QFR><NM_ITM>"+sqlQuery.value("nm_itm").toString()+"</NM_ITM><PRICE>"+sNumber+"</PRICE><QTY_ITM>"+sqlQuery.value("qu_itm").toString()+"</QTY_ITM></ItemList>";
+                xml+="<ItemList><ID_ITM_PS>"+sqlQuery.value("id_itm_ps").toString()+"</ID_ITM_PS><ID_ITM_PS_QFR>"+sqlQuery.value("id_itm_ps_qfr").toString()+"</ID_ITM_PS_QFR><NM_ITM>"+sqlQuery.value("nm_itm").toString()+"</NM_ITM><PRICE>"+sNumber+"</PRICE><QTY_ITM>"+sqlQuery.value("qu_itm").toString()+"</QTY_ITM><PIC>"+sqlQuery.value("url").toString()+"</PIC></ItemList>";
                 if(Contador == 1)
                 {
                 posidentity=sqlQuery.value("id_itm_ps").toString();

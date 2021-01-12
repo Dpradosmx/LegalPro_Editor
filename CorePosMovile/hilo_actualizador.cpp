@@ -111,9 +111,17 @@ void hilo_actualizador::CicloRecover()
              QString id_strgrp=xmlt.elementsByTagName("ID_STRGRP").at(0).toElement().text();
              QString id_prep_cc=xmlt.elementsByTagName("ID_PREP_CC").at(0).toElement().text();
              QString qu_itm=xmlt.elementsByTagName("QU_ITM").at(0).toElement().text();
-             QString picture=xmlt.elementsByTagName("PICTURE").at(0).toElement().text();
-             if(picture.length()<1)
-                 picture="null";
+
+             QDomNodeList itempic=xmlt.elementsByTagName("itempictures");
+             for(int i=0;i<itempic.size();i++){
+                 QString idseq=itempic.at(0).toDocument().elementsByTagName("ID_SEQ").at(0).toElement().text();
+                 QString picture=itempic.at(0).toDocument().elementsByTagName("ID_SEQ").at(0).toElement().text();
+                 QString url=itempic.at(0).toDocument().elementsByTagName("URL").at(0).toElement().text();
+
+                 abc_itempicture(id_itm,idseq,picture,url);
+
+             }
+
 
 
              QString queri=queryy= abc_item(id_itm,id_itm_sl_prc,id_mrhrc_gp,id_brn,lu_exm_tx,
@@ -516,11 +524,21 @@ QString hilo_actualizador::abc_item(QString idt, QString sl_prc, QString merch, 
     QString query="insert into itemsellprice(id_itm_sl_prc,sell_price,price_list,ofer_price,fl_vl_price) values("+id_sl_prc+","+sell+","+list+","+ofer+",'"+fl_vl+"');"+
             "insert into item(id_itm,id_itm_sl_prc,id_mrhrc_gp,id_brn,lu_exm_tx,nm_itm,de_itm,ty_itm,food_stamp_ex) values("+idt+","+id_sl_prc+","+merch+","+brand+","+exm_tx+",'"+nombre+"','"+descripcion+"','"+ty+"','"+food+"');"+
             "insert into stockitem (id_itm,id_spr,lu_cnt_sls_wt_un,cp_un_sl_ls_rsv) values("+idt+","+spr+",'"+lu_cnt+"',"+cp_un_sl+");"+
-            "insert into posidentity(id_itm_ps,id_itm_ps_qfr,id_itm_sl_prc,id_itm,id_prep_cc,qu_itm,activo) values('"+itm_ps+"',"+qfr+","+id_sl_prc+","+idt+","+prep_cc+","+qu+",'S');"+
-            "insert into itempictures(id_itm,picture) values ("+idt+", null);";
+            "insert into posidentity(id_itm_ps,id_itm_ps_qfr,id_itm_sl_prc,id_itm,id_prep_cc,qu_itm,activo) values('"+itm_ps+"',"+qfr+","+id_sl_prc+","+idt+","+prep_cc+","+qu+",'S');"
+            ;//+"insert into itempictures(id_itm,picture) values ("+idt+", null);";
+            //itempictures ahora se dividio en uno especial
     qDebug()<< " query "+query;
    return ejecutaQuery(query);
 
+}
+
+void hilo_actualizador::abc_itempicture(QString idt,QString idseq,QString picture,QString url){
+    if(picture.length()<=0||picture.compare("NULL")==0){
+        picture="NULL";
+    }
+    QString query="insert into itempictures(id_itm,id_seq,picture,url) values ("+idt+","+idseq+","+picture+","+url+");";
+    qDebug()<< " query "+query;
+   ejecutaQuery(query);
 }
 
 //CORRECTA, REVISION DE NULOS PENDIENTE

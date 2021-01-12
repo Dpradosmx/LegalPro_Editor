@@ -86,6 +86,7 @@ App {
     property var categoriaActual: ""
     property var visibleMenuDespegable1:false
     property bool visibleAlta: false
+    property bool visible_visor:false
     //tickets
     property bool visibleTarjeta: false
     property bool visibleCheque:false
@@ -139,6 +140,7 @@ App {
                //lleva una N para ser remplazada por la linea actual
                coneccion.send_message("N,"+principal.settings.getValue("tienda")+","+principal.settings.getValue("instancia")+",x",0);//primera vez
                coneccion.run_hilo_actualizador();
+               //coneccion.insertar();
            }
            //pruebas
            //coneccion.iniciar2("wss://localhost:8080/WebBackofficeV2/endpoint");
@@ -155,51 +157,116 @@ App {
             //backgroundColor: "aliceblue"
             backgroundColor: "white"
             useSafeArea: false // do not consider safe area insets of screen
-            property bool loginvisible: true
+            property bool loginvisible: false
+
 
             Rectangle{
-                color:"black"
+                id:galeriaimagenes
+                color:"white" //#82bee3"
                 //border.color: "black";
-                width:page.width-dp(300)
+                width:page.width/1.5
                 x:dp(20)
-                height: page.height-dp(300)
+                height: page.height/1.5
                 z:1
-                visible:false
-                property var sourse: "https://www.dzoom.org.es/wp-content/uploads/2017/09/larga-exposicion-13-810x540.jpg"
-                property int valor: 1
+                visible:visible_visor
+                //visible:true
+                border.color:"grey"
+                anchors.centerIn: parent
+                layer.enabled: true
+                            layer.effect: DropShadow {
+                                transparentBorder: true
+                                horizontalOffset: 1
+                                verticalOffset: 1
+                            }
+
+                property var sourse: ""
+                property int valor: 0
+                property variant listaimagenes:[]
                 MouseArea{
                     anchors.fill: parent
                             onClicked: {
-                                if(parent.valor==5)
-                                    parent.valor=1;
-                                else
-                                    parent.valor++;
-                                if(parent.valor==1)
-                                    parent.sourse="https://www.dzoom.org.es/wp-content/uploads/2017/09/larga-exposicion-13-810x540.jpg";
-                                else if(parent.valor==2)
-                                    parent.sourse="https://www.dzoom.org.es/wp-content/uploads/2020/12/me-gustaria.png";
-                                else if(parent.valor==3)
-                                    parent.sourse="https://img.wattpad.com/49e3d667d5bb8f317c3122231a8464239c28e752/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f4c2d616b734e6d624967493168413d3d2d322e313539633439313136383234346461343332383235343438313134302e6a7067?s=fit&w=720&h=720";
-                                else if(parent.valor==4)
-                                    parent.sourse="https://st.depositphotos.com/1771835/2012/i/950/depositphotos_20120691-stock-photo-serious-woman-portrait-real-high.jpg";
-                                else if(parent.valor==5)
-                                    parent.sourse="https://st2.depositphotos.com/1034986/6164/i/950/depositphotos_61643183-stock-photo-young-beautiful-girl-with-confetti.jpg";
-
+                                parent.valor=parent.valor+1;
+                                if(parent.valor==parent.listaimagenes.length){
+                                    parent.valor=0;
+                                }
+                                parent.sourse=parent.listaimagenes[parent.valor];
                             }
+                }
+                AppActivityIndicator {
+                    width: parent.width/3
+                    //x: dp(20)
+                    height: parent.width/3
+                    anchors.centerIn: parent
+                    //fillMode: Image.PreserveAspectFit
+                    //autoTransform: true
+                    //source: "../assets/l.gif"
+
                 }
                 AppImage {
                            id: resultImage
-                           width: parent.width-dp(10)
-                           //x: dp(20)
-                           height: parent.height-dp(10)
+                           width: parent.width-dp(40)
+                           x: dp(20)
+                           height: parent.height-dp(30)
                            fillMode: Image.PreserveAspectFit
                            autoTransform: true
                            source: parent.sourse
+                           //anchors.leftMargin: dp(10)
+                           layer.enabled: true
+                                       layer.effect: DropShadow {
+                                           transparentBorder: true
+                                           horizontalOffset: 1
+                                           verticalOffset: 1
+                                       }
 
                          }
+                AppButton {
+
+
+                  flat: false
+                  fontCapitalization: Font.MixedCase
+                  backgroundColor: "#4a576c"
+                  backgroundColorPressed: "#d6d6d6"
+                  borderColor: "white"
+                  fontBold: false
+                        text:"Cerrar"
+                        anchors.bottom: parent.bottom
+                        anchors.horizontalCenter: resultImage.horizontalCenter
+                        onClicked: visible_visor=false
+                }
+                ListModel {
+                   id: modeloimagenes
+                }
             }
 
+            Rectangle {
 
+              anchors.bottom: galeriaimagenes.top
+              anchors.left: galeriaimagenes.left
+              color: "#4a576c"
+              width: galeriaimagenes.width
+              height: ingresog.height + dp(16)
+              radius: dp(4)
+              visible:visible_visor
+              //visible: true
+              border.color: "grey"
+               z:1
+               layer.enabled: true
+                           layer.effect: DropShadow {
+                               transparentBorder: true
+                               horizontalOffset: 1
+                               verticalOffset: 1
+                           }
+
+              AppText {
+                id:ingresog
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: dp(10)
+                //fontSize: sp(0)
+                text: "Imagenes"
+                color: "white"
+              }
+            }
                 /*
             AppText {
               id: myText
@@ -1555,6 +1622,13 @@ App {
                                           t1.text=textPrice;
                                           t1e.text=textPrice;
                                           t2.text=textTotal;
+                                          var lista=imagenes.split(",");
+                                          //console.debug("al darle clic imagenes tiene "+imagenes +" "+imagenes.length);
+                                          //console.debug("al darle clic imagenes2 tiene "+lista +" "+lista.length);
+                                          galeriaimagenes.listaimagenes=lista;
+                                          galeriaimagenes.valor=0;
+                                          galeriaimagenes.sourse=galeriaimagenes.listaimagenes[0];
+                                          visible_visor=true;
 
                                               visibleDescripcio=true;
                                               visibleBusqueda=false;
@@ -1687,7 +1761,7 @@ App {
                                 }
                 }
 
-                //este es el principal
+                //seccion fondo principal
                 Rectangle{
                     id:lineaDescripcion
                     anchors.right: parent.right
@@ -1708,7 +1782,8 @@ App {
                                 }
 
                 }
-
+                //fin seccion fondo principal
+                //seccion de mensajes
                 Rectangle{
                 id:mensajes
                 anchors.left: lineaDescripcion.left
@@ -1807,7 +1882,7 @@ App {
                                   }
                          }
                 }
-
+                //fin seccion de mensajes
                 XmlListModel {
                     id: botonesTender
                     query: "/Envelope/Body/GETButtonConfigWResponse/return/buttonconfig"
@@ -2142,8 +2217,8 @@ App {
                     //visible:visibleVenta
                     visible:visibleVenta && visibleCheque ? true:false
                 }
-                //edicion
-                //venta
+
+                //secccion venta
                 Row{
                     spacing: dp(5)
                     anchors.horizontalCenter: lineaDescripcion.horizontalCenter
@@ -2234,6 +2309,7 @@ App {
                                           myObject.pack = value2.pack ;
                                           myObject.canceled = false;
                                           myObject.cambios="";
+
                                           myModelt.insert( funciones.getNumeroLineas()-1, myObject );
                                           funciones.finish_ticket(0,{});//clientes
                                           //myDisplay.clearLines2();
@@ -2322,8 +2398,7 @@ App {
                       visible:visibleVenta
                     }
                     }
-
-                //fin venta
+                //fin seccion venta
 
                 //descripcion linea
                 property bool edicionlvisible: false
@@ -2421,6 +2496,46 @@ App {
                           observaciontext.text=d3.text;
                       }
                   }
+                }
+
+                Rectangle{
+                    id:previewbusqueda
+                 color:white
+                 width: page.width/10
+                 height: page.width/10
+                 visible: visibleBusqueda
+                 anchors.right: lineaDescripcion.left
+                 anchors.top: lineaDescripcion.top
+                 border.color: "gray"
+                 anchors.rightMargin: dp(10)
+                 layer.enabled: true
+                             layer.effect: DropShadow {
+                                 transparentBorder: true
+                                 horizontalOffset: 1
+                                 verticalOffset: 1
+                             }
+                 property var sourse: "../assets/default.png"
+                 property int valor: 1
+                 AppActivityIndicator {
+                     width: parent.width-dp(15)
+                     //x: dp(20)
+                     height: parent.height-dp(15)
+                     anchors.centerIn: parent
+                     //fillMode: Image.PreserveAspectFit
+                     //autoTransform: true
+                     //source: "../assets/l.gif"
+
+                 }
+                 AppImage {
+                            width: parent.width-dp(5)
+                            //x: dp(20)
+                            height: parent.height-dp(5)
+                            anchors.centerIn: parent
+                            fillMode: Image.PreserveAspectFit
+                            autoTransform: true
+                            source: parent.sourse
+
+                          }
                 }
 
                 AppText{
@@ -2577,7 +2692,7 @@ App {
                    visible:visibleDescripcio
                 }
                 //fin descripcion linea
-                //categorias
+                //seccion categorias
 
                 AppButton{
                   id:backCategoria
@@ -2919,8 +3034,8 @@ App {
                     delegate: contactsDelegate
                 }
 
-                //categorias
-                //listabusqueda
+                //finn seccion categorias
+                //seccion listabusqueda
 
                 property var busquedaSelectPS:""
                 property var busquedaSelectPSQFR:""
@@ -2933,6 +3048,7 @@ App {
                      XmlRole { name: "NM_ITM"; query: "NM_ITM/string()" }
                      XmlRole { name: "PRICE"; query: "PRICE/string()" }
                      XmlRole { name: "QTY_ITM"; query: "QTY_ITM/string()" }
+                     XmlRole{name: "PIC"; query: "PIC/string()"}
                 }
                 AppListView {
                     id:listaitems
@@ -2968,7 +3084,12 @@ App {
                                              listaitems.currentIndex=index;
                                             page.busquedaSelectPS=ID_ITM_PS;
                                             page.busquedaSelectPSQFR=ID_ITM_PS_QFR;
-
+                                            console.log("tntntntn"+PIC+"tntntnt");
+                                            if(PIC.length<7){
+                                            previewbusqueda.sourse="../assets/default.png";
+                                            }else{
+                                            previewbusqueda.sourse=PIC
+                                            }
                                         }
                             }
                             AppText{
@@ -3082,6 +3203,10 @@ App {
                               myObject.pack = value.pack ;
                               myObject.canceled = false;
                               myObject.cambios="";
+
+                              myObject.imagenes=value.imagenes;
+                              //myObject.imagenes=myObject.imagenes.join(",");
+                              console.debug("imagenes tiene "+myObject.imagenes[0]+" tamaño "+myObject.imagenes.length);
                               myModelt.insert( funciones.getNumeroLineas()-1, myObject );
                               visibleBusqueda=false;
                               visibleDescripcio=false;
@@ -3106,8 +3231,6 @@ App {
                     onClicked:{ visibleBusqueda=false;}
                     }
                 }
-
-                //fin listabusqueda
 
                 AppButton{
                   id:botonBuscar
@@ -3186,7 +3309,7 @@ App {
                           visibleCategorias=false;
                           visibleVenta=false;
                           listaitems.focus=true;
-                          console.log("Clicked Item #"+index);
+                          //console.log("Clicked Item #"+index);
 
                            listaitems.currentIndex=0;
                       }
@@ -3857,6 +3980,8 @@ App {
 
                 }
 
+                //fin seccion listabusqueda
+
 
                 //login de encargado
                 property bool supervisorLogVisible: false
@@ -3872,8 +3997,8 @@ App {
                 8 cancelacion de venta
                 9 cambio de precio temporal
 */
-                //zona login
-               // login form background
+                //seccion zona login supervisor
+
                 Rectangle{
                   id:fondoblock2
                   width: parent.width
@@ -4163,9 +4288,9 @@ App {
 
                 }
 
-                  //fin de zona login
+                  //fin seccion de zona login
 
-                  //retiro/deposito
+                  //seccion retiro/deposito
                   property bool despositoVisible: false
                   Rectangle {
                     id: depositoRetiro
@@ -4322,9 +4447,9 @@ App {
                     }
                   }
                   }
-                    //retiro/deposito
+                    //fin seccion retiro/deposito
 
-                  //cambio de precio
+                  //seccion cambio de precio
                   property bool cambiopVisible: false
                   Rectangle {
                     id: cambiopf
@@ -4514,10 +4639,10 @@ App {
                     }
 
                   }
-                  //cambio de precio
+                  // seccion cambio de precio
 
-                  //alta xpress
-                  // alta express
+
+                  //seccion alta express
 
                      Rectangle {
                        id: altaX
@@ -4876,8 +5001,9 @@ App {
                        }
                      }
 
-                  //alta express
-                  //lista de ventas en espera
+                  //fin secion alta express
+
+                  //seccion de ventas en espera
                   property bool ventasSVisible: false
                   property var listaComboVentas: []
                   Rectangle {
@@ -4979,6 +5105,7 @@ App {
                     }
 
                   }
+                  //fin seccion de ventas en espera
         }
     }
 

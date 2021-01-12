@@ -68,6 +68,8 @@ QMap<QString,QVariant> retail_Transaction::add_line(RT_LineItem* linea)
         total_v+=linea->get_importe();
         total_impuestofs+=linea->get_total_taxfs();
         total_vfs+=linea->get_importefs();
+        qDebug()<< "array "<<linea->get_imagenes();
+        resultado["imagenes"]=linea->imagenes;
     }
     else
         if(linea->get_ty_ln_item()=="TE")
