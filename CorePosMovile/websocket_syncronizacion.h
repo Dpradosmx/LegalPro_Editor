@@ -24,11 +24,12 @@ public:
     websocket_syncronizacion();
     explicit websocket_syncronizacion(const QUrl &url, bool debug = false, QObject *parent = nullptr);
     QStringList opciones;
+    bool primeravez=true;
 Q_SIGNALS:
     void closed();
 signals:
     void progreso_actualizacionChanged();
-    void setInstancia(int instancia);
+    void setsyncronizacion();
     void loginf(int instancia,int tienda);
     void confirmado(int valor);//1 si 0 no
     void instalacionCompleta(int instancia,int tienda);

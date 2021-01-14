@@ -188,11 +188,18 @@ void websocket_syncronizacion::cerrar_slot(){
 }
 
 void websocket_syncronizacion::send_message(QString mensaje,int actual){
-    actual=settings.getLineMax().toInt();
-    mensaje=mensaje.replace(QString("N"),settings.getLineMax());
-    if(ai_ln_actual==0){  ai_ln_actual=actual;}
-    qDebug()<< "send_message "+mensaje;
-    //m_webSocket.sendTextMessage(mensaje);
+    try {
+        actual=settings.getLineMax().toInt();
+        mensaje=mensaje.replace(QString("N"),settings.getLineMax());
+        if(ai_ln_actual==0){  ai_ln_actual=actual;}
+        qDebug()<< "send_message "+mensaje;
+        m_webSocket.sendTextMessage(mensaje);
+    } catch (QException ex) {
+       qDebug()<< "excepcion " << ex.what();
+       mensaje=mensaje.replace(QString("N"),"0");
+       ai_ln_actual=0;
+       m_webSocket.sendTextMessage(mensaje);
+    }
 
 }
 void websocket_syncronizacion::send_message_log_conf(QString mensaje){
@@ -210,11 +217,8 @@ void websocket_syncronizacion::onConnected()
         qDebug() << "WebSocket connected syncronizacion";
     connect(&m_webSocket, &QWebSocket::textMessageReceived,
             this, &websocket_syncronizacion::onTextMessageReceived);
-    //actual=settings.getLineMax().toInt();
-    QString mensaje=settings.getLineMax()+","+settings.getIdStore()+","+settings.getIdInstancia()+",x";
-    qDebug() << "Inicia gethistcatalogos "<<mensaje;
-    m_webSocket.sendTextMessage(mensaje);
-
+    //actual=settings.getLineMax().toInt();   
+    setsyncronizacion();
 
 }
 void websocket_syncronizacion::onConnected2()

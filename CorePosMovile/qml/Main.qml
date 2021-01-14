@@ -126,8 +126,7 @@ App {
            }
            else{
                 console.log("Iniciando variables")
-                funciones.init_principal();
-               coneccion.init_websocket();
+
                //botonesCategorias1.xml=funciones.buttonsRoot()
                //botonesCategorias1.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado>"
                botonesCategorias1.xml=  "<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10005</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO 1 PZ /4LB</NM_BTN><DE_BTN>CHORIZO CHICANO 1 PZ /4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10002</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>CHORIZO CHICANO CAJA 10/4LB</NM_BTN><DE_BTN>CHORIZO CHICANO CAJA 10/4LB</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>CHORCHICA</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10000</ID_BTN><ID_BTN_PRNT></ID_BTN_PRNT><TY_BTN>RO</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Chorizos</NM_BTN><DE_BTN>Chorizos</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10004</ID_BTN><ID_BTN_PRNT>10003</ID_BTN_PRNT><TY_BTN>PR</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>MILAN QUESO PUERCO GRANDE</NM_BTN><DE_BTN>MILAN QUESO PUERCO GRANDE</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS>QUESMILANP</ID_ITM_PS><ID_ITM_PS_QFR>1</ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig><buttonconfig><ID_STR_RT>1</ID_STR_RT><ID_BTNSET>1</ID_BTNSET><ID_BTN>10003</ID_BTN><ID_BTN_PRNT>10000</ID_BTN_PRNT><TY_BTN>AG</TY_BTN><BTN_WT>1</BTN_WT><NM_BTN>Otros</NM_BTN><DE_BTN>Otros</DE_BTN><PIC/><ICON_ADDRESS/><ID_STRGRP>1</ID_STRGRP><ID_ITM_PS></ID_ITM_PS><ID_ITM_PS_QFR></ID_ITM_PS_QFR><POSITION>0</POSITION></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
@@ -138,7 +137,7 @@ App {
                impuestosgenerales.xml=funciones.get_taxs();
                console.log("Syncronizacion");
                //lleva una N para ser remplazada por la linea actual
-               coneccion.send_message("N,"+principal.settings.getValue("tienda")+","+principal.settings.getValue("instancia")+",x",0);//primera vez
+               //coneccion.send_message("N,"+principal.settings.getValue("tienda")+","+principal.settings.getValue("instancia")+",x",0);//primera vez
                coneccion.run_hilo_actualizador();
                //coneccion.insertar();
            }
@@ -157,7 +156,7 @@ App {
             //backgroundColor: "aliceblue"
             backgroundColor: "white"
             useSafeArea: false // do not consider safe area insets of screen
-            property bool loginvisible: false
+            property bool loginvisible: true
 
 
             Rectangle{
@@ -291,7 +290,7 @@ App {
             }
 */
 
-            //zona de mesas
+            //seccion de mesas
                JsonListModel {
                    id: jsonModel1
                    source: modelo1
@@ -812,8 +811,8 @@ App {
                      }//if onclicked
                }
 
-               //!zona de mesas
-                 //fondo
+               //fin seccion de mesas
+                 //seccion pantalla inicial
                   Rectangle{
                     id:fondoblock
                     width: parent.width
@@ -856,8 +855,8 @@ App {
 
                     }
 
-                    //zona login
-                   // login form background
+                    //seccion login inicial
+
                       Rectangle {
                         id: loginForm
                         anchors.centerIn: parent
@@ -951,6 +950,8 @@ App {
                                           mensajes.tipoM=1;
                                           mt.text="Sesion iniciada";
                                           mostrarTexto.start();
+                                          funciones.init_principal();
+                                         coneccion.init_websocket();
                                         }
                                         else{
                                          NativeDialog.confirm("Error", "Contraseña incorrecta", function(ok) {
@@ -1024,7 +1025,8 @@ App {
                           color: "white"
                         }
                       }
-                     //fin de zona login
+
+                      //fin de zona login
 
 
                       // zona nuevo registro
@@ -1057,6 +1059,7 @@ App {
                                          login=false;
                                          codigo=false;
                                          datos2=false;
+                                         ingresof.text="Todos los datos son necesarios.";
                                      }
 
                                      }
@@ -1072,6 +1075,7 @@ App {
                                          login=true;
                                          codigo=false;
                                          datos2=false;
+                                         ingresof.text="Usuario ya registrado";
                                      }
 
                                      }
@@ -1087,6 +1091,7 @@ App {
                                          login=false;
                                          codigo=true;
                                          datos2=false;
+                                         ingresof.text="El código tiene caducidad, también debe de haber pasado el proceso de creación nuevo o ya registrado al menos una vez.";
                                      }
 
                                      }
@@ -1129,7 +1134,7 @@ App {
                                        borderColor: Theme.tintColor
                                        borderWidth: dp(2)
                                        visible:login
-                                       placeholderText: "password registrado"
+                                       placeholderText: "Contraseña"
 
                                      }
 
@@ -1152,6 +1157,7 @@ App {
                                          login=false;
                                          codigo=true;*/
                                          aceptarl.enabled=false;
+                                         ingresof.text="Procesando";
                                      }
                                      //anchors.horizontalCenter: parent.horizontalCenter
                                        //      anchors.top: passwordl.bottom
@@ -1167,6 +1173,7 @@ App {
                                          codigo=false;
                                          datos2=false;
                                          principal.settings.setValue("instancia", 0);
+                                         ingresof.text="Bienvenido, ¿usted es un usuario completamente nuevo o ya tiene un usuario y una contraseña? Si ya tiene un código puede introducirlo ahora.";
                                      }
                                      //anchors.horizontalCenter: parent.horizontalCenter
                                        //      anchors.top: aceptarl.bottom
@@ -1528,6 +1535,7 @@ App {
                                            onClicked: NativeDialog.confirm("Confirmado", "Pronto recibira  un correo con un codigo de confirmacion", function(ok) {
                                                if(ok) {}
                                              })
+                                           ingresof.text=""
                                        }
                                        else{
                                            usuario=true;
@@ -1535,6 +1543,7 @@ App {
                                            login=false;
                                            codigo=false;
                                            datos2=false;
+                                           ingresof.text="Bienvenido, ¿usted es un usuario completamente nuevo o ya tiene un usuario y una contraseña? Si ya tiene un código puede introducirlo ahora."
                                        }
                                      })
                                }
@@ -1568,7 +1577,32 @@ App {
                              color: "white"
                            }
                          }
-                        //fin zona registro
+
+                         Rectangle{
+                             id: loginFormf
+                             anchors.top: loginForm2.bottom
+                             anchors.left: loginForm2.left
+                             color: "gray"
+                             width: loginForm2.width
+                             height: ingresof.height + dp(16)
+                             radius: dp(4)
+                             visible: registroN
+                             border.color: "black"
+
+                             AppText {
+                               id:ingresof
+                               anchors.verticalCenter: parent.verticalCenter
+                               anchors.left: parent.left
+                               anchors.leftMargin: dp(10)
+                               width: loginForm2.width-dp(20)
+                               //fontSize: sp(0)
+                               text: "Bienvenido, ¿usted es un usuario completamente nuevo o ya tiene un usuario y una contraseña? Si ya tiene un código puede introducirlo ahora."
+                               color: "white"
+
+                             }
+                         }
+
+                         //fin zona registro
                   }
 
                 //fin fondo
@@ -5117,8 +5151,14 @@ App {
     void instalacionCompleta(int instancia,tienda);
         */
         target:coneccion
-        onSetInstancia:{
-            //p3.text=instancia
+        onSetsyncronizacion:{
+            //esta vuelta se da porque no puede iniciar settings con la base de datos vacia
+            //mas que nada es para las instalaciones nuevas
+            //la pantalla siempre tiene la instancia y  la tienda disponibles, el c++ los toma de la bd
+            var mensaje="N,"+principal.settings.getValue("tienda")+","+principal.settings.getValue("instancia")+",x";
+            console.debug("inicia syncronizacion "+mensaje);
+            coneccion.send_message(mensaje,0);//primera vez
+
         }
 
         onLoginf:{
