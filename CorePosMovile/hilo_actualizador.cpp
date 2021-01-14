@@ -28,7 +28,7 @@ void hilo_actualizador::dowork()
     //emit setservice("Dentro del hilo");
     QEventLoop loop;
     timer = new QTimer(this);
-    timer->setInterval(120000); //cada 2 minutos
+    timer->setInterval(12000); //cada 2 minutos
     connect(timer, SIGNAL(timeout()), this, SLOT(CicloRecover()));
     qDebug() << "Corriendo el hilo";
     timer->start();
@@ -474,11 +474,11 @@ void hilo_actualizador::CicloRecover()
                else if(operacion=="B"){}
                }
        if(queryy.compare("ok")==0){
-           qDebug() << " correto " <<queryy ;
-           query.prepare("update HistCatalogos set aplicado=1 where "+query.value("ai_ln").toString());
+           qDebug() << " correto, ejecutando update HistCatalogos set aplicado=1 where "<<query.value("ai_ln").toString();
+           query2.prepare("update HistCatalogos set aplicado=1 where "+query.value("ai_ln").toString());
 
-           if(!query.exec()){
-             qDebug() << "ERRORth4: " << query.lastError().text();
+           if(!query2.exec()){
+             qDebug() << "ERRORth4: " << query2.lastError().text();
              //return 0;
            }
            //emit setservice(valorxquery*contador);
