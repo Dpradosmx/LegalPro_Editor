@@ -1617,17 +1617,22 @@ App {
                 height: parent.height/3
                 anchors.right: parent.right
                 anchors.top: parent.top
+                anchors.topMargin: dp(20)
+                anchors.rightMargin: dp(20)
                 visible: consolasql
                 color: "gray"
-                z:1
-                Column{
+                border.color: "grey"
 
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.top: parent.top
+                z:1
 
                     AppTextField {
                       id: sql
                       //Layout.preferredWidth: dp(200)
+                      width: parent.width-dp(40)
+                      anchors.horizontalCenter: parent.horizontalCenter
+                      anchors.top: parent.top
+                      anchors.topMargin: dp(30)
+
                       showClearButton: true
                       font.pixelSize: sp(14)
                       backgroundColor: "white";
@@ -1636,18 +1641,25 @@ App {
                       borderWidth: dp(2)
                     }
                     AppButton{
+                        id:select
                         text: "SELECTs"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: sql.bottom
+                        anchors.topMargin: dp(30)
                         onClicked: {
                         coneccion.selectquery(sql.text);
                         }
                     }
                     AppButton{
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: select.bottom
+                        anchors.topMargin: dp(10)
                         text: "UPDATESs"
                         onClicked: {
                         coneccion.updatequery(sql.text);
                         }
                     }
-                }
+
                }
 
                 //fin fondo
