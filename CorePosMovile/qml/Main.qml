@@ -136,7 +136,6 @@ App {
                botonesTender.xml="<?xml version='1.0' encoding='UTF-8'?><Envelope xmlns:S='http://schemas.xmlsoap.org/soap/envelope/'><Body><GETButtonConfigWResponse xmlns:ns2='http://Webmet.core/'><return><resultado><resultado>1</resultado><resultadoMsg>ok</resultadoMsg></resultado><buttonconfig><ID_STR_RT>CCAR</ID_STR_RT><ID_BTNSET>CARD</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CASH</ID_STR_RT><ID_BTNSET>CASH</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>CHEC</ID_STR_RT><ID_BTNSET>CHEC</ID_BTNSET></buttonconfig><buttonconfig><ID_STR_RT>FDST</ID_STR_RT><ID_BTNSET>Food Stamp</ID_BTNSET></buttonconfig></return></GETButtonConfigWResponse></Body></Envelope>";
                categoriasgenerales.xml=funciones.get_categorias("");
                impuestosgenerales.xml=funciones.get_taxs();
-               console.log("Syncronizacion");
                //lleva una N para ser remplazada por la linea actual
                //coneccion.send_message("N,"+principal.settings.getValue("tienda")+","+principal.settings.getValue("instancia")+",x",0);//primera vez
                coneccion.run_hilo_actualizador();

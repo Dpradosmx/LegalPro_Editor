@@ -6,16 +6,22 @@ principal::principal(int a){
 
 }
 void principal::init_principal(){
+    qDebug()<<"paso 1 new retailtrasaction()";
     tiket = new retail_Transaction();
     modoventa = true;
+    qDebug()<<"paso 2 inicializar settings()";
     settings.setUp();
     sqldatabasecortex =QSqlDatabase::addDatabase("QSQLITE","Origen"); // El acceso es a traves del driver de ODBC
     sqldatabasecortex.setDatabaseName("pruebas");
     if(!sqldatabasecortex.open()){
         qDebug() << "Error syncronizacion 1: "; //<< sqldatabasecortex.lastError();
     }
+    qDebug()<<"paso 3 inicializar  taxs()";
     Taxes = new RT_Total_Tax(true);
+    qDebug()<<"paso 4 inicializar el ticket";
     tiket->inicializar(settings.getDesglosaImpuestos()=="TRUE", Taxes);
+    qDebug()<<"paso 5 inicializar los datos del ticket";
+
     datos_ticket.inicializar();
     //sesion_actual.setLogin("usuarion","usuarion");
 

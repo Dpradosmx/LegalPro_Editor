@@ -1,6 +1,6 @@
 #include "rt_total_tax.h"
 #include <qDebug>
-
+#include <QException>
 
 RT_Total_Tax::RT_Total_Tax(bool wdesglosa)
 //Carga la totalidad de la estructura de impuestos
@@ -56,20 +56,25 @@ RT_Total_Tax::RT_Total_Tax(RT_Total_Tax* nodo)
 {
 
     //qDebug() << "rt_total_tax::rt_total_tax 3 "<< QString::number(nodo->id_gp_tax) << " " << nodo->nm_gp_tx;
-    desglosa_impuestos = nodo->desglosa_impuestos;
-    id_gp_tax = nodo->id_gp_tax;
-    nm_gp_tx = nodo->nm_gp_tx;
-    cd_rcpt_prn  = nodo->cd_rcpt_prn;
-    next = NULL;
-    reglas = NULL;
-    if(nodo->next != NULL)
-    {
-        next = new RT_Total_Tax(nodo->next);
+    try {
+        desglosa_impuestos = nodo->desglosa_impuestos;
+        id_gp_tax = nodo->id_gp_tax;
+        nm_gp_tx = nodo->nm_gp_tx;
+        cd_rcpt_prn  = nodo->cd_rcpt_prn;
+        next = NULL;
+        reglas = NULL;
+        if(nodo->next != NULL)
+        {
+            next = new RT_Total_Tax(nodo->next);
+        }
+        if(nodo->reglas != NULL)
+        {
+            reglas = new RT_Total_individual_Tax(nodo->reglas);
+        }
+    } catch (QException extaxs) {
+        qDebug()<<"Excepcion en rt_total_tax "<<extaxs.what();
     }
-    if(nodo->reglas != NULL)
-    {
-        reglas = new RT_Total_individual_Tax(nodo->reglas);
-    }
+
 }
 
 RT_Total_Tax::RT_Total_Tax(int wid_gpo_tx, RT_Total_Tax* nodo)

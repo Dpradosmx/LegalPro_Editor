@@ -172,7 +172,7 @@ void hilo_actualizador::CicloRecover()
            operacion=xmlt.elementsByTagName("Operacion").at(0).toElement().text();
 
            QString OPR= xmlt.elementsByTagName("ID_OPR").at(0).toElement().text();
-           QString STR=xmlt.elementsByTagName("ID_OPR").at(0).toElement().text();
+           QString STR=xmlt.elementsByTagName("ID_STR_RT").at(0).toElement().text();
            QString NM=xmlt.elementsByTagName("NM_OPR").at(0).toElement().text();
            QString PWD=xmlt.elementsByTagName("PWD_ACS_OPR").at(0).toElement().text();
 
@@ -688,11 +688,18 @@ QString hilo_actualizador::abc_tender_c(QString ty,QString act,QString cny,QStri
     return ejecutaQuery(query);
 }
 
-//correcto, revisar nulos pendiente
+//correcto
 QString hilo_actualizador::abc_till_a(QString str,QString rpsty,QString ws,QString opr,QString sc,QString  opn, QString  mxm){
     if(opr.length()<=0){
         opr="null";
     }
+    if(rpsty.length()<=0){
+        rpsty="1";
+    }
+    if(mxm.length()<=0)
+        mxm="1500";
+    if(opn.length()<=0)
+        opn="0";
     QString query="insert into till (id_str_rt,id_rpsty_tnd,id_ws,id_opr,cp_blnc_dflt_opn,lu_tnd_mxm_alw) values ("+str+","+rpsty+","+ws+","+opr+","+opn+","+mxm+");";
     return ejecutaQuery(query);
 }
