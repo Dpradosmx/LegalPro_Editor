@@ -93,6 +93,7 @@ App {
     property int ticketIndice:0
     //venta por default se usa cash, efectivo
     property var tySeleccionado: "CASH"
+    property bool consolasql:false;
 
     property var impuesttos : [] ;
     property var cattegorias: [];
@@ -813,7 +814,8 @@ App {
 
                //fin seccion de mesas
                  //seccion pantalla inicial
-                  Rectangle{
+
+               Rectangle{
                     id:fondoblock
                     width: parent.width
                     height: parent.height
@@ -828,7 +830,12 @@ App {
                         anchors.margins: dp(30)
                         width:dp(320)
                         height: dp(85)
-
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                consolasql= consolasql ? false:true;
+                            }
+                        }
                     }
 
                     Rectangle{
@@ -1604,6 +1611,44 @@ App {
 
                          //fin zona registro
                   }
+
+               Rectangle{
+                width: parent.width/3
+                height: parent.height/3
+                anchors.right: parent.right
+                anchors.top: parent.top
+                visible: consolasql
+                color: "gray"
+                z:1
+                Column{
+
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
+
+                    AppTextField {
+                      id: sql
+                      //Layout.preferredWidth: dp(200)
+                      showClearButton: true
+                      font.pixelSize: sp(14)
+                      backgroundColor: "white";
+
+                      borderColor: Theme.tintColor
+                      borderWidth: dp(2)
+                    }
+                    AppButton{
+                        text: "SELECTs"
+                        onClicked: {
+                        coneccion.selectquery(sql.text);
+                        }
+                    }
+                    AppButton{
+                        text: "UPDATESs"
+                        onClicked: {
+                        coneccion.updatequery(sql.text);
+                        }
+                    }
+                }
+               }
 
                 //fin fondo
                 //ticket

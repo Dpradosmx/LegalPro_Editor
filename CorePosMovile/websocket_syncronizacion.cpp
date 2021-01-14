@@ -115,6 +115,7 @@ void websocket_syncronizacion::select(){
 }
 
 void websocket_syncronizacion::selectquery(QString querys){
+    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("pruebas");
     QString xml="";
     if(!db.open()){
@@ -123,7 +124,7 @@ void websocket_syncronizacion::selectquery(QString querys){
     }
     QSqlQuery query(db);
     query.exec(querys);
-    qDebug() << "SELECT * FROM HistCatalogos ORDER BY ai_ln";
+    qDebug() << querys;
     QString resultado="vacio";
     while (query.next()) {
         resultado="";
@@ -135,6 +136,24 @@ void websocket_syncronizacion::selectquery(QString querys){
     }
 
 }
+
+void websocket_syncronizacion::updatequery(QString querys){
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("pruebas");
+    QString xml="";
+    if(!db.open()){
+        qDebug() << "ERROR: " << db.lastError();
+        return;
+    }
+    QSqlQuery query(db);
+    //query.exec(querys);
+    qDebug() << querys;
+    QString resultado="vacio";
+    if(!query.exec(querys)){
+      qDebug() << "ERROR3: " << query.lastError().text();
+    }
+}
+
 
 QString websocket_syncronizacion::get_tender(){
     db.setDatabaseName("pruebas");

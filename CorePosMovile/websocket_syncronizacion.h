@@ -58,6 +58,7 @@ public slots:
     void insertar();
     void select();
     void selectquery(QString query);
+    void updatequery(QString querys);
     QString get_tender();
 private:
     QWebSocket m_webSocket;//syncronizacion
